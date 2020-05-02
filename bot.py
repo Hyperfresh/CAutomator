@@ -156,4 +156,25 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 else:
                     await message.channel.send("<@{.author.id}>, the Hexadecimal code you entered is incorrect!".format(message))
 
+    if message.content.startswith('-delrole'):
+        member = message.author
+        if(member.roles.find(547360918930194443)): # check if the member has level 30 role
+
+            User = Query()
+            result = db.search(User.memberId == member.id)
+
+            if(len(result) == 1):
+
+                print('ROLE DELETION REQUESTED for ' + member.name + "#" + member.discriminator)
+
+                role = message.guild.get_role(result[0]['roleId'])
+                await role.delete()
+                db.remove(User.memberId == member.id)
+
+                await message.channel.send("<@{0}>, I removed your custom role\nDo `-role` to create a new custom role".format(member.id))
+
+            else:
+                await message.channel.send("<@{0}>, you already don't have any custom role!".format(member.id))
+
+
 client.run(TOKEN)
