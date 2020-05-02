@@ -118,6 +118,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
 
             if(len(result) == 1):
 
+                # role edit
                 roleName = ""
                 for x in range(0, len(args)-1):
                     roleName = roleName + args[x] + " "
@@ -138,7 +139,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                     await message.channel.send("<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
 
             else:
-                # needs to split member into arguments (string array)
+                # role create
                 roleName = ""
                 for x in range(0, len(args)-1):
                     roleName = roleName + args[x] + " "
