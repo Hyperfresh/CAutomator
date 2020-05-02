@@ -42,7 +42,7 @@ async def on_message(message):
 
     if message.content.startswith('-help'):
         await message.channel.send("> **Help**\n `-speed`: See how fast my host's network is!\n `-abspeed`: Tells you some info about the `-speed` command.\n `-help`: This command!\n `-about`: Tells you some info about me!\n `-whoami`: Tells you who you are!")
-    
+
     if message.content.startswith('-whoami'):
         await message.channel.send("You are " + str(message.author))
 
