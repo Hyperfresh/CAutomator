@@ -13,6 +13,7 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 import csv
+import re
 
 def read_cell(row, col): # Getting name of entry. Thanks @GradyDal on Repl.it
 	with open('speeds.csv', 'r') as f:
