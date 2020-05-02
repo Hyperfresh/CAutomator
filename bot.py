@@ -105,4 +105,24 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 print('SPEED TEST REQUESTED:')
                 print(os.system('speed.cmd'))
 
+    if message.content.startswith('-role'):
+        member = message.author
+        if(member.roles.find(547360918930194443)): # check if the member has level 30 role
+            # needs to split member into arguments (string array)
+            roleName = ""
+            for x in range(0, len(args)-1):
+                roleName = roleName + args[x] + " "
+
+            roleColour = discord.Colour(int(args[len(args)-1], 16))
+
+            hexColorMatch = re.search(r'^(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1])
+
+            if hexColorMatch:
+                print(roleName, roleColour)
+                role = await message.guild.create_role(name=roleName, colour=roleColour)
+                await member.add_roles(role)
+                print("color match ok")
+            else:
+                await message.channel.send("<@{.author.id}>, the Hexadecimal code you entered is incorrect!".format(message))
+
 client.run(TOKEN)
