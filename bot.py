@@ -131,11 +131,11 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 hexColorMatch = re.search(r'^(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1])
 
                 if hexColorMatch:
-                    print(roleName, roleColour)
+                    print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
                     role = await message.guild.create_role(name=roleName, colour=roleColour)
                     await member.add_roles(role)
                     db.insert({'memberId': member.id, 'roleId': role.id})
-                    print("color match ok")
+                    await message.channel.send("<@{0}>, I gave you the role **<@&{1}>**".format(message.author.id, role.id))
                 else:
                     await message.channel.send("<@{.author.id}>, the Hexadecimal code you entered is incorrect!".format(message))
 
