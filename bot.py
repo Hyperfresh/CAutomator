@@ -123,10 +123,10 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 for x in range(0, len(args)-1):
                     roleName = roleName + args[x] + " "
 
-                hexColorMatch = re.search(r'^(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1])
+                hexColorMatch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1])
 
                 if hexColorMatch:
-                    roleColour = discord.Colour(int(args[len(args)-1], 16))
+                    roleColour = discord.Colour(int(args[len(args)-1][1:], 16))
                     print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
                     role = message.guild.get_role(result[0]['roleId'])
                     await role.edit(name=roleName, colour=roleColour)
@@ -144,10 +144,10 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 for x in range(0, len(args)-1):
                     roleName = roleName + args[x] + " "
 
-                hexColorMatch = re.search(r'^(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1])
+                hexColorMatch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1])
 
                 if hexColorMatch:
-                    roleColour = discord.Colour(int(args[len(args)-1], 16))
+                    roleColour = discord.Colour(int(args[len(args)-1][1:], 16))
                     print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
                     role = await message.guild.create_role(name=roleName, colour=roleColour)
                     await member.add_roles(role)
