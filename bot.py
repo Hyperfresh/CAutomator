@@ -3,6 +3,9 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
+from tinydb import TinyDB, Query
+db = TinyDB('db.json')
+
 #the other thing
 import os
 from dotenv import load_dotenv
