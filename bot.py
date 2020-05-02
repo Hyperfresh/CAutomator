@@ -35,6 +35,8 @@ async def on_message(message):
     global linecount
     if message.author.bot: return #avoid every bots instead of only itself
 
+    if(not message.content.startswith('-')): return
+
     if message.content.startswith('-about'):
         await message.channel.send(file=discord.File('cautomator.png'))
         await message.channel.send('> **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh8080/CAutomator')
