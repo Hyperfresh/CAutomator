@@ -1,0 +1,4 @@
+"server name","server id","latency","jitter","packet loss","download","upload","download bytes","upload bytes","share url"
+"Telstra - Adelaide","2628","9.391","0.562","0","2783039","552661","24383219","4214419","https://www.speedtest.net/result/c/cf5d71f0-e095-47c2-a7d7-ecd97b4700eb"
+"Internode - Adelaide","234","9.788","0.991","0","2886199","556561","19674308","4274944","https://www.speedtest.net/result/c/700aadb9-20cb-44d6-bb3e-36a980b67f44"
+"Internode - Adelaide","234","10.271","0.531","0","2902709","576333","22964911","3995402","https://www.speedtest.net/result/c/59451a17-2705-4c5f-aad3-4bb504ce46ec"
