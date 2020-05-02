@@ -118,7 +118,24 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
 
             if(len(result) == 1):
 
-                await message.channel.send("<@{0}>, you already have **<@&{1}>**".format(member.id, result[0]['roleId']))
+                roleName = ""
+                for x in range(0, len(args)-1):
+                    roleName = roleName + args[x] + " "
+
+                hexColorMatch = re.search(r'^(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1])
+
+                if hexColorMatch:
+                    roleColour = discord.Colour(int(args[len(args)-1], 16))
+                    print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
+                    role = message.guild.get_role(result[0]['roleId'])
+                    await role.edit(name=roleName, colour=roleColour)
+                    await message.channel.send("<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
+                else:
+                    print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' without colour change')
+                    role = message.guild.get_role(result[0]['roleId'])
+                    roleName = roleName + args[len(args)-1]
+                    await role.edit(name=roleName)
+                    await message.channel.send("<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
 
             else:
                 # needs to split member into arguments (string array)
@@ -126,11 +143,10 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 for x in range(0, len(args)-1):
                     roleName = roleName + args[x] + " "
 
-                roleColour = discord.Colour(int(args[len(args)-1], 16))
-
                 hexColorMatch = re.search(r'^(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1])
 
                 if hexColorMatch:
+                    roleColour = discord.Colour(int(args[len(args)-1], 16))
                     print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
                     role = await message.guild.create_role(name=roleName, colour=roleColour)
                     await member.add_roles(role)
