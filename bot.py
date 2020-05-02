@@ -33,8 +33,7 @@ async def on_ready():
 async def on_message(message):
     global testing
     global linecount
-    if message.author == client.user:
-        return
+    if message.author.bot: return #avoid every bots instead of only itself
 
     if message.content.startswith('-about'):
         await message.channel.send(file=discord.File('cautomator.png'))
