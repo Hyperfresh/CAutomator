@@ -9,6 +9,9 @@ db = TinyDB('db.json')
 #the other thing
 import os
 from dotenv import load_dotenv
+load_dotenv()
+TOKEN = os.getenv('DISCORD_TOKEN')
+
 import csv
 
 def read_cell(row, col): # Getting name of entry. Thanks @GradyDal on Repl.it
@@ -20,9 +23,6 @@ testing = False
 linecount = 0
 
 bot = commands.Bot(command_prefix='-')
-
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
 
 #the code
 client = discord.Client()
