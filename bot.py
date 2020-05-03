@@ -1,20 +1,21 @@
-#the thing
+#discord.py
 import discord
 from discord.ext import commands
 from discord.utils import get
 
+#tinydb
 from tinydb import TinyDB, Query
 db = TinyDB('db.json')
 
-#the other thing
-import os
-
-from dotenv import load_dotenv
+#others
+import os #dotenv and running speedtest
+from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-import csv
-import re
+import csv #for reading speedtest results
+import re #regular expression
+from array import * #array declaration
 
 def read_cell(row, col): # Getting name of entry. Thanks @GradyDal on Repl.it
 	with open('speeds.csv', 'r') as f:
@@ -39,6 +40,7 @@ async def on_ready():
 async def on_message(message):
     global testing
     global linecount
+    global lvl30ID
     if message.author.bot: return #avoid every bots instead of only itself
 
     if(not message.content.startswith('-')): return
@@ -76,8 +78,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
 # ATT - The following code won't work unless you have Speedtest CLI installed somewhere
 # Okay... this is a lil janky so hear me out.
 # The reason why I did it the way I did it was because this was the most "efficient" way.
-# There's definitely other ways but with CMD Batch, implying /wait will uh do thing
-# Code will be optimised later
+# With Speedtest CLI, 
     if message.content.startswith('-speed'):
         speeder = open("inprocess.txt", 'r')
         for line in speeder:
@@ -117,9 +118,12 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 print('SPEED TEST REQUESTED:')
                 print(os.system('speed.cmd'))
 
+# COLOUR ROLES!!!
     if message.content.startswith('-role'):
         member = message.author
-        if(lvl30ID in member.roles): # check if the member has level 30 role
+        print("user has: " + str(member.roles))
+
+        if str(lvl30ID) in str(member.roles): # check if the member has level 30 role
 
 
             User = Query()
@@ -167,7 +171,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
 
     if message.content.startswith('-delrole'):
         member = message.author
-        if(lvl30ID in member.roles): # check if the member has level 30 role
+        if str(lvl30ID) in str(member.roles): # check if the member has level 30 role
 
             User = Query()
             result = db.search(User.memberId == member.id)
@@ -177,8 +181,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 print('ROLE DELETION REQUESTED for ' + member.name + "#" + member.discriminator)
 
                 role = message.guild.get_role(result[0]['roleId'])
-                await role.delete()
-                db.remove(User.memberId == member.id)
+                await member.remove_roles(role)
                 await message.channel.send("> :white_check_mark: > **Role removed**\n<@{0}>, I removed your custom role.\nDo `-role` to create a new custom role".format(member.id))
             else:
                 await message.channel.send("> :x: > **You can't do that**\n<@{0}>, you don't have any custom role!".format(member.id))
