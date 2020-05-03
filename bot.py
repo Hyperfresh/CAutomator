@@ -78,21 +78,23 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
 # ATT - The following code won't work unless you have Speedtest CLI installed somewhere
 # Okay... this is a lil janky so hear me out.
 # The reason why I did it the way I did it was because this was the most "efficient" way.
-# With Speedtest CLI, 
+# I do not know a way for it to check constantly whether the speedtest has completed.
+# The way it was working before was that "/wait" was implied at the speed.cmd batch which
+# basically froze this up. My way on fixing this was... echo whether the command was used
     if message.content.startswith('-speed'):
-        speeder = open("inprocess.txt", 'r')
+        speeder = open("inprocess.txt", 'r') # open process txt
         for line in speeder:
-            if 'Process' in line:
-                count = open('speeds.csv','r')
+            if 'Process' in line: # this would've changed by cmd
+                count = open('speeds.csv','r') # counts lines in speed csv
                 lines = 0
                 for line in count:
                     lines = lines + 1
                 count.close
-                if lines == linecount:
+                if lines == linecount: # compares to when run before, if different, don't continue
                     speeder.close
                     print('SPEED TEST REQUESTED BUT DENIED - IN PROCESS')
                     await message.channel.send("> :x: > **I'm still testing speed!**\n Please wait a bit longer.")           
-                else:
+                else: # print results
                     speeder.close
                     downspeed = int(read_cell(lines-1,5))
                     upspeed = int(read_cell(lines-1,6))
@@ -105,10 +107,10 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                     speeder.write('Idle')
                     speeder.close
 
-            elif 'Idle' in line:
+            elif 'Idle' in line: # would've been set to idle by discord.py
                 linecount = 0
                 speeder.close
-                count = open('speeds.csv','r')
+                count = open('speeds.csv','r') # count lines first
                 lines = 0
                 for line in count:
                     lines = lines + 1
@@ -116,7 +118,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 linecount = lines
                 await message.channel.send('> :bullettrain_side: > **Testing speed...**\nRun this command again in two minutes to see results!')
                 print('SPEED TEST REQUESTED:')
-                print(os.system('speed.cmd'))
+                print(os.system('speed.cmd')) # speed.cmd sets as process
 
 # COLOUR ROLES!!!
     if message.content.startswith('-role'):
