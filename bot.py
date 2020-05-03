@@ -55,7 +55,6 @@ async def on_message(message):
 
     if message.content.startswith('-help'):
         await message.channel.send("> **Help**\n `-speed`: See how fast my host's network is!\n `-abspeed`: Tells you some info about the `-speed` command.\n `-help`: This command!\n `-about`: Tells you some info about me!\n `-whoami`: Tells you who you are!\n `-role`: **Level 30+ only**: Add or edit your custom role: `-role <name> <colour>`\n `-delrole`: **Level 30+ only**: Delete your custom role")
-
     if message.content.startswith('-whoami'):
         await message.channel.send("You are " + str(message.author))
 
@@ -120,14 +119,14 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
 
     if message.content.startswith('-role'):
         member = message.author
-        if(member.roles.find(lvl30ID)): # check if the member has level 30 role
+        if(lvl30ID in member.roles): # check if the member has level 30 role
+
 
             User = Query()
             result = db.search(User.memberId == member.id)
 
             if(len(result) == 1):
-
-                # code to edit the role
+                # edit role name
                 roleName = ""
                 for x in range(0, len(args)-1):
                     roleName = roleName + args[x] + " "
@@ -146,7 +145,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                     roleName = roleName + args[len(args)-1]
                     await role.edit(name=roleName)
                     await message.channel.send("> :white_check_mark: > **Role edited**\n<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
-
+            # edit role colour
             else:
                 roleName = ""
                 for x in range(0, len(args)-1):
@@ -168,7 +167,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
 
     if message.content.startswith('-delrole'):
         member = message.author
-        if(member.roles.find(lvl30ID)): # check if the member has level 30 role
+        if(lvl30ID in member.roles): # check if the member has level 30 role
 
             User = Query()
             result = db.search(User.memberId == member.id)
@@ -180,13 +179,10 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 role = message.guild.get_role(result[0]['roleId'])
                 await role.delete()
                 db.remove(User.memberId == member.id)
-
                 await message.channel.send("> :white_check_mark: > **Role removed**\n<@{0}>, I removed your custom role.\nDo `-role` to create a new custom role".format(member.id))
-
             else:
                 await message.channel.send("> :x: > **You can't do that**\n<@{0}>, you don't have any custom role!".format(member.id))
         else:
             await message.channel.send("> :x: > **You can't do that**\nThis is for Level 30+ use only.")
-
 
 client.run(TOKEN)
