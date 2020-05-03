@@ -112,7 +112,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
 
     if message.content.startswith('-role'):
         member = message.author
-        if(member.roles.find(lvl30ID)): # check if the member has level 30 role
+        if(lvl30ID in member.roles): # check if the member has level 30 role
 
             User = Query()
             result = db.search(User.memberId == member.id)
@@ -159,7 +159,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
 
     if message.content.startswith('-delrole'):
         member = message.author
-        if(member.roles.find(lvl30ID)): # check if the member has level 30 role
+        if(lvl30ID in member.roles): # check if the member has level 30 role
 
             User = Query()
             result = db.search(User.memberId == member.id)
