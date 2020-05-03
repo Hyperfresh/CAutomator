@@ -56,7 +56,7 @@ async def on_message(message):
         await message.channel.send("My creator told me to say \"you're welcome\" :)")
 
     if message.content.startswith('-help'):
-        await message.channel.send("> **Help**\n `-speed`: See how fast my host's network is!\n `-abspeed`: Tells you some info about the `-speed` command.\n `-help`: This command!\n `-about`: Tells you some info about me!\n `-whoami`: Tells you who you are!\n `-role`: **Level 30+ only**: Add or edit your custom role: `-role <name> <colour>`\n `-delrole`: **Level 30+ only**: Delete your custom role")
+        await message.channel.send("> **Help**\n `-speed`: See how fast my host's network is!\n `-abspeed`: Tells you some info about the `-speed` command.\n `-help`: This command!\n `-about`: Tells you some info about me!\n `-whoami`: Tells you who you are!\n `-role`: **Level 30+ only**: Add or edit your custom role: `-role <name> #<hex colour>` - **`#` MUST BE IMPLIED**\n `-delrole`: **Level 30+ only**: Delete your custom role")
     if message.content.startswith('-whoami'):
         await message.channel.send("You are " + str(message.author))
 
@@ -167,7 +167,7 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                     db.insert({'memberId': member.id, 'roleId': role.id})
                     await message.channel.send("> :white_check_mark: > **Role given**\n<@{0}>, I gave you the role **<@&{1}>**".format(message.author.id, role.id))
                 else:
-                    await message.channel.send("> :x: > **Something went wrong**\n <@{.author.id}>, the colour hex code you entered is incorrect!".format(message))
+                    await message.channel.send("> :x: > **Something went wrong**\n <@{.author.id}>, the colour hex code you entered is incorrect!\nDid you forget the `#` at the start of your hex code?".format(message))
         else:
             await message.channel.send("> :x: > **You can't do that**\nThis is for Level 30+ use only.")
 
