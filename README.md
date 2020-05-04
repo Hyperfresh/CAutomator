@@ -19,14 +19,15 @@ Additionally, you will also need the `speedtest` CLI for `-speed` to work. You c
 
 **STEPS 2 AND 3 FOR WINDOWS USERS ONLY**
 
-2. Create a separate folder (maybe in Documents), this setup will assume you made `CAuto` in Documents
+2. Create a separate folder (maybe in Documents), this setup will assume you made the folder `CAuto` in Documents
 3. Assuming you installed Python from python.org, create a CMD Batch (`start.cmd`) with the following code:
  ```cmd
  py %userprofile%\documents\github\cautomator\bot.py >> log.txt
  ```
  `>> log.txt` is optional, it is only for, well, logging.
- Save the file in `CAuto`. You can create a link to this batch file in your computer's startup so it runs when you login - this will be at `%userprofile%\appdata\roaming\microsoft\windows\start menu\programs\startup`
- Please also copy the `CAutomator.png` to `CAuto`.
+- Save this file in `CAuto`.
+- You can create a link to this batch file in your computer's startup so it runs when you login - this will be at `%userprofile%\appdata\roaming\microsoft\windows\start menu\programs\startup`.
+- Please also copy the `CAutomator.png` to `CAuto`.
 
 4. For `-speed` to work, download the `speedtest` CLI.
  - On Windows, place speedtest.exe in `CAuto`
