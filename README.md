@@ -18,6 +18,7 @@ Additionally, you will also need the `speedtest` CLI for `-speed` to work. You c
  - If you're cloning: this setup assumes you're cloning onto your home/Documents/GitHub folder
 
 **STEPS 2 AND 3 FOR WINDOWS USERS ONLY**
+
 2. Create a separate folder (maybe in Documents), this setup will assume you made `CAuto` in Documents
 3. Assuming you installed Python from python.org, create a CMD Batch (`start.cmd`) with the following code:
  `py %userprofile%\documents\github\cautomator\bot.py`
@@ -26,16 +27,16 @@ Additionally, you will also need the `speedtest` CLI for `-speed` to work. You c
 
 4. For `-speed` to work, download the `speedtest` CLI.
  - On Windows, place speedtest.exe in `CAuto`
- - On *nix, place speedtest in your copy of CAutomator
+ - On \*nix, place speedtest in your copy of CAutomator
 
 5. Depending on your OS:
  - On Windows, create `speed.cmd` in `CAuto` with the following code:
  `echo Process > %cd%\inprocess.txt`
  `start /b %cd%\speed.exe --accept-license --selection-details --f csv > NUL >> %cd%\speeds.csv`
- 1. On *nix, create `speed.sh` in your copy of CAutomator with the following code:
+ - On \*nix, create `speed.sh` in your copy of CAutomator with the following code:
  `echo "Process" > inprocess.txt`
  `speedtest --accept-license --selection-details --f csv >> speeds.csv`
- 2. Then in `bot.py`, at approximately line 121 (with code `print(os.system(speed.cmd)) # cmd sets as process`), change `speed.cmd` to `sh speed.sh`.
+ Then in `bot.py`, at approximately line 121 (with code `print(os.system(speed.cmd)) # cmd sets as process`), change `speed.cmd` to `sh speed.sh`.
 
 6. Create a .env file in your copy of CAutomator, with following code:
  `# .env`
