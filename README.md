@@ -37,4 +37,9 @@ Additionally, you will also need the `speedtest` CLI for `-speed` to work. You c
  `speedtest --accept-license --selection-details --f csv >> speeds.csv`
  2. Then in `bot.py`, at approximately line 121 (with code `print(os.system(speed.cmd)) # cmd sets as process`), change `speed.cmd` to `sh speed.sh`.
 
-6. Run `bot.py` - if you run into issues, please feel free to open an issue on this repository :)
+6. Create a .env file in your copy of CAutomator, with following code:
+ `# .env`
+ `DISCORD_TOKEN=<token>`
+ where `<token>` is your bot token in discord developers.
+
+7. Run `bot.py` - if you run into issues, please feel free to open an issue on this repository :)
