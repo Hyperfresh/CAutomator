@@ -21,7 +21,10 @@ Additionally, you will also need the `speedtest` CLI for `-speed` to work. You c
 
 2. Create a separate folder (maybe in Documents), this setup will assume you made `CAuto` in Documents
 3. Assuming you installed Python from python.org, create a CMD Batch (`start.cmd`) with the following code:
- `py %userprofile%\documents\github\cautomator\bot.py`
+ ```cmd
+ py %userprofile%\documents\github\cautomator\bot.py >> log.txt
+ ```
+ `>> log.txt` is optional, it is only for, well, logging.
  Save the file in `CAuto`. You can create a link to this batch file in your computer's startup so it runs when you login - this will be at `%userprofile%\appdata\roaming\microsoft\windows\start menu\programs\startup`
  Please also copy the `CAutomator.png` to `CAuto`.
 
@@ -31,11 +34,16 @@ Additionally, you will also need the `speedtest` CLI for `-speed` to work. You c
 
 5. Depending on your OS:
  - On Windows, create `speed.cmd` in `CAuto` with the following code:
- `echo Process > %cd%\inprocess.txt`
- `start /b %cd%\speed.exe --accept-license --selection-details --f csv > NUL >> %cd%\speeds.csv`
+ ```cmd
+ echo Process > %cd%\inprocess.txt
+ start /b %cd%\speed.exe --accept-license --selection-details --f csv > NUL >> %cd%\speeds.csv
+ ```
+ 
  - On \*nix, create `speed.sh` in your copy of CAutomator with the following code:
- `echo "Process" > inprocess.txt`
- `speedtest --accept-license --selection-details --f csv >> speeds.csv`
+ ```sh
+ echo "Process" > inprocess.txt
+ speedtest --accept-license --selection-details --f csv >> speeds.csv
+ ```
  Then in `bot.py`, at approximately line 121 (with code `print(os.system(speed.cmd)) # cmd sets as process`), change `speed.cmd` to `sh speed.sh`.
 
 6. Create a .env file in your copy of CAutomator, with following code:
