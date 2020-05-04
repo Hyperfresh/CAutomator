@@ -11,18 +11,20 @@ db = TinyDB('db.json')
 import os #dotenv and running speedtest
 from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+TOKEN = os.getenv('DISCORD_TOKEN') # CHECK YOUR .env FILE!
 
 import csv #for reading speedtest results
 import re #regular expression
-from array import * #array declaration
 
 def read_cell(row, col): # Getting name of entry. Thanks @GradyDal on Repl.it
 	with open('speeds.csv', 'r') as f:
 		data=list(csv.reader(f))
 		return(data[int(row)][int(col)])
 
-testing = False
+def crashcrash():
+    exit()
+    crashcrash()
+
 linecount = 0
 lvl30ID = 547360918930194443
 
@@ -38,49 +40,59 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    global testing
-    global linecount
-    global lvl30ID
-    if message.author.bot: return #avoid every bots instead of only itself
+    global linecount # used for -speed
+    global lvl30ID # used for -role and -delrole
+
+    if message.author.bot: return #avoid every bot instead of only itself
 
     if(not message.content.startswith('-')): return
 
     args = message.content.split()
     args.pop(0) # removes the command from arguments
 
+######################################################
+# ABOUT MODULE
+
     if message.content.startswith('-about'):
         await message.channel.send(file=discord.File('cautomator.png'))
         await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh8080/CAutomator\n Also, thanks to https://github.com/iwaQwQ for some errands :)')
 
-    if message.content.startswith('-thankshy'):
-        await message.channel.send("My creator told me to say \"you're welcome\" :)")
+######################################################
+# HELP MODULE now redirects to the bot's wiki on commands
 
     if message.content.startswith('-help'):
-        await message.channel.send("> **Help**\n `-speed`: See how fast my host's network is!\n `-abspeed`: Tells you some info about the `-speed` command.\n `-help`: This command!\n `-about`: Tells you some info about me!\n `-whoami`: Tells you who you are!\n `-role`: **Level 30+ only**: Add or edit your custom role: `-role <name> #<hex colour>` - **`#` MUST BE IMPLIED**\n `-delrole`: **Level 30+ only**: Delete your custom role")
-    if message.content.startswith('-whoami'):
-        await message.channel.send("You are " + str(message.author))
+        await message.channel.send("> :information_source: > **Check here** https://github.com/Hyperfresh8080/CAutomator/wiki/Commands")
 
+######################################################
+# SHUTDOWN MODULE
     if message.content.startswith('-shutdown'):
         if str(message.author) == 'Hyperfresh#8080':
-            await message.channel.send(':wave: > Shut down at hyperfresh.ddns.net:7777, ' + str(message.author) + '!')
+            await message.channel.send(':wave: > See ya, ' + str(message.author) + '!')
+            exit()
         else:
             await message.channel.send(':x: > Nice try, ' + str(message.author) + ". <:squinteyes:563998593460076544>")
 
+######################################################
+# ABOUT SPEEDTEST MODULE
     if message.content.startswith('-abspeed'):
         speedabout = '''**Speedtest CLI by Ookla** (speedtest.exe) is the official command line client for testing the speed and performance of an internet connection, provided by Ookla.
-Your use of this command (speed) is subject to the Speedtest End User License Agreement, Terms of Use and Privacy Policy at these URLs:
+Your use of the `-speed` command is subject to the Speedtest End User License Agreement, Terms of Use and Privacy Policy at these URLs:
         https://www.speedtest.net/about/eula
         https://www.speedtest.net/about/terms
         https://www.speedtest.net/about/privacy
         '''
         await message.channel.send(str(speedabout))
 
+######################################################
+# SPEEDTEST MODULE
+#
 # ATT - The following code won't work unless you have Speedtest CLI installed somewhere
 # Okay... this is a lil janky so hear me out.
 # The reason why I did it the way I did it was because this was the most "efficient" way.
 # I do not know a way for it to check constantly whether the speedtest has completed.
 # The way it was working before was that "/wait" was implied at the speed.cmd batch which
 # basically froze this up. My way on fixing this was... echo whether the command was used
+
     if message.content.startswith('-speed'):
         speeder = open("inprocess.txt", 'r') # open process txt
         for line in speeder:
@@ -115,13 +127,15 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                 for line in count:
                     lines = lines + 1
                 count.close
-                linecount = lines
+                linecount = lines # set line count to compare when run again
                 await message.channel.send('> :bullettrain_side: > **Testing speed...**\nRun this command again in two minutes to see results!')
                 print('SPEED TEST REQUESTED:')
                 print(os.system('speed.cmd')) # speed.cmd sets as process
 
-# COLOUR ROLES!!!
-    if message.content.startswith('-role'):
+######################################################
+# CUSTOM ROLE MODULE
+
+    if message.content.startswith('-role'): # assign or edit role
         member = message.author
         print("user has: " + str(member.roles))
 
@@ -131,13 +145,12 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
             User = Query()
             result = db.search(User.memberId == member.id)
 
-            if(len(result) == 1):
-                # edit role name
+            if(len(result) == 1): # edit exisiting role
                 roleName = ""
                 for x in range(0, len(args)-1):
                     roleName = roleName + args[x] + " "
 
-                hexColorMatch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1])
+                hexColorMatch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1]) # check if hex can be parsed
 
                 if hexColorMatch:
                     roleColour = discord.Colour(int(args[len(args)-1][1:], 16))
@@ -151,13 +164,12 @@ Your use of this command (speed) is subject to the Speedtest End User License Ag
                     roleName = roleName + args[len(args)-1]
                     await role.edit(name=roleName)
                     await message.channel.send("> :white_check_mark: > **Role edited**\n<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
-            # edit role colour
-            else:
+            else: # assign new role
                 roleName = ""
                 for x in range(0, len(args)-1):
                     roleName = roleName + args[x] + " "
 
-                hexColorMatch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1])
+                hexColorMatch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1]) # check if hex can be parsed
 
                 if hexColorMatch:
                     roleColour = discord.Colour(int(args[len(args)-1][1:], 16))
