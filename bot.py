@@ -221,8 +221,12 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 # PING DISCORD MODULE
 #
     if message.content.startswith('-ping'):
+        os.system('ping -n 1 discord.com > ping.txt')
+        ping = open('ping.txt','r')
         await message.channel.send('> :ping_pong: > **Pong!**')
-        await message.channel.send(os.system('ping -n 1 discord.com')) # Using *nix? Chnage -n to -c
+        for line in ping:
+            await message.channel.send(line)
+        ping.close
 
 ######################################################
 # GET TIME MODULE
