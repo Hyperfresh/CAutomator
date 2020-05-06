@@ -69,14 +69,15 @@ async def on_message(message):
 # HELP MODULE now redirects to the bot's wiki on commands
 
     if message.content.startswith('-help'):
-        await message.channel.send("> :information_source: > **Check here** https://github.com/Hyperfresh8080/CAutomator/wiki/Commands")
+        await message.channel.send("> :information_source: > **Check here**\nhttps://github.com/Hyperfresh8080/CAutomator/wiki/Commands")
 
 ######################################################
 # SHUTDOWN MODULE
     if message.content.startswith('-shutdown'):
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send(':wave: > See ya, ' + str(message.author) + '!')
-            exit()
+            await client.change_presence(activity=None)
+            crashcrash()
         else:
             await message.channel.send(':x: > Nice try, ' + str(message.author) + ". <:squinteyes:563998593460076544>")
 
