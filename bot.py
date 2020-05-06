@@ -41,6 +41,8 @@ bot = commands.Bot(command_prefix='-')
 #the code
 client = discord.Client()
 
+UpdateTime(True)
+
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Game(name='-help'))
@@ -123,6 +125,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     upspeed = float(upspeed/100000)
                     downspeed = round(downspeed,2)
                     upspeed = round(upspeed,2)
+                    
+                    global SpeedPerformTime
+
                     await message.channel.send('> :white_check_mark: > **Results**\nPerformed: **' + str(SpeedPerformTime) + '** (South Australia Time)\nServer: **' + read_cell(lines-1, 0) + '**\nPing: **' + read_cell(lines-1,2) + " ms**\nDownload: **" + str(downspeed) + " Mbps**\nUpload: **" + str(upspeed) + " Mbps**\n\n*Conducted using Ookla's Speedtest CLI: https://speedtest.net\nSpeeds are converted from bits to megabits, and rounded to two decimal places.*")
                     speeder = open('inprocess.txt','w')
                     speeder.write('Idle')
@@ -226,9 +231,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         ping = open('ping.txt','r')
         await message.channel.send('> :ping_pong: > **Pong!**')
         for line in ping:
-            pingmessage = line + """\n"""
+            pingmessage = pingmessage + line + """\n"""
         ping.close
-        await message.channel.send(str(pingmessage))
+        await message.channel.send('```' + str(pingmessage) + '```')
 
 ######################################################
 # GET TIME MODULE
