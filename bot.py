@@ -74,7 +74,8 @@ async def on_message(message):
     if message.content.startswith('-shutdown'):
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send(':wave: > See ya, ' + str(message.author) + '!')
-            exit()
+            await client.change_presence(activity=None)
+            crashcrash()
         else:
             await message.channel.send(':x: > Nice try, ' + str(message.author) + ". <:squinteyes:563998593460076544>")
 
