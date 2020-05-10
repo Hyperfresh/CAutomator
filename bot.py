@@ -63,7 +63,7 @@ async def on_message(message):
 
     if message.content.startswith('-about'):
         await message.channel.send(file=discord.File('cautomator.png'))
-        await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh8080/CAutomator\n Also, thanks to https://github.com/iwaQwQ for some errands :)')
+        await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh8080/CAutomator\n Also, thanks to https://github.com/iwa for some errands :)')
 
 ######################################################
 # HELP MODULE now redirects to the bot's wiki on commands
@@ -151,8 +151,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # CUSTOM ROLE MODULE
 #
-# Thanks to http://github.com/iwaQwQ for helping me out with this module :)
-# His Q-Bot is much more amazing than mine, you should definitely check it.
+# Thanks to https://github.com/iwa for helping me out with this module :)
 
     global lvl30ID # used for -role and -delrole
 
