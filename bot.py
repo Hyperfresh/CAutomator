@@ -76,7 +76,7 @@ async def on_message(message):
     if message.content.startswith('-shutdown'):
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send(':wave: > See ya, ' + str(message.author) + '!')
-            await client.change_presence(activity=None)
+            await client.change_presence(activity=None,status=discord.Status.offline)
             crashcrash()
         else:
             await message.channel.send(':x: > Nice try, ' + str(message.author) + ". <:squinteyes:563998593460076544>")
@@ -158,7 +158,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 
     if message.content.startswith('-role'): # assign or edit role
         member = message.author
-        print("user has: " + str(member.roles))
+        #print("user has: " + str(member.roles))
 
         if str(lvl30ID) in str(member.roles): # check if the member has level 30 role
 
