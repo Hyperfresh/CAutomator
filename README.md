@@ -1,8 +1,6 @@
 # About CAutomator
 ![CAutomator logo](/cautomator.png)
-I am CAutomator, a bot specifically built for the Calculated Anarchy server to "automate all da things!".
-
-Built using Python.
+I am CAutomator, a custom discord.py bot built by Hyperfresh#8080 for the [Calculated Anarchy Discord Server](https://discord.gg/YsZ8h3J).
 
 Use this at your will, just make sure you follow the MIT License.
 
