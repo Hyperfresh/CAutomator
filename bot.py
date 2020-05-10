@@ -8,6 +8,7 @@ from tinydb import TinyDB, Query
 db = TinyDB('db.json')
 
 #others
+import time # for time...
 import os #dotenv and running speedtest
 from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
@@ -21,9 +22,16 @@ def read_cell(row, col): # Getting name of entry. Thanks @GradyDal on Repl.it
 		data=list(csv.reader(f))
 		return(data[int(row)][int(col)])
 
-def crashcrash():
+def crashcrash(): # closes the program (yeah, not intuitive.)
     exit()
     crashcrash()
+
+def UpdateTime(speed):
+    global CurrentTime
+    global SpeedPerformTime
+    CurrentTime = (time.strftime("%d %b %Y %H:%M:%S", time.localtime()))
+    if speed == True:
+        SpeedPerformTime = CurrentTime
 
 linecount = 0
 lvl30ID = 547360918930194443
@@ -33,6 +41,8 @@ bot = commands.Bot(command_prefix='-')
 #the code
 client = discord.Client()
 
+UpdateTime(True)
+
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Game(name='-help'))
@@ -40,8 +50,6 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    global linecount # used for -speed
-    global lvl30ID # used for -role and -delrole
 
     if message.author.bot: return #avoid every bot instead of only itself
 
@@ -61,14 +69,15 @@ async def on_message(message):
 # HELP MODULE now redirects to the bot's wiki on commands
 
     if message.content.startswith('-help'):
-        await message.channel.send("> :information_source: > **Check here** https://github.com/Hyperfresh8080/CAutomator/wiki/Commands")
+        await message.channel.send("> :information_source: > **Check here**\nhttps://github.com/Hyperfresh8080/CAutomator/wiki/Commands")
 
 ######################################################
 # SHUTDOWN MODULE
     if message.content.startswith('-shutdown'):
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send(':wave: > See ya, ' + str(message.author) + '!')
-            exit()
+            await client.change_presence(activity=None,status=discord.Status.offline)
+            crashcrash()
         else:
             await message.channel.send(':x: > Nice try, ' + str(message.author) + ". <:squinteyes:563998593460076544>")
 
@@ -87,11 +96,14 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 # SPEEDTEST MODULE
 #
 # ATT - The following code won't work unless you have Speedtest CLI installed somewhere
-# Okay... this is a lil janky so hear me out.
+# Okay... this is a lil janky so hear me out. This will be optimised later, don't worry.
 # The reason why I did it the way I did it was because this was the most "efficient" way.
 # I do not know a way for it to check constantly whether the speedtest has completed.
 # The way it was working before was that "/wait" was implied at the speed.cmd batch which
 # basically froze this up. My way on fixing this was... echo whether the command was used
+
+    global linecount # used for -speed
+    global SpeedPerformTime
 
     if message.content.startswith('-speed'):
         speeder = open("inprocess.txt", 'r') # open process txt
@@ -114,7 +126,10 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     upspeed = float(upspeed/100000)
                     downspeed = round(downspeed,2)
                     upspeed = round(upspeed,2)
-                    await message.channel.send('> :white_check_mark: > **Results**\nServer: **' + read_cell(lines-1, 0) + '**\nPing: **' + read_cell(lines-1,2) + " ms**\nDownload: **" + str(downspeed) + " Mbps**\nUpload: **" + str(upspeed) + " Mbps**\n\n*Conducted using Ookla's Speedtest CLI: https://speedtest.net\nSpeeds are converted from bits to megabits, and rounded to two decimal places.*")
+                    
+                    global SpeedPerformTime
+
+                    await message.channel.send('> :white_check_mark: > **Results**\nPerformed: **' + str(SpeedPerformTime) + '** (South Australia Time)\nServer: **' + read_cell(lines-1, 0) + '**\nPing: **' + read_cell(lines-1,2) + " ms**\nDownload: **" + str(downspeed) + " Mbps**\nUpload: **" + str(upspeed) + " Mbps**\n\n*Conducted using Ookla's Speedtest CLI: https://speedtest.net\nSpeeds are converted from bits to megabits, and rounded to two decimal places.*")
                     speeder = open('inprocess.txt','w')
                     speeder.write('Idle')
                     speeder.close
@@ -128,16 +143,22 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     lines = lines + 1
                 count.close
                 linecount = lines # set line count to compare when run again
+                UpdateTime(True) # set time this test was performed
                 await message.channel.send('> :bullettrain_side: > **Testing speed...**\nRun this command again in two minutes to see results!')
                 print('SPEED TEST REQUESTED:')
                 print(os.system('speed.cmd')) # speed.cmd sets as process
 
 ######################################################
 # CUSTOM ROLE MODULE
+#
+# Thanks to http://github.com/iwaQwQ for helping me out with this module :)
+# His Q-Bot is much more amazing than mine, you should definitely check it.
+
+    global lvl30ID # used for -role and -delrole
 
     if message.content.startswith('-role'): # assign or edit role
         member = message.author
-        print("user has: " + str(member.roles))
+        #print("user has: " + str(member.roles))
 
         if str(lvl30ID) in str(member.roles): # check if the member has level 30 role
 
@@ -201,5 +222,28 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await message.channel.send("> :x: > **You can't do that**\n<@{0}>, you don't have any custom role!".format(member.id))
         else:
             await message.channel.send("> :x: > **You can't do that**\nThis is for Level 30+ use only.")
+
+######################################################
+# PING DISCORD MODULE
+#
+    if message.content.startswith('-ping'):
+        os.system('ping -n 1 discord.com > ping.txt')
+        pingmessage = """"""
+        ping = open('ping.txt','r')
+        await message.channel.send('> :ping_pong: > **Pong!**')
+        for line in ping:
+            pingmessage = pingmessage + line + """\n"""
+        ping.close
+        await message.channel.send('```' + str(pingmessage) + '```')
+
+######################################################
+# GET TIME MODULE
+#
+    global CurrentTime
+
+    if message.content.startswith('-time'):
+        UpdateTime(False)
+        await message.channel.send('It is **' + str(CurrentTime) + '**, South Australia Time.')
+        
 
 client.run(TOKEN)
