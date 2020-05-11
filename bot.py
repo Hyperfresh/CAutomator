@@ -9,7 +9,8 @@ db = TinyDB('db.json')
 
 #others
 import time # for time...
-import os #dotenv and running speedtest
+import platform # for os info
+import os #dotenv, running speedtest and os info
 from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN') # CHECK YOUR .env FILE!
@@ -243,6 +244,11 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-time'):
         UpdateTime(False)
         await message.channel.send('It is **' + str(CurrentTime) + '**, South Australia Time.')
-        
+
+######################################################
+# GET OS MODULE
+#      
+    if message.content.startswith('-os'):
+            await message.channel.send('I am running on **' + str(os.name) + " " + str(platform.system()) + " " + str(platform.release()) + '**.')
 
 client.run(TOKEN)
