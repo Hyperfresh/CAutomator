@@ -9,7 +9,8 @@ db = TinyDB('db.json')
 
 #others
 import time # for time...
-import os #dotenv and running speedtest
+import platform # for os info
+import os #dotenv, running speedtest and os info
 from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN') # CHECK YOUR .env FILE!
@@ -63,7 +64,7 @@ async def on_message(message):
 
     if message.content.startswith('-about'):
         await message.channel.send(file=discord.File('cautomator.png'))
-        await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh8080/CAutomator\n Also, thanks to https://github.com/iwaQwQ for some errands :)')
+        await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh8080/CAutomator\n Also, thanks to https://github.com/iwa for some errands :)')
 
 ######################################################
 # HELP MODULE now redirects to the bot's wiki on commands
@@ -151,8 +152,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # CUSTOM ROLE MODULE
 #
-# Thanks to http://github.com/iwaQwQ for helping me out with this module :)
-# His Q-Bot is much more amazing than mine, you should definitely check it.
+# Thanks to https://github.com/iwa for helping me out with this module :)
 
     global lvl30ID # used for -role and -delrole
 
@@ -244,6 +244,11 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-time'):
         UpdateTime(False)
         await message.channel.send('It is **' + str(CurrentTime) + '**, South Australia Time.')
-        
+
+######################################################
+# GET OS MODULE
+#      
+    if message.content.startswith('-os'):
+            await message.channel.send('I am running on **' + str(os.name) + " " + str(platform.system()) + " " + str(platform.release()) + '**.')
 
 client.run(TOKEN)
