@@ -121,16 +121,16 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     await message.channel.send("> :x: > **I'm still testing speed!**\n Please wait a bit longer.")           
                 else: # print results
                     speeder.close
-                    downspeed = int(read_cell(lines-1,5))
-                    upspeed = int(read_cell(lines-1,6))
-                    downspeed = float(downspeed/100000)
-                    upspeed = float(upspeed/100000)
+                    downspeed = float(read_cell(lines-1,6))
+                    upspeed = float(read_cell(lines-1,7))
+                    downspeed = float(downspeed/1000000)
+                    upspeed = float(upspeed/1000000)
                     downspeed = round(downspeed,2)
                     upspeed = round(upspeed,2)
                     
                     global SpeedPerformTime
 
-                    await message.channel.send('> :white_check_mark: > **Results**\nPerformed: **' + str(SpeedPerformTime) + '** (South Australia Time)\nServer: **' + read_cell(lines-1, 0) + '**\nPing: **' + read_cell(lines-1,2) + " ms**\nDownload: **" + str(downspeed) + " Mbps**\nUpload: **" + str(upspeed) + " Mbps**\n\n*Conducted using Ookla's Speedtest CLI: https://speedtest.net\nSpeeds are converted from bits to megabits, and rounded to two decimal places.*")
+                    await message.channel.send('> :white_check_mark: > **Results**\nPerformed: **' + str(SpeedPerformTime) + '** (South Australia Time)\nServer: **' + read_cell(lines-1, 1) + " " + read_cell(lines-1, 2)  + '**\nPing: **' + read_cell(lines-1,5) + " ms**\nDownload: **" + str(downspeed) + " Mbps**\nUpload: **" + str(upspeed) + " Mbps**\n\n*Conducted using Ookla's Speedtest CLI: https://speedtest.net\nSpeeds are converted from bits to megabits, and rounded to two decimal places.*")
                     speeder = open('inprocess.txt','w')
                     speeder.write('Idle')
                     speeder.close
@@ -147,7 +147,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 UpdateTime(True) # set time this test was performed
                 await message.channel.send('> :bullettrain_side: > **Testing speed...**\nRun this command again in two minutes to see results!')
                 print('SPEED TEST REQUESTED:')
-                print(os.system('speed.cmd')) # speed.cmd sets as process
+                print(os.system('sh speed.sh')) # speed.cmd sets as process
 
 ######################################################
 # CUSTOM ROLE MODULE
@@ -227,7 +227,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 # PING DISCORD MODULE
 #
     if message.content.startswith('-ping'):
-        os.system('ping -n 1 discord.com > ping.txt')
+        os.system('ping -c 1 discord.com > ping.txt')
         pingmessage = """"""
         ping = open('ping.txt','r')
         await message.channel.send('> :ping_pong: > **Pong!**')
