@@ -324,7 +324,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             code = separator.join(args)
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             try:
-                await message.channel.send('```py\n' + exec(code) + '```')
+                await message.channel.send('```py\n' + exec(str(code)) + '```')
             except Exception as e:
                 await message.channel.send(':x: > Something went wrong when sending the output of the command here.\nError:```' + str(e) + "```")
             await client.change_presence(activity=discord.Game('-help'))
