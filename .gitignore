@@ -123,3 +123,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# don't sync speedtest, ping, speeds or the user database
+db.json
+speed.sh
+speeds.csv
+ping.txt
+inprocess.txt
+log.txt
