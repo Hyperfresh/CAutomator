@@ -326,7 +326,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             try:
                 await message.channel.send('```py\n' + exec(str(code)) + '```')
             except Exception as e:
-                await message.channel.send(':x: > Something went wrong when sending the output of the command here.\nError:```' + str(e) + "```")
+                await message.channel.send(':x: > Something went wrong when sending the output of the command here.\n\nCode: ```' + str(code) + '```\nError:```' + str(e) + "```")
             await client.change_presence(activity=discord.Game('-help'))
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
