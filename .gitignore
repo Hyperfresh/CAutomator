@@ -131,3 +131,5 @@ speeds.csv
 ping.txt
 inprocess.txt
 log.txt
+update.sh
+eval.txt

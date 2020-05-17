@@ -11,6 +11,7 @@ db = TinyDB('db.json')
 import time # for time...
 import platform # for os info
 import os #dotenv, running speedtest and os info
+import sys # for restarting the bot
 from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN') # CHECK YOUR .env FILE!
@@ -46,6 +47,7 @@ UpdateTime(True)
 
 @client.event
 async def on_ready():
+    
     await client.change_presence(activity=discord.Game(name='-help'))
     print('We have logged in as {0.user}'.format(client))
 
@@ -251,4 +253,67 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-os'):
             await message.channel.send('I am running on **' + str(os.name) + " " + str(platform.system()) + " " + str(platform.release()) + '**.')
 
+######################################################
+# UPDATE MODULE
+#
+
+    if message.content.startswith('-update'):
+        if str(message.author) == 'Hyperfresh#8080':
+            await message.channel.send('<a:Typing:459588536841011202> > Updating...')
+            await client.change_presence(activity=discord.Game('Updating...'),status=discord.Status.idle)
+            os.system('sh update.sh > update.log')
+            logmessage = """"""
+            log = open('update.log','r')
+            for line in log:
+                logmessage = logmessage + line + """\n"""
+            log.close
+            await message.channel.send('```' + str(logmessage) + '```')
+            time.sleep(3)
+            await message.channel.send(':red_circle: > Restarting...')
+            await client.change_presence(activity=discord.Game('Restarting...'),status=discord.Status.dnd)
+            time.sleep(3)
+            os.execl(sys.executable, sys.executable, * sys.argv)
+        else:
+            await message.channel.send(':x: > Only the bot author can do this.')
+            
+######################################################
+# RESTART MODULE
+#           
+    global BotStatus
+    
+    if message.content.startswith('-restart'):
+        if str(message.author) == 'Hyperfresh#8080':
+            await message.channel.send(':red_circle: > Restarting...')
+            await client.change_presence(activity=discord.Game('Restarting...'),status=discord.Status.dnd)
+            time.sleep(3)
+            os.execl(sys.executable, sys.executable, * sys.argv)
+        else:
+            await message.channel.send(':x: > Only the bot author can do this.')
+            
+            
+
+######################################################
+# shell
+#
+    if message.content.startswith('-sh'):
+        if str(message.author) == 'Hyperfresh#8080':
+            separator = " "
+            code = separator.join(args)
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+            print(os.system(str(code) + ' > eval.txt'))
+            logmessage = """"""
+            log = open('eval.txt','r')
+            for line in log:
+                logmessage = logmessage + line + """\n"""
+            log.close
+            try:
+                await message.channel.send('```' + str(logmessage) + '```')
+            except Exception as e:
+                await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
+                await message.channel.send(file=discord.File('eval.txt'))
+            await client.change_presence(activity=discord.Game('-help'))
+        else:
+            await message.channel.send(':x: > Only the bot author can do this.')
+
 client.run(TOKEN)
+
