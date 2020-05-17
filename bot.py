@@ -315,5 +315,22 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
 
+######################################################
+# eval
+#
+    if message.content.startswith('-eval'):
+        if str(message.author) == 'Hyperfresh#8080':
+            separator = " "
+            code = separator.join(args)
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+            try:
+                await message.channel.send('```py\n' + code + '```')
+            except Exception as e:
+                await message.channel.send(':x: > Something went wrong when sending the output of the command here.\nError:```' + str(e) + "```")
+            await client.change_presence(activity=discord.Game('-help'))
+        else:
+            await message.channel.send(':x: > Only the bot author can do this.')
+
+
 client.run(TOKEN)
 
