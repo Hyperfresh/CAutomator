@@ -302,9 +302,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             separator = " "
             code = separator.join(args)
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
-            print(os.system(str(code) + ' > eval.txt'))
+            print(os.system(str(code) + ' > sh.log'))
             logmessage = """"""
-            log = open('eval.txt','r')
+            log = open('sh.log','r')
             for line in log:
                 logmessage = logmessage + line + """\n"""
             log.close
@@ -312,15 +312,15 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await message.channel.send('```' + str(logmessage) + '```')
             except Exception as e:
                 await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
-                await message.channel.send(file=discord.File('eval.txt'))
+                await message.channel.send(file=discord.File('sh.log'))
             await client.change_presence(activity=discord.Game('-help'))
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
 
 ######################################################
-# eval
+# python
 #
-    if message.content.startswith('-eval'):
+    if message.content.startswith('-py'):
         if str(message.author) == 'Hyperfresh#8080':
             separator = " "
             code = separator.join(args)
@@ -344,16 +344,30 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(':x: > Only the bot author can do this.')
 
 ######################################################
-# math
+# python
 #
+    if message.content.startswith('-ps'):
+        if str(message.author) == 'Hyperfresh#8080':
+            separator = " "
+            code = separator.join(args)
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+            try:
+                os.system('powershell -c "' + str(code) + '" > code.log')
+                logmessage = """"""
+                log = open('code.log','r')
+                for line in log:
+                    logmessage = logmessage + line + """\n"""
+                log.close
+                try:
+                    await message.channel.send('```py\n' + str(logmessage) + '```')
+                except Exception as e:
+                    await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
+                    await message.channel.send(file=discord.File('code.log'))
+            except Exception as e:
+                await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
+            await client.change_presence(activity=discord.Game('-help'))
+        else:
+            await message.channel.send(':x: > Only the bot author can do this.')
 
-    if message.content.startswith('-math'):
-        separator = " "
-        code = separator.join(args)
-        try:
-            math = exec(code)
-            await message.channel.send('```' + str(math) + '```')            
-        except Exception as e:
-            await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
 client.run(TOKEN)
 
