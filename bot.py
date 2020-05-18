@@ -231,7 +231,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 # PING DISCORD MODULE
 #
     if message.content.startswith('-ping'):
+        await message.channel.send('> :ping_pong: > **Ping...**')
         if len(args) == 1:
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             separator = " "
             pingme = separator.join(args)
             os.system('ping -c 4 ' + str(pingme) + ' > ping.txt')
@@ -239,11 +241,13 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             os.system('ping -c 1 discord.com > ping.txt')
         pingmessage = """"""
         ping = open('ping.txt','r')
-        await message.channel.send('> :ping_pong: > **Pong!**')
+        if len(args) == 0:
+            await message.channel.send('> :ping_pong: > **Pong!** I recorded ' + bot.latency + ' ms.')
         for line in ping:
             pingmessage = pingmessage + line + """\n"""
         ping.close
         await message.channel.send('```' + str(pingmessage) + '```')
+        await client.change_presence(activity=discord.Game('-help'))
 
 ######################################################
 # GET TIME MODULE
