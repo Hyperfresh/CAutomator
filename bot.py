@@ -359,7 +359,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     logmessage = logmessage + line + """\n"""
                 log.close
                 try:
-                    await message.channel.send('```py\n' + str(logmessage) + '```')
+                    await message.channel.send('```powershell\n' + str(logmessage) + '```')
                 except Exception as e:
                     await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
                     await message.channel.send(file=discord.File('code.log'))
