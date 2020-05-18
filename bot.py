@@ -231,7 +231,12 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 # PING DISCORD MODULE
 #
     if message.content.startswith('-ping'):
-        os.system('ping -c 1 discord.com > ping.txt')
+        if len(args) == 1:
+            separator = " "
+            pingme = separator.join(args)
+            os.system('ping -c 4 ' + str(pingme) + ' > ping.txt')
+        else:
+            os.system('ping -c 1 discord.com > ping.txt')
         pingmessage = """"""
         ping = open('ping.txt','r')
         await message.channel.send('> :ping_pong: > **Pong!**')
@@ -344,7 +349,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(':x: > Only the bot author can do this.')
 
 ######################################################
-# python
+# powershell
 #
     if message.content.startswith('-ps'):
         if str(message.author) == 'Hyperfresh#8080':
@@ -368,6 +373,10 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await client.change_presence(activity=discord.Game('-help'))
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
+
+######################################################
+# 
+#
 
 client.run(TOKEN)
 
