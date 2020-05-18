@@ -231,8 +231,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 # PING DISCORD MODULE
 #
     if message.content.startswith('-ping'):
-        await message.channel.send('> :ping_pong: > **Ping...**')
         if len(args) == 1:
+            await message.channel.send('> :ping_pong: > **Ping...**')
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             separator = " "
             pingme = separator.join(args)
