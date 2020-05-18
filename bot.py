@@ -242,7 +242,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         pingmessage = """"""
         ping = open('ping.txt','r')
         if len(args) == 0:
-            await message.channel.send('> :ping_pong: > **Pong!** I recorded ' + bot.latency + ' ms.')
+            await message.channel.send('> :ping_pong: > **Pong!** I recorded ' + str(bot.latency) + ' ms.')
         for line in ping:
             pingmessage = pingmessage + line + """\n"""
         ping.close
