@@ -16,6 +16,8 @@ from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN') # CHECK YOUR .env FILE!
 
+from math import * # for math
+
 import csv #for reading speedtest results
 import re #regular expression
 
@@ -281,7 +283,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 #           
     global BotStatus
     
-    if message.content.startswith('-restart'):
+    if message.content.startswith('-rb'):
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send(':red_circle: > Restarting...')
             await client.change_presence(activity=discord.Game('Restarting...'),status=discord.Status.dnd)
@@ -324,13 +326,34 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             code = separator.join(args)
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             try:
-                await message.channel.send('```py\n' + exec(str(code)) + '```')
+                os.system('python3 -c "' + str(code) + '" > code.log')
+                logmessage = """"""
+                log = open('code.log','r')
+                for line in log:
+                    logmessage = logmessage + line + """\n"""
+                log.close
+                try:
+                    await message.channel.send('```py\n' + str(logmessage) + '```')
+                except Exception as e:
+                    await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
+                    await message.channel.send(file=discord.File('code.log'))
             except Exception as e:
-                await message.channel.send(':x: > Something went wrong when sending the output of the command here.\n\nCode: ```' + str(code) + '```\nError:```' + str(e) + "```")
+                await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
             await client.change_presence(activity=discord.Game('-help'))
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
 
+######################################################
+# math
+#
 
+    if message.content.startswith('-math'):
+        separator = " "
+        code = separator.join(args)
+        try:
+            math = exec(code)
+            await message.channel.send('```' + str(math) + '```')            
+        except Exception as e:
+            await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
 client.run(TOKEN)
 
