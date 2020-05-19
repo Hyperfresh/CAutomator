@@ -16,8 +16,6 @@ from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN') # CHECK YOUR .env FILE!
 
-from math import * # for math
-
 import csv #for reading speedtest results
 import re #regular expression
 
@@ -290,7 +288,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # RESTART MODULE
 #           
-    global BotStatus
     
     if message.content.startswith('-rb'):
         if str(message.author) == 'Hyperfresh#8080':
