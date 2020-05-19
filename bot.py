@@ -376,8 +376,19 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(':x: > Only the bot author can do this.')
 
 ######################################################
-# 
+# Weather
 #
-
+	if message.content.startswith('-weather'):
+		if len(args) == 0: await message.channel.send(":x: > You didn't specify a location.")
+		else:
+			separator = "%20"
+            		code = separator.join(args)
+			print(os.system('curl wttr.in/' + str( + '?0 > sh.log'))
+			logmessage = """"""
+			log = open('sh.log','r')
+			for line in log:
+			    logmessage = logmessage + line + """\n"""
+			log.close
+			await message.channel.send('```' + str(logmessage) + '```')
 client.run(TOKEN)
 
