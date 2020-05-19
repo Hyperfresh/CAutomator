@@ -387,9 +387,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 			separator = "%20"
             		code = separator.join(args)
 			print(os.system('curl wttr.in/' + str( + '?0 > sh.log'))
-			os.system('powershell -c "' + str(code) + '" > code.log')
 			logmessage = """"""
-			log = open('code.log','r')
+			log = open('sh.log','r')
 			for line in log:
 			    logmessage = logmessage + line + """\n"""
 			log.close
