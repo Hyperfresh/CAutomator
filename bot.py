@@ -378,17 +378,16 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # Weather
 #
-	if message.content.startswith('-weather'):
-		if len(args) == 0: await message.channel.send(":x: > You didn't specify a location.")
-		else:
-			separator = "%20"
-            		code = separator.join(args)
-			print(os.system('curl wttr.in/' + str( + '?0 > sh.log'))
-			logmessage = """"""
-			log = open('sh.log','r')
-			for line in log:
-			    logmessage = logmessage + line + """\n"""
-			log.close
-			await message.channel.send('```' + str(logmessage) + '```')
+    if message.content.startswith('-weather'):
+        if len(args) == 0:
+            await message.channel.send(":x: > You didn't specify a location.")
+        else:
+            await message.channel.send("Getting weather, please wait...")
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+            separator = "%20"
+            code = separator.join(args)
+            print(os.system('curl wttr.in/' + str(code) + '.png > weather.png'))
+            await message.channel.send(file=discord.File('weather.png'))
+            await client.change_presence(activity=discord.Game('-help'))
 client.run(TOKEN)
 
