@@ -125,11 +125,7 @@ dmypy.json
 .pyre/
 
 # don't sync speedtest, ping, speeds or the user database
-db.json
-speed.sh
-speeds.csv
-ping.txt
-inprocess.txt
-log.txt
-update.sh
-eval.txt
+*.json
+*.txt
+*.sh
+weather.img
