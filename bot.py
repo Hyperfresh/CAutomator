@@ -229,14 +229,23 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 # PING DISCORD MODULE
 #
     if message.content.startswith('-ping'):
-        os.system('ping -c 1 discord.com > ping.txt')
+        if len(args) == 1:
+            await message.channel.send('> :ping_pong: > **Ping...**')
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+            separator = " "
+            pingme = separator.join(args)
+            os.system('ping -c 4 ' + str(pingme) + ' > ping.txt')
+        else:
+            os.system('ping -c 1 discord.com > ping.txt')
         pingmessage = """"""
         ping = open('ping.txt','r')
-        await message.channel.send('> :ping_pong: > **Pong!**')
+        if len(args) == 0:
+            await message.channel.send('> :ping_pong: > **Pong!** I recorded ' + str(bot.latency) + ' ms.')
         for line in ping:
             pingmessage = pingmessage + line + """\n"""
         ping.close
         await message.channel.send('```' + str(pingmessage) + '```')
+        await client.change_presence(activity=discord.Game('-help'))
 
 ######################################################
 # GET TIME MODULE
@@ -279,9 +288,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # RESTART MODULE
 #           
-    global BotStatus
     
-    if message.content.startswith('-restart'):
+    if message.content.startswith('-rb'):
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send(':red_circle: > Restarting...')
             await client.change_presence(activity=discord.Game('Restarting...'),status=discord.Status.dnd)
@@ -300,9 +308,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             separator = " "
             code = separator.join(args)
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
-            print(os.system(str(code) + ' > eval.txt'))
+            print(os.system(str(code) + ' > sh.log'))
             logmessage = """"""
-            log = open('eval.txt','r')
+            log = open('sh.log','r')
             for line in log:
                 logmessage = logmessage + line + """\n"""
             log.close
@@ -310,10 +318,76 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await message.channel.send('```' + str(logmessage) + '```')
             except Exception as e:
                 await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
-                await message.channel.send(file=discord.File('eval.txt'))
+                await message.channel.send(file=discord.File('sh.log'))
             await client.change_presence(activity=discord.Game('-help'))
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
 
+######################################################
+# python
+#
+    if message.content.startswith('-py'):
+        if str(message.author) == 'Hyperfresh#8080':
+            separator = " "
+            code = separator.join(args)
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+            try:
+                os.system('python3 -c "' + str(code) + '" > code.log')
+                logmessage = """"""
+                log = open('code.log','r')
+                for line in log:
+                    logmessage = logmessage + line + """\n"""
+                log.close
+                try:
+                    await message.channel.send('```py\n' + str(logmessage) + '```')
+                except Exception as e:
+                    await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
+                    await message.channel.send(file=discord.File('code.log'))
+            except Exception as e:
+                await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
+            await client.change_presence(activity=discord.Game('-help'))
+        else:
+            await message.channel.send(':x: > Only the bot author can do this.')
+
+######################################################
+# powershell
+#
+    if message.content.startswith('-ps'):
+        if str(message.author) == 'Hyperfresh#8080':
+            separator = " "
+            code = separator.join(args)
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+            try:
+                os.system('powershell -c "' + str(code) + '" > code.log')
+                logmessage = """"""
+                log = open('code.log','r')
+                for line in log:
+                    logmessage = logmessage + line + """\n"""
+                log.close
+                try:
+                    await message.channel.send('```powershell\n' + str(logmessage) + '```')
+                except Exception as e:
+                    await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
+                    await message.channel.send(file=discord.File('code.log'))
+            except Exception as e:
+                await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
+            await client.change_presence(activity=discord.Game('-help'))
+        else:
+            await message.channel.send(':x: > Only the bot author can do this.')
+
+######################################################
+# Weather
+#
+    if message.content.startswith('-weather'):
+        if len(args) == 0:
+            await message.channel.send(":x: > You didn't specify a location.")
+        else:
+            await message.channel.send("Getting weather, please wait...")
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+            separator = "%20"
+            code = separator.join(args)
+            print(os.system('curl wttr.in/' + str(code) + '.png > weather.png'))
+            await message.channel.send(file=discord.File('weather.png'))
+            await client.change_presence(activity=discord.Game('-help'))
 client.run(TOKEN)
 
