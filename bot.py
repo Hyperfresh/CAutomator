@@ -427,7 +427,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 
                     await message.channel.send(":compression: > Compressing using HandBrake to lower the file size...")
                     print(os.system('rm file_compress.mp4'))
-                    print(os.system('HandBrakeCLI -z "Discord Nitro Small 10-20 Minutes 480p30" -i file.mkv -o file_compress.mp4 > sh.log'))
+                    print(os.system('HandBrakeCLI -Z "Discord Nitro Small 10-20 Minutes 480p30" -i file.mkv -o file_compress.mp4 > sh.log'))
                     await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
                     try:
                         await message.channel.send(file=discord.File('file_compress.mp4'))
