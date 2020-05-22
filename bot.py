@@ -389,5 +389,29 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             print(os.system('curl wttr.in/' + str(code) + '.png > weather.png'))
             await message.channel.send(file=discord.File('weather.png'))
             await client.change_presence(activity=discord.Game('-help'))
+
+######################################################
+# Download music from YouTube
+#
+    if message.content.startswith('-ytdl'):
+        if len(args) == 0:
+            await message.channel.send(":x: > You didn't specify a video.")
+        elif len(args) > 1:
+            await message.channel.send(":x: > More than one argument was provided.")
+        elif "list" in args:
+            await message.channel.send(":x: > This seems to be (linked to) a playlist, which is not supported right now.")
+        else:
+            await message.channel.send("Downloading now, please wait...")
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+            print(os.system('youtube-dl -x --format-audio mp3 -o file.mp3 ' + str(args[0])))
+            filesize = os.path.getsize("file.mp3")
+            if filesize > 7999999:
+                await message.channel.send(":x: > File too large.")
+                await client.change_presence(activity=discord.Game('-help'))
+            else:
+                await message.channel.send(file=discord.File('file.mp3'))
+                await client.change_presence(activity=discord.Game('-help'))
+
+
 client.run(TOKEN)
 
