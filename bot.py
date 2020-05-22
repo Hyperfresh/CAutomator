@@ -324,6 +324,23 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(':x: > Only the bot author can do this.')
 
 ######################################################
+# Get a file on the HYWS
+#
+
+    if message.content.startswith('-file'):
+        if str(message.author) == 'Hyperfresh#8080':
+            if len(args) > 1:
+                await message.channel.send(":x: > More than one argument was provided.")
+            else:
+                filesize = os.path.getsize(str(args[0]))
+                if filesize > 7999999:
+                    await message.channel.send(":x: > File too large.")
+                else:
+                    await message.channel.send(file=discord.File(str(args[0])))
+        else:
+            await message.channel.send(':x: > Only the bot author can do this.')
+
+######################################################
 # python
 #
     if message.content.startswith('-py'):
