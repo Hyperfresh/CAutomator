@@ -418,26 +418,23 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     await client.change_presence(activity=discord.Game('-help'))
             else:
                 if str(args[1]) == "mp4":
-                    print(os.system('rm file.mp4'))
-                    print(os.system('youtube-dl -o file.mp4 ' + str(args[0]) + ' > sh.log'))
+                    print(os.system('rm file.mkv'))
+                    print(os.system('youtube-dl -o "file.%(ext)s" --merge-output-format mkv ' + str(args[0]) + ' > sh.log'))
                     try:
                         await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
                     except:
                         await message.channel.send("```Log too large to post.```\nTrying to upload...")
+                
+                    await message.channel.send(":compression: > Compressing using HandBrake to lower the file size...")
+                    print(os.system('rm file_compress.mp4'))
+                    print(os.system('HandBrakeCLI -z "Discord Nitro Small 10-20 Minutes 480p30" -i file.mkv -o file_compress.mp4 > sh.log'))
+                    await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
                     try:
-                        await message.channel.send(file=discord.File('file.mp4'))
+                        await message.channel.send(file=discord.File('file_compress.mp4'))
                         await client.change_presence(activity=discord.Game('-help'))
                     except:
-                        await message.channel.send(":compression: > Video failed to upload (it's probably too big).\nCompressing using HandBrake to try lower the file size...")
-                        print(os.system('rm file_compress.mp4'))
-                        print(os.system('HandBrakeCLI -z "Discord Nitro Small 10-20 Minutes 480p30" -i file.mp4 -o file_compress.mp4 > sh.log'))
-                        await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
-                        try:
-                            await message.channel.send(file=discord.File('file_compress.mp4'))
-                            await client.change_presence(activity=discord.Game('-help'))
-                        except:
-                            await message.channel.send(":x: > File still too large. Must be a really long video.")
-                            await client.change_presence(activity=discord.Game('-help'))
+                        await message.channel.send(":x: > File too large. Must be a really long video.")
+                        await client.change_presence(activity=discord.Game('-help'))
                 else:
                     print(os.system('rm file.mp3'))
                     print(os.system('youtube-dl -x --audio-format mp3 -o file.mp3 ' + str(args[0]) + ' > sh.log'))
