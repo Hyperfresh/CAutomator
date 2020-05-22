@@ -406,7 +406,10 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             if len(args) == 1:
                 print(os.system('rm file.mp3'))
                 print(os.system('youtube-dl -x --audio-format mp3 -o file.mp3 ' + str(args[0]) + ' > sh.log'))
-                await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                try:
+                    await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                except:
+                    await message.channel.send("```Log too large to post.```\nTrying to upload...")
                 try:
                     await message.channel.send(file=discord.File('file.mp3'))
                     await client.change_presence(activity=discord.Game('-help'))
@@ -417,7 +420,10 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 if str(args[1]) == "mp4":
                     print(os.system('rm file.mp4'))
                     print(os.system('youtube-dl -o file.mp4 ' + str(args[0]) + ' > sh.log'))
-                    await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                    try:
+                        await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                    except:
+                        await message.channel.send("```Log too large to post.```\nTrying to upload...")
                     try:
                         await message.channel.send(file=discord.File('file.mp4'))
                         await client.change_presence(activity=discord.Game('-help'))
@@ -435,7 +441,10 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 else:
                     print(os.system('rm file.mp3'))
                     print(os.system('youtube-dl -x --audio-format mp3 -o file.mp3 ' + str(args[0]) + ' > sh.log'))
-                    await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                    try:
+                        await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                    except:
+                        await message.channel.send("```Log too large to post.```\nTrying to upload...")
                     try:
                         await message.channel.send(file=discord.File('file.mp3'))
                         await client.change_presence(activity=discord.Game('-help'))
