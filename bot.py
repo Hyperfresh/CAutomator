@@ -429,6 +429,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 
                     await message.channel.send(":compression: > Compressing using HandBrake to lower the file size.\n> :warning: > This process takes a while and the bot may go offline for a bit. Please be patient!")
                     print(os.system('rm file_compress.mp4'))
+                    await client.change_presence(activity=discord.Game('DO NOT USE BOT!'),status=discord.Status.dnd)
                     print(os.system('HandBrakeCLI -Z "Discord Tiny 5 Minutes 240p30" -i file.mkv -o file_compress.mp4 > sh.log'))
                     try:
                         await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
@@ -444,7 +445,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                         await client.change_presence(activity=discord.Game('-help'))
                 else:
                     print(os.system('rm file.mp3'))
-                    await client.change_presence(activity=discord.Game('DO NOT USE BOT!'),status=discord.Status.dnd)
                     print(os.system('youtube-dl -x --audio-format mp3 -o file.mp3 ' + str(args[0]) + ' > sh.log'))
                     try:
                         await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
