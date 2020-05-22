@@ -401,13 +401,21 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         elif "list" in args:
             await message.channel.send(":x: > This seems to be (linked to) a playlist, which is not supported right now.")
         else:
-            if str(args[1]) != "mp3" or "mp4":
-                await message.channel.send(":x: > Unrecognised file format. `mp3` or `mp4` only.")
+            await message.channel.send("Downloading now, please wait...")
+            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+            if len(args) == 1:
+                print(os.system('rm file.mp3'))
+                print(os.system('youtube-dl -x --audio-format mp3 -o file.mp3 ' + str(args[0]) + ' > sh.log'))
+                await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                try:
+                    await message.channel.send(file=discord.File('file.mp3'))
+                    await client.change_presence(activity=discord.Game('-help'))
+                except:
+                    await message.channel.send(":x: > Audio failed to upload (it's probably too big).")
+                    await client.change_presence(activity=discord.Game('-help'))
             else:
-                await message.channel.send("Downloading now, please wait...")
-                await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
-                if len(args) == 1:
-                    print(os.system('rm file.mp3'))
+                if str(args[1]) == "mp4":
+                    print(os.system('rm file.mp4'))
                     print(os.system('youtube-dl -o file.mp4 ' + str(args[0]) + ' > sh.log'))
                     await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
                     try:
@@ -424,7 +432,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                         except:
                             await message.channel.send(":x: > File still too large. Must be a really long video.")
                             await client.change_presence(activity=discord.Game('-help'))
-                else:        
+                else:
                     print(os.system('rm file.mp3'))
                     print(os.system('youtube-dl -x --audio-format mp3 -o file.mp3 ' + str(args[0]) + ' > sh.log'))
                     await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
@@ -434,6 +442,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     except:
                         await message.channel.send(":x: > Audio failed to upload (it's probably too big).")
                         await client.change_presence(activity=discord.Game('-help'))
+                
 
 
 
