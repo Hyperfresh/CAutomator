@@ -325,7 +325,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             if len(args) > 1:
                 await message.channel.send(":x: > More than one argument was provided.")
             else:
-                filesize = os.path.getsize(str(args[0]))
+                await message.channel.send("Attempting to upload...")
                 try:
                     await message.channel.send(file=discord.File(str(args[0])))
                 except Exception as e:
@@ -427,7 +427,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 
                     await message.channel.send(":compression: > Compressing using HandBrake to lower the file size.\n> :warning: > This process takes a while and the bot may go offline for a bit. Please be patient!")
                     print(os.system('rm file_compress.mp4'))
-                    print(os.system('HandBrakeCLI -Z "Discord Nitro Small 10-20 Minutes 480p30" -i file.mkv -o file_compress.mp4 > sh.log'))
+                    print(os.system('HandBrakeCLI -Z "Discord Small 2 Minutes 360p30" -i file.mkv -o file_compress.mp4 > sh.log'))
                     try:
                         await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
                     except:
