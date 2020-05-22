@@ -400,7 +400,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(":x: > More than one argument was provided.")
         elif "list" in args:
             await message.channel.send(":x: > This seems to be (linked to) a playlist, which is not supported right now.")
-        elif args[1] != "mp3" or "mp4":
+        elif args[1] != "mp3" or args[1] != "mp4":
             await message.channel.send(":x: > Unrecognised file format. `mp3` or `mp4` only.")
         else:
             await message.channel.send("Downloading now, please wait...")
