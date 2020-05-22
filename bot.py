@@ -35,6 +35,14 @@ def UpdateTime(speed):
     if speed == True:
         SpeedPerformTime = CurrentTime
 
+def readlog(logfile):
+    logmessage = """"""
+    log = open(logfile,'r')
+    for line in log:
+        logmessage = logmessage + line + """\n"""
+    log.close
+    return(logmessage)
+
 linecount = 0
 lvl30ID = 547360918930194443
 
@@ -237,14 +245,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             os.system('ping -c 4 ' + str(pingme) + ' > ping.txt')
         else:
             os.system('ping -c 1 discord.com > ping.txt')
-        pingmessage = """"""
-        ping = open('ping.txt','r')
         if len(args) == 0:
             await message.channel.send('> :ping_pong: > **Pong!** I recorded ' + str(bot.latency) + ' ms.')
-        for line in ping:
-            pingmessage = pingmessage + line + """\n"""
-        ping.close
-        await message.channel.send('```' + str(pingmessage) + '```')
+        await message.channel.send('```' + str(readlog('ping.txt')) + '```')
         await client.change_presence(activity=discord.Game('-help'))
 
 ######################################################
@@ -271,12 +274,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send('<a:Typing:459588536841011202> > Updating...')
             await client.change_presence(activity=discord.Game('Updating...'),status=discord.Status.idle)
             os.system('sh update.sh > update.log')
-            logmessage = """"""
-            log = open('update.log','r')
-            for line in log:
-                logmessage = logmessage + line + """\n"""
-            log.close
-            await message.channel.send('```' + str(logmessage) + '```')
+            await message.channel.send('```' + str(readlog('update.log')) + '```')
             time.sleep(3)
             await message.channel.send(':red_circle: > Restarting...')
             await client.change_presence(activity=discord.Game('Restarting...'),status=discord.Status.dnd)
@@ -309,13 +307,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             code = separator.join(args)
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             print(os.system(str(code) + ' > sh.log'))
-            logmessage = """"""
-            log = open('sh.log','r')
-            for line in log:
-                logmessage = logmessage + line + """\n"""
-            log.close
             try:
-                await message.channel.send('```' + str(logmessage) + '```')
+                await message.channel.send('```' + str(readlog('sh.log')) + '```')
             except Exception as e:
                 await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
                 await message.channel.send(file=discord.File('sh.log'))
@@ -333,10 +326,10 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await message.channel.send(":x: > More than one argument was provided.")
             else:
                 filesize = os.path.getsize(str(args[0]))
-                if filesize > 7999999:
-                    await message.channel.send(":x: > File too large.")
-                else:
+                try:
                     await message.channel.send(file=discord.File(str(args[0])))
+                except Exception as e:
+                    await message.channel.send(":x: > An error occurred when sending this file.\n```" + str(e) + "```")
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
 
@@ -350,13 +343,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             try:
                 os.system('python3 -c "' + str(code) + '" > code.log')
-                logmessage = """"""
-                log = open('code.log','r')
-                for line in log:
-                    logmessage = logmessage + line + """\n"""
-                log.close
                 try:
-                    await message.channel.send('```py\n' + str(logmessage) + '```')
+                    await message.channel.send('```py\n' + str(readlog('code.log')) + '```')
                 except Exception as e:
                     await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
                     await message.channel.send(file=discord.File('code.log'))
@@ -376,13 +364,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             try:
                 os.system('powershell -c "' + str(code) + '" > code.log')
-                logmessage = """"""
-                log = open('code.log','r')
-                for line in log:
-                    logmessage = logmessage + line + """\n"""
-                log.close
                 try:
-                    await message.channel.send('```powershell\n' + str(logmessage) + '```')
+                    await message.channel.send('```powershell\n' + str(readlog('code.log')) + '```')
                 except Exception as e:
                     await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
                     await message.channel.send(file=discord.File('code.log'))
@@ -413,22 +396,44 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-ytdl'):
         if len(args) == 0:
             await message.channel.send(":x: > You didn't specify a video.")
-        elif len(args) > 1:
+        elif len(args) > 2:
             await message.channel.send(":x: > More than one argument was provided.")
         elif "list" in args:
             await message.channel.send(":x: > This seems to be (linked to) a playlist, which is not supported right now.")
+        elif args[1] != "mp3" or "mp4":
+            await message.channel.send(":x: > Unrecognised file format. `mp3` or `mp4` only.")
         else:
             await message.channel.send("Downloading now, please wait...")
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
-            print(os.system('rm file.mp3'))
-            print(os.system('youtube-dl -x --audio-format mp3 -o file.mp3 ' + str(args[0])))
-            filesize = os.path.getsize("file.mp3")
-            if filesize > 7999999:
-                await message.channel.send(":x: > File too large.")
-                await client.change_presence(activity=discord.Game('-help'))
-            else:
-                await message.channel.send(file=discord.File('file.mp3'))
-                await client.change_presence(activity=discord.Game('-help'))
+            if args[1] == "mp4":
+                print(os.system('rm file.mp3'))
+                print(os.system('youtube-dl -o file.mp4 ' + str(args[0]) + ' > sh.log'))
+                await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                try:
+                    await message.channel.send(file=discord.File('file.mp4'))
+                    await client.change_presence(activity=discord.Game('-help'))
+                except:
+                    await message.channel.send(":compression: > Video failed to upload (it's probably too big).\nCompressing using HandBrake to try lower the file size...")
+                    print(os.system('rm file_compress.mp4'))
+                    print(os.system('HandBrakeCLI -z "Discord Nitro Small 10-20 Minutes 480p30" -i file.mp4 -o file_compress.mp4 > sh.log'))
+                    await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                    try:
+                        await message.channel.send(file=discord.File('file_compress.mp4'))
+                        await client.change_presence(activity=discord.Game('-help'))
+                    except:
+                        await message.channel.send(":x: > File still too large. Must be a really long video.")
+                        await client.change_presence(activity=discord.Game('-help'))
+            else:        
+                print(os.system('rm file.mp3'))
+                print(os.system('youtube-dl -x --audio-format mp3 -o file.mp3 ' + str(args[0]) + ' > sh.log'))
+                await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                try:
+                    await message.channel.send(file=discord.File('file.mp3'))
+                    await client.change_presence(activity=discord.Game('-help'))
+                except:
+                    await message.channel.send(":x: > Audio failed to upload (it's probably too big).")
+                    await client.change_presence(activity=discord.Game('-help'))
+
 
 
 client.run(TOKEN)
