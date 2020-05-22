@@ -403,7 +403,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else:
             await message.channel.send("Downloading now, please wait...")
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
-            print(os.system('youtube-dl -x --format-audio mp3 -o file.mp3 ' + str(args[0])))
+            print(os.system('youtube-dl -x --audio-format mp3 -o file.mp3 ' + str(args[0])))
             filesize = os.path.getsize("file.mp3")
             if filesize > 7999999:
                 await message.channel.send(":x: > File too large.")
