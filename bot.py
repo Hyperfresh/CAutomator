@@ -409,7 +409,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 try:
                     await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
                 except:
-                    await message.channel.send("```Log too large to post.```\nTrying to upload...")
+                    await message.channel.send("```Log too large to post within Discord. Uploaded separately.```\nTrying to upload...")
+                    await message.channel.send(file=discord.File('sh.log'))
                 try:
                     await message.channel.send(file=discord.File('file.mp3'))
                     await client.change_presence(activity=discord.Game('-help'))
@@ -423,20 +424,23 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     try:
                         await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
                     except:
-                        await message.channel.send("```Log too large to post.```")
+                        await message.channel.send("```Log too large to post within Discord. Uploaded separately.```")
+                        await message.channel.send(file=discord.File('sh.log'))
                 
                     await message.channel.send(":compression: > Compressing using HandBrake to lower the file size.\n> :warning: > This process takes a while and the bot may go offline for a bit. Please be patient!")
                     print(os.system('rm file_compress.mp4'))
                     print(os.system('HandBrakeCLI -Z "Discord Small 2 Minutes 360p30" -i file.mkv -o file_compress.mp4 > sh.log'))
                     try:
                         await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
+                        await message.channel.send(file=discord.File('sh.log'))
                     except:
-                        await message.channel.send("```Log too large to post.```\nTrying to upload...")
+                        await message.channel.send("```Log too large to post within Discord. Uploaded separately.```\nTrying to upload...")
+                        await message.channel.send(file=discord.File('sh.log'))
                     try:
                         await message.channel.send(file=discord.File('file_compress.mp4'))
                         await client.change_presence(activity=discord.Game('-help'))
-                    except:
-                        await message.channel.send(":x: > File too large. Must be a really long video.")
+                    except Exception as e:
+                        await message.channel.send(":x: > File too large. Must be a really long video.\n```" + str(e) + "```")
                         await client.change_presence(activity=discord.Game('-help'))
                 else:
                     print(os.system('rm file.mp3'))
@@ -448,8 +452,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     try:
                         await message.channel.send(file=discord.File('file.mp3'))
                         await client.change_presence(activity=discord.Game('-help'))
-                    except:
-                        await message.channel.send(":x: > Audio failed to upload (it's probably too big).")
+                    except Exception as e:
+                        await message.channel.send(":x: > Audio failed to upload (it's probably too big).\n```" + str(e) + "```")
                         await client.change_presence(activity=discord.Game('-help'))
                 
 
