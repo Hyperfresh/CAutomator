@@ -445,7 +445,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                         await client.change_presence(activity=discord.Game('-help'))
                 else:
                     print(os.system('rm file.mp3'))
-                    print(os.system('youtube-dl -x --audio-format wav -o "file.%(ext)s" ' + str(args[0]) + ' > sh.log'))
+                    print(os.system('youtube-dl -x --audio-format wav -o "file.wav" ' + str(args[0]) + ' > sh.log'))
                     try:
                         await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
                     except:
