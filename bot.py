@@ -393,12 +393,12 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # Download music from YouTube
 #
-    if message.content.startswith('-ytdl'):
-        if len(args) == 0:
+    if message.content.startswith('-ytdl'): # -ytdl <video> <mp4/mp3>
+        if len(args) == 0: # no args, no video
             await message.channel.send(":x: > You didn't specify a video.")
-        elif len(args) > 2:
-            await message.channel.send(":x: > More than one argument was provided.")
-        elif "list" in args:
+        elif len(args) > 2: # video is one, type is two
+            await message.channel.send(":x: > Too many arguments provided.")
+        elif "list" in args: # soon:tm:
             await message.channel.send(":x: > This seems to be (linked to) a playlist, which is not supported right now.")
         else:
             await message.channel.send("Downloading now, please wait...")
@@ -445,7 +445,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                         await client.change_presence(activity=discord.Game('-help'))
                 else:
                     print(os.system('rm file.mp3'))
-                    print(os.system('youtube-dl -x --audio-format mp3 -o file.mp3 ' + str(args[0]) + ' > sh.log'))
+                    print(os.system('youtube-dl -x --audio-format mp3 -o "file.%(ext)s" ' + str(args[0]) + ' > sh.log'))
                     try:
                         await message.channel.send("```" + str(readlog('sh.log')) + "```\nTrying to upload...")
                     except:
@@ -457,8 +457,4 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                         await message.channel.send(":x: > Audio failed to upload (it's probably too big).\n```" + str(e) + "```")
                         await client.change_presence(activity=discord.Game('-help'))
                 
-
-
-
-client.run(TOKEN)
-
+client.run(TOKEN) #the bot that runs it all
