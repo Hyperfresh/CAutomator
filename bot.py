@@ -5,7 +5,6 @@ from discord.utils import get
 
 #tinydb
 from tinydb import TinyDB, Query
-db = TinyDB('db.json')
 
 #other modules
 import platform # for os info
@@ -15,7 +14,18 @@ import sys # for restarting the bot
 
 from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
+
+# Variable declaration
+db = TinyDB('db.json')
 TOKEN = os.getenv('DISCORD_TOKEN') # CHECK YOUR .env FILE!
+CurrentTime = ""
+SpeedPerformTime = ""
+results = {}
+testing = False
+convert = ""
+downloading = False
+upload = []
+ytdl_options = []
 
 import csv #for reading speedtest results
 import re #regular expression
@@ -51,11 +61,15 @@ def TestSpeed():
     s.upload(threads=None)
     s.results.share()
     results = s.results.dict()
-testing = 0
 
 import glob
-def ytdl(video,dltype):
+def ytdl():
     global upload
+    global ytdl_options
+
+    dltype = str(ytdl_options[1])
+    video = str(ytdl_options[0])
+
     os.system('rm -rf ~/CAutomator/yt-pl')
     os.system('rm output.*')
     if dltype == "list":
@@ -68,10 +82,17 @@ def ytdl(video,dltype):
         os.system('youtube-dl -x -o "output.%(ext)s" ' + str(video))
         upload = glob.glob('output.*')
 
-def hb(convert):
-    os.system('rm compress.mp4')
-    os.system('HandBrakeCLI -Z "Discord Tiny 5 Minutes 240p30" -i ' + str(convert) + ' -o compress.mp4')
+def hb():
+    global upload
 
+    os.system('rm compress.mp4')
+    os.system('HandBrakeCLI -Z "Discord Tiny 5 Minutes 240p30" -i ' + str(upload[0]) + ' -o compress.mp4')
+
+def conv():
+    global upload
+
+    os.system('rm audio.mp3')
+    os.system('ffmpeg -i ' + str(upload[0]) + ' -vn -ar 44100 -ac 2 -b:a 192k audio.mp3')
 
 def readlog(logfile):
     logmessage = """"""
@@ -149,8 +170,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     global testing
 
     if message.content.startswith('-speed'):
-        if testing == 0:
-            testing = 1
+        if testing == False:
+            testing = True
             await message.channel.send('> :bullettrain_side: > **Testing speed...**\nI\'ll send results shortly!')
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(ThreadPoolExecutor(), TestSpeed)
@@ -159,7 +180,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             downspeed = round(downspeed,2)
             upspeed = round(upspeed,2)
             await message.channel.send('> :white_check_mark: > **Results**\nPerformed: **' + str(SpeedPerformTime) + '** (South Australia Time)\nServer: **' + str(results['server']['sponsor']) + " " + str(results['server']['name'])  + '**\nPing: **' + str(results['ping']) + " ms**\nDownload: **" + str(downspeed) + " Mbps**\nUpload: **" + str(upspeed) + " Mbps**\n\n*Conducted using Ookla's Speedtest CLI: https://speedtest.net\nSpeeds are converted from bits to megabits, and rounded to two decimal places.*")
-            testing = 0
+            testing = False
         else:
             await message.channel.send(':x: > I\'m still testing speed! Please be patient.')
 
@@ -399,50 +420,59 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 # Download music from YouTube
 #
     global upload
+    global downloading
+    global ytdl_options
+    global convert
 
     if message.content.startswith('-ytdl'): # -ytdl <video> <mp4/mp3>
         if len(args) > 2: await message.channel.send(":x: > Too many arguments provided.")
         else:
+            downloading = True
             if len(args) == 1: args = [str(args[0]), "mp3"]
             if "list" in str(args[0]):
-                if str(args[1]) == "list":
-                    await message.channel.send("Downloading playlist as a zip of MP3s.")
-                    await client.change_presence(activity=discord.Game(name='Downloading...'))
-                    loop = asyncio.get_event_loop()
-                    await loop.run_in_executor(ThreadPoolExecutor(), ytdl(str(args[0]),'list'))
-                    await client.change_presence(activity=discord.Game(name='Uploading...'))
-                    await message.channel.send("Downloaded playlist. Uploading to Discord...")
-                    try:
-                        await message.channel.send(file=discord.File('output.zip'))
-                    except Exception as e:
-                        await message.channel.send(":x: > Upload failed. The ZIP might be too big to upload here.\n\nError: ```" + str(e) + "```")
-                    await client.change_presence(activity=discord.Game(name='-help'))
-                elif str(args[1]) == "mp3":
-                    await message.channel.send("Downloading video as audio.")
-                    await client.change_presence(activity=discord.Game(name='Downloading...'))
-                    loop = asyncio.get_event_loop()
-                    await loop.run_in_executor(ThreadPoolExecutor(), ytdl(str(args[0]),'aud'))
-                    await client.change_presence(activity=discord.Game(name='Uploading...'))
-                    await message.channel.send("Downloaded audio. Uploading to Discord...")
-                    try:
-                        await message.channel.send(file=discord.File(str(upload[0])))
-                    except Exception as e:
-                        await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
-                    await client.change_presence(activity=discord.Game(name='-help'))
-                else:
-                    await message.channel.send("Downloading video.")
-                    await client.change_presence(activity=discord.Game(name='Downloading...'))
-                    loop = asyncio.get_event_loop()
-                    await loop.run_in_executor(ThreadPoolExecutor(), ytdl(str(args[0]),'vid'))
-                    await client.change_presence(activity=discord.Game(name='Compressing...'))
-                    await message.channel.send("Downloaded video. Compressing...")
-                    await loop.run_in_executor(ThreadPoolExecutor(), hb(str(upload[0])))
-                    await client.change_presence(activity=discord.Game(name='Uploading...'))
-                    await message.channel.send("Compressed. Uploading to Discord...")
-                    try:
-                        await message.channel.send(file=discord.File('compress.mp4'))
-                    except Exception as e:
-                        await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
-                    await client.change_presence(activity=discord.Game(name='-help'))
+                await message.channel.send("Downloading playlist as a zip of MP3s.")
+                await client.change_presence(activity=discord.Game(name='Downloading...'))
+                ytdl_options = [str(args[0],'list')]
+                loop = asyncio.get_event_loop()
+                await loop.run_in_executor(ThreadPoolExecutor(), ytdl(str(args[0]),'list'))
+                await client.change_presence(activity=discord.Game(name='Uploading...'))
+                await message.channel.send("Downloaded playlist. Uploading to Discord...")
+                try:
+                    await message.channel.send(file=discord.File('output.zip'))
+                except Exception as e:
+                    await message.channel.send(":x: > Upload failed. The ZIP might be too big to upload here.\n\nError: ```" + str(e) + "```")
+                await client.change_presence(activity=discord.Game(name='-help'))
+            elif str(args[1]) == "mp3":
+                await message.channel.send("Downloading video as audio.")
+                await client.change_presence(activity=discord.Game(name='Downloading...'))
+                ytdl_options = [str(args[0],'aud')]
+                loop = asyncio.get_event_loop()
+                await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
+                await client.change_presence(activity=discord.Game(name='Converting...'))
+                await message.channel.send("Downloaded audio. Converting to mp3...")
+                await loop.run_in_executor(ThreadPoolExecutor(), conv)
+                await client.change_presence(activity=discord.Game(name='Uploading...'))
+                await message.channel.send("Converted. Uploading to Discord...")
+                try:
+                    await message.channel.send(file=discord.File('audio.mp3'))
+                except Exception as e:
+                    await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
+                await client.change_presence(activity=discord.Game(name='-help'))
+            else:
+                await message.channel.send("Downloading video.")
+                await client.change_presence(activity=discord.Game(name='Downloading...'))
+                ytdl_options = [str(args[0],'vid')]
+                loop = asyncio.get_event_loop()
+                await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
+                await client.change_presence(activity=discord.Game(name='Compressing...'))
+                await message.channel.send("Downloaded video. Compressing...")
+                await loop.run_in_executor(ThreadPoolExecutor(), hb)
+                await client.change_presence(activity=discord.Game(name='Uploading...'))
+                await message.channel.send("Compressed. Uploading to Discord...")
+                try:
+                    await message.channel.send(file=discord.File('compress.mp4'))
+                except Exception as e:
+                    await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
+                await client.change_presence(activity=discord.Game(name='-help'))
                 
 client.run(TOKEN) #the bot that runs it all
