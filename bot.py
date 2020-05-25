@@ -26,7 +26,6 @@ convert = ""
 downloading = False
 upload = []
 ytdl_options = []
-isdownload = False
 
 import csv #for reading speedtest results
 import re #regular expression
@@ -67,12 +66,10 @@ import glob
 def ytdl():
     global upload
     global ytdl_options
-    global isdownload
 
     dltype = str(ytdl_options[1])
     video = str(ytdl_options[0])
 
-    isdownload = True
     os.system('rm -rf ~/CAutomator/yt-pl')
     os.system('rm output.*')
     if dltype == "list":
@@ -80,29 +77,14 @@ def ytdl():
         os.system('zip -r "~/CAutomator/output.zip" "~/CAutomator/yt-pl/"')
     elif dltype == "aud":
         os.system('youtube-dl -x -o "output.%(ext)s" ' + str(video))
+        upload = glob.glob('output.*')
+        os.system('rm audio.mp3')
+        os.system('ffmpeg -i ' + str(upload) + ' -vn -ar 44100 -ac 2 -b:a 192k audio.mp3')
     else:
         os.system('youtube-dl -o "output.%(ext)s" ' + str(video))
-    isdownload = False
-
-def hb():
-    global isdownload
-
-    while isdownload == True:
-        print('waiting...')
-
-    upload = glob.glob('output.*')
-    os.system('rm compress.mp4')
-    os.system('HandBrakeCLI -Z "Discord Tiny 5 Minutes 240p30" -i ' + str(upload[0]) + ' -o compress.mp4')
-
-def conv():
-    global isdownload
-
-    while isdownload == True:
-        print('waiting...')
-
-    upload = glob.glob('output.*')
-    os.system('rm audio.mp3')
-    os.system('ffmpeg -i ' + str(upload) + ' -vn -ar 44100 -ac 2 -b:a 192k audio.mp3')
+        upload = glob.glob('output.*')
+        os.system('rm compress.mp4')
+        os.system('HandBrakeCLI -Z "Discord Tiny 5 Minutes 240p30" -i ' + str(upload[0]) + ' -o compress.mp4')
 
 def readlog(logfile):
     logmessage = """"""
@@ -460,11 +442,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 ytdl_options = [str(args[0]),'aud']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
-                await client.change_presence(activity=discord.Game(name='Converting...'))
-                await message.channel.send("Downloaded audio. Converting to mp3...")
-                await loop.run_in_executor(ThreadPoolExecutor(), conv)
-                await message.channel.send("Converted. Uploading to Discord...")
-                await client.change_presence(activity=discord.Game(name='Uploading...'))
                 try:
                     await message.channel.send(file=discord.File('audio.mp3'))
                 except Exception as e:
@@ -472,16 +449,11 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await client.change_presence(activity=discord.Game(name='-help'))
                 downloading = False
             else:
-                await message.channel.send("Downloading video.")
+                await message.channel.send("Downloading and compressing video.")
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
                 ytdl_options = [str(args[0]),'vid']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
-                await client.change_presence(activity=discord.Game(name='Compressing...'))
-                await message.channel.send("Downloaded video. Compressing...")
-                await loop.run_in_executor(ThreadPoolExecutor(), hb)
-                await client.change_presence(activity=discord.Game(name='Uploading...'))
-                await message.channel.send("Compressed. Uploading to Discord...")
                 try:
                     await message.channel.send(file=discord.File('compress.mp4'))
                 except Exception as e:
