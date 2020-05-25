@@ -7,17 +7,24 @@ from discord.utils import get
 from tinydb import TinyDB, Query
 db = TinyDB('db.json')
 
-#others
-import time # for time...
+#other modules
+import youtube_dl
+
 import platform # for os info
-import os #dotenv, running speedtest and os info
+import os #dotenv and os info
+
 import sys # for restarting the bot
+
 from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN') # CHECK YOUR .env FILE!
 
 import csv #for reading speedtest results
 import re #regular expression
+
+# So commands don't hang the bot.
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 def read_cell(row, col): # Getting name of entry. Thanks @GradyDal on Repl.it
 	with open('speeds.csv', 'r') as f:
@@ -28,12 +35,26 @@ def crashcrash(): # closes the program (yeah, not intuitive.)
     exit()
     crashcrash()
 
+import time
 def UpdateTime(speed):
     global CurrentTime
     global SpeedPerformTime
     CurrentTime = (time.strftime("%d %b %Y %H:%M:%S", time.localtime()))
     if speed == True:
         SpeedPerformTime = CurrentTime
+
+import speedtest
+def TestSpeed():
+    global results
+    UpdateTime(True)
+    s = speedtest.Speedtest()
+    s.get_best_server()
+    s.download(threads=None)
+    s.upload(threads=None)
+    s.results.share()
+    results = s.results.dict()
+
+testing = 0
 
 def readlog(logfile):
     logmessage = """"""
@@ -106,58 +127,25 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # SPEEDTEST MODULE
 #
-# ATT - The following code won't work unless you have Speedtest CLI installed somewhere
-# Okay... this is a lil janky so hear me out. This will be optimised later, don't worry.
-# The reason why I did it the way I did it was because this was the most "efficient" way.
-# I do not know a way for it to check constantly whether the speedtest has completed.
-# The way it was working before was that "/wait" was implied at the speed.cmd batch which
-# basically froze this up. My way on fixing this was... echo whether the command was used
-
-    global linecount # used for -speed
     global SpeedPerformTime
+    global results
+    global testing
 
     if message.content.startswith('-speed'):
-        speeder = open("inprocess.txt", 'r') # open process txt
-        for line in speeder:
-            if 'Process' in line: # this would've changed by cmd
-                count = open('speeds.csv','r') # counts lines in speed csv
-                lines = 0
-                for line in count:
-                    lines = lines + 1
-                count.close
-                if lines == linecount: # compares to when run before, if different, don't continue
-                    speeder.close
-                    print('SPEED TEST REQUESTED BUT DENIED - IN PROCESS')
-                    await message.channel.send("> :x: > **I'm still testing speed!**\n Please wait a bit longer.")           
-                else: # print results
-                    speeder.close
-                    downspeed = float(read_cell(lines-1,6))
-                    upspeed = float(read_cell(lines-1,7))
-                    downspeed = float(downspeed/1000000)
-                    upspeed = float(upspeed/1000000)
-                    downspeed = round(downspeed,2)
-                    upspeed = round(upspeed,2)
-                    
-                    global SpeedPerformTime
+        if testing == 0:
+            testing = 1
+            await message.channel.send('> :bullettrain_side: > **Testing speed...**\nI\'ll send results shortly!')
+            loop = asyncio.get_event_loop()
+            await loop.run_in_executor(ThreadPoolExecutor(), TestSpeed)
+            downspeed = float((results['download'])/1000000)
+            upspeed = float((results['upload'])/1000000)
+            downspeed = round(downspeed,2)
+            upspeed = round(upspeed,2)
+            await message.channel.send('> :white_check_mark: > **Results**\nPerformed: **' + str(SpeedPerformTime) + '** (South Australia Time)\nServer: **' + str(results['server']['sponsor']) + " " + str(results['server']['name'])  + '**\nPing: **' + str(results['ping']) + " ms**\nDownload: **" + str(downspeed) + " Mbps**\nUpload: **" + str(upspeed) + " Mbps**\n\n*Conducted using Ookla's Speedtest CLI: https://speedtest.net\nSpeeds are converted from bits to megabits, and rounded to two decimal places.*")
+            testing = 0
+        else:
+            await message.channel.send(':x: > I\'m still testing speed! Please be patient.')
 
-                    await message.channel.send('> :white_check_mark: > **Results**\nPerformed: **' + str(SpeedPerformTime) + '** (South Australia Time)\nServer: **' + read_cell(lines-1, 1) + " " + read_cell(lines-1, 2)  + '**\nPing: **' + read_cell(lines-1,5) + " ms**\nDownload: **" + str(downspeed) + " Mbps**\nUpload: **" + str(upspeed) + " Mbps**\n\n*Conducted using Ookla's Speedtest CLI: https://speedtest.net\nSpeeds are converted from bits to megabits, and rounded to two decimal places.*")
-                    speeder = open('inprocess.txt','w')
-                    speeder.write('Idle')
-                    speeder.close
-
-            elif 'Idle' in line: # would've been set to idle by discord.py
-                linecount = 0
-                speeder.close
-                count = open('speeds.csv','r') # count lines first
-                lines = 0
-                for line in count:
-                    lines = lines + 1
-                count.close
-                linecount = lines # set line count to compare when run again
-                UpdateTime(True) # set time this test was performed
-                await message.channel.send('> :bullettrain_side: > **Testing speed...**\nRun this command again in two minutes to see results!')
-                print('SPEED TEST REQUESTED:')
-                print(os.system('sh speed.sh')) # speed.cmd sets as process
 
 ######################################################
 # CUSTOM ROLE MODULE
@@ -291,7 +279,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send(':red_circle: > Restarting...')
             await client.change_presence(activity=discord.Game('Restarting...'),status=discord.Status.dnd)
+            print('Preparing to restart...')
             time.sleep(3)
+            print('Restarting...')
             os.execl(sys.executable, sys.executable, * sys.argv)
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
@@ -398,7 +388,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(":x: > You didn't specify a video.")
         elif len(args) > 2: # video is one, type is two
             await message.channel.send(":x: > Too many arguments provided.")
-        elif "list" in args: # soon:tm:
+        elif "list" in str(args): # soon:tm:
             await message.channel.send(":x: > This seems to be (linked to) a playlist, which is not supported right now.")
         else:
             await message.channel.send("Downloading now, please wait...")
@@ -441,7 +431,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                         await message.channel.send(file=discord.File('file_compress.mp4'))
                         await client.change_presence(activity=discord.Game('-help'))
                     except Exception as e:
-                        await message.channel.send(":x: > File too large. Must be a really long video.\n```" + str(e) + "```")
+                        await message.channel.send(":x: > File too large. Must be a really long video.\nError:```" + str(e) + "```")
                         await client.change_presence(activity=discord.Game('-help'))
                 else:
                     print(os.system('rm file.mp3'))
