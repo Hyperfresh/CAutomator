@@ -432,9 +432,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             if "list" in str(args[0]):
                 await message.channel.send("Downloading playlist as a zip of MP3s.")
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
-                ytdl_options = [str(args[0],'list')]
+                ytdl_options = [str(args[0]),'list']
                 loop = asyncio.get_event_loop()
-                await loop.run_in_executor(ThreadPoolExecutor(), ytdl(str(args[0]),'list'))
+                await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
                 await client.change_presence(activity=discord.Game(name='Uploading...'))
                 await message.channel.send("Downloaded playlist. Uploading to Discord...")
                 try:
@@ -445,7 +445,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             elif str(args[1]) == "mp3":
                 await message.channel.send("Downloading video as audio.")
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
-                ytdl_options = [str(args[0],'aud')]
+                ytdl_options = [str(args[0]),'aud']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
                 await client.change_presence(activity=discord.Game(name='Converting...'))
@@ -461,7 +461,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             else:
                 await message.channel.send("Downloading video.")
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
-                ytdl_options = [str(args[0],'vid')]
+                ytdl_options = [str(args[0]),'vid']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
                 await client.change_presence(activity=discord.Game(name='Compressing...'))
