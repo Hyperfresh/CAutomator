@@ -77,20 +77,16 @@ def ytdl():
         os.system('zip -r "~/CAutomator/output.zip" "~/CAutomator/yt-pl/"')
     elif dltype == "aud":
         os.system('youtube-dl -x -o "output.%(ext)s" ' + str(video))
-        upload = glob.glob('output.*')
     else:
-        os.system('youtube-dl -x -o "output.%(ext)s" ' + str(video))
-        upload = glob.glob('output.*')
+        os.system('youtube-dl -o "output.%(ext)s" ' + str(video))
 
 def hb():
-    global upload
-
+    upload = glob.glob('output.*')
     os.system('rm compress.mp4')
     os.system('HandBrakeCLI -Z "Discord Tiny 5 Minutes 240p30" -i ' + str(upload[0]) + ' -o compress.mp4')
 
 def conv():
-    global upload
-
+    upload = glob.glob('output.*')
     os.system('rm audio.mp3')
     os.system('ffmpeg -i ' + str(upload) + ' -vn -ar 44100 -ac 2 -b:a 192k audio.mp3')
 
