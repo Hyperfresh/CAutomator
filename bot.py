@@ -92,7 +92,7 @@ def conv():
     global upload
 
     os.system('rm audio.mp3')
-    os.system('ffmpeg -i ' + str(upload[0]) + ' -vn -ar 44100 -ac 2 -b:a 192k audio.mp3')
+    os.system('ffmpeg -i ' + str(upload) + ' -vn -ar 44100 -ac 2 -b:a 192k audio.mp3')
 
 def readlog(logfile):
     logmessage = """"""
@@ -425,6 +425,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     global convert
 
     if message.content.startswith('-ytdl'): # -ytdl <video> <mp4/mp3>
+        if downloading == True: await message.channel.send(":x: > In the process of downloading something. Please try again later.")
         if len(args) > 2: await message.channel.send(":x: > Too many arguments provided.")
         else:
             downloading = True
@@ -442,6 +443,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 except Exception as e:
                     await message.channel.send(":x: > Upload failed. The ZIP might be too big to upload here.\n\nError: ```" + str(e) + "```")
                 await client.change_presence(activity=discord.Game(name='-help'))
+                downloading = False
             elif str(args[1]) == "mp3":
                 await message.channel.send("Downloading video as audio.")
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
@@ -458,6 +460,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 except Exception as e:
                     await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
                 await client.change_presence(activity=discord.Game(name='-help'))
+                downloading = False
             else:
                 await message.channel.send("Downloading video.")
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
@@ -474,5 +477,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 except Exception as e:
                     await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
                 await client.change_presence(activity=discord.Game(name='-help'))
+                downloading = False
                 
 client.run(TOKEN) #the bot that runs it all
