@@ -429,7 +429,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else:
             downloading = True
             if len(args) == 1: args = [str(args[0]), "mp3"]
-            if "list" in str(args[0]):
+            if "list" in str(args[0]) and "watch" not in str(args[0]):
                 await message.channel.send("Downloading playlist as a zip of MP3s.")
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
                 ytdl_options = [str(args[0]),'list']
