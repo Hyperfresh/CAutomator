@@ -12,6 +12,8 @@ import os #dotenv and os info
 
 import sys # for restarting the bot
 
+import subprocess
+
 from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv()
 
@@ -26,6 +28,8 @@ convert = ""
 downloading = False
 upload = []
 ytdl_options = []
+getbom = False
+notbom = False
 
 import csv #for reading speedtest results
 import re #regular expression
@@ -71,20 +75,71 @@ def ytdl():
     video = str(ytdl_options[0])
 
     os.system('rm -rf ~/CAutomator/yt-pl')
-    os.system('rm output.*')
+    os.system('rm ~/CAutomator/output.*')
     if dltype == "list":
-        os.system('youtube-dl -x -o "~/CAutomator/yt-pl/%(title)s.%(ext)s" ' + str(video))
-        os.system('zip -r "~/CAutomator/output.zip" "~/CAutomator/yt-pl/"')
+        print("converting list to mp3 zips")
+        subprocess.run(['youtube-dl','-x','-o','~/CAutomator/yt-pl/%(title)s.%(ext)s',str(video)])  
+        print("zipping")      
+        subprocess.run(['zip','-r','~/CAutomator/output.zip','"~/CAutomator/yt-pl/"']) 
+        print("complete")       
     elif dltype == "aud":
-        os.system('youtube-dl -x -o "output.%(ext)s" ' + str(video))
-        upload = glob.glob('output.*')
-        os.system('rm audio.mp3')
-        os.system('ffmpeg -i ' + str(upload) + ' -vn -ar 44100 -ac 2 -b:a 192k audio.mp3')
+        print("downloading to mp3")
+        subprocess.run(['youtube-dl','--no-playlist','-x','-o','~/CAutomator/output.%(ext)s',str(video)])
+        print("complete")
+        upload = glob.glob('/home/hyperfresh/CAutomator/output.*')   
     else:
-        os.system('youtube-dl -o "output.%(ext)s" ' + str(video))
-        upload = glob.glob('output.*')
-        os.system('rm compress.mp4')
-        os.system('HandBrakeCLI -Z "Discord Tiny 5 Minutes 240p30" -i ' + str(upload[0]) + ' -o compress.mp4')
+        print("downloading to mp4")
+        subprocess.run(['youtube-dl','-o','~/CAutomator/output.%(ext)s',str(video)])   
+        print("complete")     
+        upload = glob.glob('/home/hyperfresh/CAutomator/output.*')
+        
+def conv():
+    global upload
+    global ytdl_options
+
+    dltype = str(ytdl_options[1])
+    
+    os.system('rm ~/CAutomator/compress.mp4 ~/CAutomator/audio.mp3')
+    if dltype == "aud":
+        print("converting to mp3")
+        subprocess.run(['ffmpeg','-i',str(upload[0]),'-vn','-ar','44100','-ac','2','-b:a','192k','/home/hyperfresh/CAutomator/audio.mp3'])
+        print("completed")
+    else:
+        print("compressing")
+        subprocess.run(['HandBrakeCLI','-Z','"Discord Tiny 5 Minutes 240p30"','-i',str(upload[0]),'-o','/home/hyperfresh/CAutomator/compress.mp4'])
+        print("completed")
+
+import imgkit
+def wttr():
+    global location
+    global getbom
+    global notbom
+    print("getting weather")
+
+    au_cities = ['adelaide','perth','sydney','darwin','canberra','melbourne','brisbane','hobart']
+    au_states = ['sa','wa','nsw','nt','act','vic','qld','tas']
+    notbom = False
+
+    if getbom == True:
+        if location in au_cities:
+            print("au location detected")
+            forecast = au_cities.index(location)
+            imgkit.from_url('http://bom.gov.au/'+str(au_states[forecast])+'/forecasts/'+str(au_cities[forecast])+'.shtml', 'weather.png')
+            print("got results from bom")
+            return
+        elif location in au_states:
+            print("au location detected")
+            forecast = au_states.index(location)
+            imgkit.from_url('http://bom.gov.au/'+str(au_states[forecast])+'/forecasts/'+str(au_cities[forecast])+'.shtml', 'weather.png')
+            print("got results from bom")
+            return
+        else:
+            notbom = True
+            return
+
+    subprocess.run(['curl','wttr.in/'+str(location)+'.png','--output','weather.png'])
+    print("completed")
+
 
 def readlog(logfile):
     logmessage = """"""
@@ -398,15 +453,30 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # Weather
 #
+    global location
+    global getbom
+    global notbom
+
     if message.content.startswith('-weather'):
         if len(args) == 0:
             await message.channel.send(":x: > You didn't specify a location.")
         else:
             await message.channel.send("Getting weather, please wait...")
             separator = "%20"
-            code = separator.join(args)
-            await loop.run_in_executor(ThreadPoolExecutor(), (os.system('curl wttr.in/' + str(code) + '.png > weather.png')))
-            await message.channel.send(file=discord.File('weather.png'))
+            location = separator.join(args)
+            loop = asyncio.get_event_loop()
+            getbom = False
+            if str(args[-1]) == "-bom":
+                getbom = True
+                location = str(args[0])
+            await loop.run_in_executor(ThreadPoolExecutor(), wttr)
+            if notbom == True:
+                await message.channel.send("This isn't a location where I can get weather from BOM.")
+                return
+            try:
+                await message.channel.send(file=discord.File('weather.png'))
+            except Exception as e:
+                await message.channel.send(":x: > Can't get weather. Is http://wttr.in out of queries?\n\nError: ```" + str(e) + "```")
 
 ######################################################
 # Download music from YouTube
@@ -422,7 +492,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else:
             downloading = True
             if len(args) == 1: args = [str(args[0]), "mp3"]
-            if "list" in str(args[0]) and "watch" not in str(args[0]):
+            if("list" in str(args[0]) and "watch" not in str(args[0])):
                 await message.channel.send("Downloading playlist as a zip of MP3s.")
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
                 ytdl_options = [str(args[0]),'list']
@@ -442,10 +512,20 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 ytdl_options = [str(args[0]),'aud']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
+                await message.channel.send("Converting audio to mp3...")
+                await client.change_presence(activity=discord.Game(name='Converting...'))
+                await loop.run_in_executor(ThreadPoolExecutor(), conv)
+                await message.channel.send("Uploading to Discord...")
+                await client.change_presence(activity=discord.Game(name='Uploading...'))
+                print("attempting to upload")
                 try:
+                    print("upload")
                     await message.channel.send(file=discord.File('audio.mp3'))
+                    print("done")
                 except Exception as e:
+                    print("fail")
                     await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
+                    print("done")
                 await client.change_presence(activity=discord.Game(name='-help'))
                 downloading = False
             else:
@@ -454,6 +534,11 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 ytdl_options = [str(args[0]),'vid']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
+                await message.channel.send("Compressing video...")
+                await client.change_presence(activity=discord.Game(name='Compressing...'))
+                await loop.run_in_executor(ThreadPoolExecutor(), conv)
+                await message.channel.send("Uploading to Discord...")
+                await client.change_presence(activity=discord.Game(name='Uploading...'))
                 try:
                     await message.channel.send(file=discord.File('compress.mp4'))
                 except Exception as e:
