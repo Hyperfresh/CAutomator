@@ -84,7 +84,7 @@ def ytdl():
         print("complete")       
     elif dltype == "aud":
         print("downloading to mp3")
-        subprocess.run(['youtube-dl','--no-playlist','-x','-o','~/CAutomator/output.%(ext)s',str(video)])
+        subprocess.run(['youtube-dl','--no-playlist','-x','--audio-format','mp3','-o','~/CAutomator/output.%(ext)s',str(video)])
         print("complete")
         upload = glob.glob('/home/hyperfresh/CAutomator/output.*')   
     else:
