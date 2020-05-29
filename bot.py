@@ -89,7 +89,7 @@ def ytdl():
         upload = glob.glob('/home/hyperfresh/CAutomator/output.*')   
     else:
         print("downloading to mp4")
-        subprocess.run(['youtube-dl','-o','~/CAutomator/output.%(ext)s',str(video)])   
+        subprocess.run(['youtube-dl','-o','--no-playlist','~/CAutomator/output.%(ext)s',str(video)])   
         print("complete")     
         upload = glob.glob('/home/hyperfresh/CAutomator/output.*')
         
