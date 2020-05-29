@@ -512,15 +512,15 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 ytdl_options = [str(args[0]),'aud']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
-                await message.channel.send("Converting audio to mp3...")
-                await client.change_presence(activity=discord.Game(name='Converting...'))
-                await loop.run_in_executor(ThreadPoolExecutor(), conv)
+                #await message.channel.send("Converting audio to mp3...")
+                #await client.change_presence(activity=discord.Game(name='Converting...')) # Don't need the convert anymore
+                #await loop.run_in_executor(ThreadPoolExecutor(), conv)
                 await message.channel.send("Uploading to Discord...")
                 await client.change_presence(activity=discord.Game(name='Uploading...'))
                 print("attempting to upload")
                 try:
                     print("upload")
-                    await message.channel.send(file=discord.File('audio.mp3'))
+                    await message.channel.send(file=discord.File('output.mp3'))
                     print("done")
                 except Exception as e:
                     print("fail")
