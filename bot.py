@@ -106,7 +106,7 @@ def conv():
         print("completed")
     else:
         print("compressing")
-        subprocess.run(['HandBrakeCLI','-Z','"Discord Tiny 5 Minutes 240p30"','-i',str(upload[0]),'-o','/home/hyperfresh/CAutomator/compress.mp4'])
+        subprocess.run(['HandBrakeCLI','-Z',"Discord Tiny 5 Minutes 240p30",'-i',str(upload[0]),'-o','/home/hyperfresh/CAutomator/compress.mp4'])
         print("completed")
 
 import imgkit
