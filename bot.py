@@ -102,7 +102,7 @@ def conv():
     os.system('rm ~/CAutomator/compress.mp4 ~/CAutomator/audio.mp3')
     if dltype == "aud":
         print("converting to mp3")
-        subprocess.run(['ffmpeg','-i',str(upload[0]),'-vn','-ar','44100','-ac','2','-b:a','192k','/home/hyperfresh/CAutomator/audio.mp3'])
+        subprocess.run(['ffmpeg','-i',str(upload[0]),'-map','0:a:0','-b:a','96k','/home/hyperfresh/CAutomator/audio.mp3'])
         print("completed")
     else:
         print("compressing")
