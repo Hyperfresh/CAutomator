@@ -80,7 +80,7 @@ def ytdl():
         print("converting list to mp3 zips")
         subprocess.run(['youtube-dl','-x','-o','~/CAutomator/yt-pl/%(title)s.%(ext)s',str(video)])  
         print("zipping")      
-        subprocess.run(['zip','-r','~/CAutomator/output.zip','-i,"~/CAutomator/yt-pl/"]) 
+        subprocess.run(['zip','-r','~/CAutomator/output.zip','-i',"~/CAutomator/yt-pl/"]) 
         print("complete")       
     elif dltype == "aud":
         print("downloading to mp3")
