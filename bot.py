@@ -160,11 +160,13 @@ def readmail(messages):
     PASS = os.getenv('IMAP_PASSWORD')
     imap = imaplib.IMAP4_SSL("outlook.office365.com")
     imap.login(USER, PASS)
-    status, messages = imap.select("'Game Dev'")
-    N = messages
+    status, messages = imap.select("INBOX")
+
+    # total number of emails
     messages = int(messages[0])
+
     count = 0
-    for i in range(messages, messages-N, -1):
+    for i in range(messages-4, messages-N-4, -1):
         count = count + 1
         # fetch the email message by ID
         res, msg = imap.fetch(str(i), "(RFC822)")
