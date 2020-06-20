@@ -155,7 +155,7 @@ import imaplib
 import email
 from email.header import decode_header
 import webbrowser
-def readmail(messages):
+def readmail(count):
     USER = os.getenv('IMAP_USERNAME') # CHECK YOUR .env FILE!!!
     PASS = os.getenv('IMAP_PASSWORD')
     imap = imaplib.IMAP4_SSL("outlook.office365.com")
@@ -163,8 +163,8 @@ def readmail(messages):
     status, messages = imap.select("INBOX")
 
     # total number of emails
+    N = count
     messages = int(messages[0])
-
     count = 0
     for i in range(messages-4, messages-N-4, -1):
         count = count + 1
