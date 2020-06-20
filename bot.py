@@ -149,6 +149,44 @@ def readlog(logfile):
     log.close
     return(logmessage)
 
+# Read Game Dev emails
+
+import imaplib
+import email
+from email.header import decode_header
+import webbrowser
+def readmail(messages):
+    USER = os.getenv('IMAP_USERNAME') # CHECK YOUR .env FILE!!!
+    PASS = os.getenv('IMAP_PASSWORD')
+    imap = imaplib.IMAP4_SSL("outlook.office365.com")
+    imap.login(USER, PASS)
+    status, messages = imap.select("Game Dev")
+    N = messages
+    messages = int(messages[0])
+    count = 0
+    for i in range(messages, messages-N, -1):
+        count = count + 1
+        # fetch the email message by ID
+        res, msg = imap.fetch(str(i), "(RFC822)")
+        for response in msg:
+            if isinstance(response, tuple):
+                # parse a bytes email into a message object
+                msg = email.message_from_bytes(response[1])
+                # decode the email subject
+                subject = decode_header(msg["Subject"])[0][0]
+                if isinstance(subject, bytes):
+                    # if it's a bytes, decode to str
+                    subject = subject.decode()
+                filename = "out.html"
+                filepath = os.path.join(subject, filename)
+                # write the file
+                open(filepath, "w").write(body)
+                imgkit.from_file(filepath, 'out'+str(count)+'.png')
+    imap.close()
+    imap.logout()
+    return count
+
+
 linecount = 0
 lvl30ID = 547360918930194443
 
@@ -545,5 +583,29 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
                 await client.change_presence(activity=discord.Game(name='-help'))
                 downloading = False
-                
+
+######################################################
+# Get comments from Game Development document
+#
+    if message.content.startswith('-getdevcom'):
+        if args > 1: await message.channel.send(":x: > Too many arguments provided.")
+        try:
+            print(int(args[0]))
+        except:
+            await message.channel.send(":x: > Not a number.")
+            return
+        loop = 0
+        tries = readmail(args[0])
+        await message.channel.send("There are **"+str(tries)+" emails** to read.")
+        while loop != tries:
+            loop = loop + 1
+            await message.channel.send("Uploading **email "+str(loop)+"**.")
+            await client.change_presence(activity=discord.Game(name='Uploading email '+str(loop)+'...'))
+            try:
+                await message.channel.send(file=discord.File('out'+str(loop)+'.png'))
+            except Exception as e:
+                await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
+        await message.channel.send("Completed.")
+        await client.change_presence(activity=discord.Game(name='-help'))
+
 client.run(TOKEN) #the bot that runs it all
