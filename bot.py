@@ -588,7 +588,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 # Get comments from Game Development document
 #
     if message.content.startswith('-getdevcom'):
-        if len(args) != 1: await message.channel.send(":x: > Too few or too many arguments provided.")
+        if len(args) != 1:
+            await message.channel.send(":x: > Too few or too many arguments provided.")
+            return
         try:
             print(int(args[0]))
         except:
