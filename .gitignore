@@ -128,4 +128,6 @@ dmypy.json
 *.json
 *.txt
 *.sh
-weather.img
+weather.png
+output.*
+*.mp3
