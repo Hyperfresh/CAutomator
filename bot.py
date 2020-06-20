@@ -160,7 +160,7 @@ def readmail(messages):
     PASS = os.getenv('IMAP_PASSWORD')
     imap = imaplib.IMAP4_SSL("outlook.office365.com")
     imap.login(USER, PASS)
-    status, messages = imap.select("Game Dev")
+    status, messages = imap.select("'Game Dev'")
     N = messages
     messages = int(messages[0])
     count = 0
