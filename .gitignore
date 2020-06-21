@@ -130,4 +130,6 @@ dmypy.json
 *.sh
 weather.png
 output.*
+out*.*
+*.html
 *.mp3
