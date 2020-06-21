@@ -659,7 +659,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(":x: > Not a number.")
             return
         await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
-        await message.channel.send("You asked me to read **"+str(args[0])+" emails.**\nPlease wait.")
+        await message.channel.send("You asked me to read **"+str(args[0])+" emails.**\nPlease wait while I check the inbox.")
         loop = 0
         tries = readmail(args[0])
         await message.channel.send("I found **"+str(tries)+" emails** to read from the **"+str(totalmess)+" total emails** in the inbox.")
