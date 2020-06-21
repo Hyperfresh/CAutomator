@@ -659,19 +659,19 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(":x: > Not a number.")
             return
         await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
-        await message.channel.send("You asked me to read **"+str(args[0])+" emails.**\nPlease wait while I check the inbox.")
+        await message.channel.send("ℹ️ > You asked me to read **"+str(args[0])+" emails.**\n<a:Typing:459588536841011202> > Please wait while I check the inbox.")
         loop = 0
         tries = readmail(args[0])
-        await message.channel.send("I found **"+str(tries)+" emails** to read from the **"+str(totalmess)+" total emails** in the inbox.")
+        await message.channel.send("📬 > I found **"+str(tries)+" emails** to read from the **"+str(totalmess)+" total emails** in the inbox.")
         while loop != tries:
             loop = loop + 1
-            await message.channel.send("Uploading **email "+str(loop)+"**.")
+            await message.channel.send("📤 Uploading **email "+str(loop)+"**.")
             await client.change_presence(activity=discord.Game(name='Uploading email '+str(loop)+'...'))
             try:
                 await message.channel.send(file=discord.File('out'+str(loop)+'.png'))
             except Exception as e:
                 await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
-        await message.channel.send("Completed.\nYou can see all comments (and reply to them) at https://docs.google.com/document/d/1sMrvJRY-Dc9oGhF-xa0qrDMbPzb8fx0vgvULUm75JSc/")
+        await message.channel.send("> ✅ > Completed.\nYou can see all comments (and reply to them) at https://docs.google.com/document/d/1sMrvJRY-Dc9oGhF-xa0qrDMbPzb8fx0vgvULUm75JSc/")
         await client.change_presence(activity=discord.Game(name='-help'))
 
 client.run(TOKEN) # the thing that runs it all
