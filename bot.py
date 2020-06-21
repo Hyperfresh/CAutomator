@@ -160,16 +160,19 @@ def readmail(count):
     PASS = os.getenv('IMAP_PASSWORD')
     imap = imaplib.IMAP4_SSL("outlook.office365.com")
     imap.login(USER, PASS)
-    status, messages = imap.select("INBOX")
+    status, messages = imap.select("GameDev")
 
     # total number of emails
-    N = count
+    N = int(count)
     messages = int(messages[0])
     count = 0
     for i in range(messages-4, messages-N-4, -1):
         count = count + 1
-        # fetch the email message by ID
         res, msg = imap.fetch(str(i), "(RFC822)")
+
+        os.system('rm ~/CAutomator/out'+str(count)+'.txt')
+        writeto = open("out"+str(count)+".txt",'a+')
+
         for response in msg:
             if isinstance(response, tuple):
                 # parse a bytes email into a message object
@@ -179,13 +182,64 @@ def readmail(count):
                 if isinstance(subject, bytes):
                     # if it's a bytes, decode to str
                     subject = subject.decode()
-                filename = "out.html"
-                filepath = os.path.join(subject, filename)
-                # write the file
-                open(filepath, "w").write(body)
-                imgkit.from_file(filepath, 'out'+str(count)+'.png')
+                # email sender
+                from_ = msg.get("From")
+                writeto.write("Subject: "+str(subject)+"\nFrom: "+str(from_)+"\n\n")
+                # if the email message is multipart
+                if msg.is_multipart():
+                    # iterate over email parts
+                    for part in msg.walk():
+                        # extract content type of email
+                        content_type = part.get_content_type()
+                        content_disposition = str(part.get("Content-Disposition"))
+                        try:
+                            # get the email body
+                            body = part.get_payload(decode=True).decode()
+                        except:
+                            pass
+                        if content_type == "text/plain" and "attachment" not in content_disposition:
+                            # print text/plain emails and skip attachments
+                            writeto.write(body)
+                        elif "attachment" in content_disposition:
+                            # download attachment
+                            filename = part.get_filename()
+                            if filename:
+                                if not os.path.isdir(subject):
+                                    # make a folder for this email (named after the subject)
+                                    os.mkdir(subject)
+                                filepath = os.path.join(subject, filename)
+                                # download attachment and save it
+                                open(filepath, "wb").write(part.get_payload(decode=True))
+                else:
+                    # extract content type of email
+                    content_type = msg.get_content_type()
+                    # get the email body
+                    try:
+                        body = msg.get_payload(decode=True).decode()
+                    except:
+                        pass
+                    if content_type == "text/plain":
+                        # print only text email parts
+                        writeto.write(body)
+                if content_type == "text/html":
+                    # if it's HTML, create a new HTML file and open it in browser
+                    if isinstance(subject, bytes):
+                        # if it's a bytes, decode to str
+                        subject = subject.decode()
+                    try:
+                        body = msg.get_payload(decode=True).decode()
+                    except:
+                        pass
+                    filename = "out.html"
+                    filepath = os.path.join(filename)
+                    # write the file
+                    open(filepath, "w").write(body)
+                    imgkit.from_file(filepath, 'out'+str(count)+'.png')
+                writeto.close()
+
     imap.close()
     imap.logout()
+
     return count
 
 
