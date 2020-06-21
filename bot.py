@@ -30,6 +30,8 @@ upload = []
 ytdl_options = []
 getbom = False
 notbom = False
+totalmess = 0
+location = ""
 
 import csv #for reading speedtest results
 import re #regular expression
@@ -156,6 +158,7 @@ import email
 from email.header import decode_header
 import webbrowser
 def readmail(count):
+    global totalmess
     USER = os.getenv('IMAP_USERNAME') # CHECK YOUR .env FILE!!!
     PASS = os.getenv('IMAP_PASSWORD')
     imap = imaplib.IMAP4_SSL("outlook.office365.com")
@@ -165,6 +168,7 @@ def readmail(count):
     # total number of emails
     N = int(count)
     messages = int(messages[0])
+    totalmess = messages
     count = 0
     for i in range(messages-4, messages-N-4, -1):
         count = count + 1
@@ -643,6 +647,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # Get comments from Game Development document
 #
+    global totalmess
+
     if message.content.startswith('-getdevcom'):
         if len(args) != 1:
             await message.channel.send(":x: > Too few or too many arguments provided.")
@@ -652,9 +658,11 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         except:
             await message.channel.send(":x: > Not a number.")
             return
+        await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
+        await message.channel.send("You asked me to read **"+str(args[0])+" emails.**\nPlease wait.")
         loop = 0
         tries = readmail(args[0])
-        await message.channel.send("There are **"+str(tries)+" emails** to read.")
+        await message.channel.send("I found **"+str(tries)+" emails** to read from the **"+str(totalmess)+" total emails** in the inbox.")
         while loop != tries:
             loop = loop + 1
             await message.channel.send("Uploading **email "+str(loop)+"**.")
@@ -666,4 +674,4 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         await message.channel.send("Completed.")
         await client.change_presence(activity=discord.Game(name='-help'))
 
-client.run(TOKEN) #the bot that runs it all
+client.run(TOKEN) # the thing that runs it all
