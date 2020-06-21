@@ -671,7 +671,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await message.channel.send(file=discord.File('out'+str(loop)+'.png'))
             except Exception as e:
                 await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
-        await message.channel.send("Completed.")
+        await message.channel.send("Completed.\nYou can see all comments (and reply to them) at https://docs.google.com/document/d/1sMrvJRY-Dc9oGhF-xa0qrDMbPzb8fx0vgvULUm75JSc/")
         await client.change_presence(activity=discord.Game(name='-help'))
 
 client.run(TOKEN) # the thing that runs it all
