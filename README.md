@@ -1,6 +1,6 @@
 # About CAutomator
 ![CAutomator logo](/cautomator.png)
-I am CAutomator, a custom discord.py bot built by Hyperfresh#8080 for the [Calculated Anarchy Discord Server](https://discord.gg/YsZ8h3J).
+I am CAutomator, a custom discord.py bot built by Hyperfresh#8080 for the [Calculated Anarchy Discord Server](https://discord.gg/cRVKFye).
 
 Use this at your will, just make sure you follow the ~~MIT License.~~ **LICENSE CHANGED TO LGPLv3**
 
