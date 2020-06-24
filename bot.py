@@ -282,7 +282,7 @@ async def on_message(message):
 # ABOUT MODULE
 
     if message.content.startswith('-about'):
-        await message.channel.send(file=discord.File('cautomator.png'))
+        await message.channel.send(file=discord.File('resources/cautomator logo.png'))
         await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh8080/CAutomator\n Also, thanks to https://github.com/iwa for some errands :)')
 
 ######################################################
