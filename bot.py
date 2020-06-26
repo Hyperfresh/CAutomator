@@ -417,7 +417,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 
             tpb = ['pirate','thepiratebay.org','piratebay']
 
-            if str(args) in tpb:
+            if str(args[0]) in tpb:
                 await message.channel.send('> :x: You cannot do that.\nDue to ISP Terms and Conditions, you cannot ping this website.')
                 return
             await message.channel.send('> :ping_pong: > **Ping...**')
