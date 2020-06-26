@@ -415,10 +415,10 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-ping'):
         if len(args) == 1:
 
-            tpb = ['pirate','thepiratebay.org','piratebay']
+            tpb = ['pirate','thepiratebay.org','piratebay','proxybay','proxy','bay']
 
             if str(args[0]) in tpb:
-                await message.channel.send('> :x: You cannot do that.\nDue to ISP Terms and Conditions, you cannot ping this website.')
+                await message.channel.send("> :x: **You can't do that**\nDue to ISP Terms and Conditions, you cannot ping this website.")
                 return
             await message.channel.send('> :ping_pong: > **Ping...**')
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
