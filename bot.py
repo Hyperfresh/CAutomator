@@ -152,6 +152,14 @@ def readlog(logfile):
     log.close
     return(logmessage)
 
+# Start minecraft server
+def StartServer():
+    print("trying")
+    subprocess.run(['sh','minecraft.sh'])
+    print("completed")
+
+
+
 # Read Game Dev emails
 
 import imaplib
@@ -688,5 +696,12 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
         await message.channel.send("> ✅ > Completed.\nYou can see all comments (and reply to them) at https://docs.google.com/document/d/1sMrvJRY-Dc9oGhF-xa0qrDMbPzb8fx0vgvULUm75JSc/")
         await client.change_presence(activity=discord.Game(name='-help'))
+
+######################################################
+# Start or check if Minecraft server is on
+#
+    if message.content.startswith('-minecraft'):
+        StartServer()
+        await message.channel.send("> Server is up at `hyperfresh.ddns.net`")
 
 client.run(TOKEN) # the thing that runs it all
