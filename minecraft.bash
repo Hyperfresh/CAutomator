@@ -1,7 +1,7 @@
 CHECK="NULL"
-[ ps -fea|grep -i java =~ "/home/hyperfresh/Documents/Minecraft" ] && CHECK="ON"
+[ ps -fea|grep -i java =~ "/home/hyperfresh/Documents/Minecraft/server.jar" ] && CHECK="ON"
 if [ "$CHECK" == "NULL" ]; then
-./mcstart.bash &
+bash mcstart.bash &
 fi
 echo "Done"
 exit
