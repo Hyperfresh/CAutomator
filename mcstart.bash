@@ -1,0 +1,1 @@
+java -Xmx2G -jar /home/hyperfresh/Documents/Minecraft/server.jar
