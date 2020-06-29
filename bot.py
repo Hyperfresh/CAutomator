@@ -155,7 +155,7 @@ def readlog(logfile):
 # Start minecraft server
 def StartServer():
     print("trying")
-    subprocess.run(['sh','minecraft.sh'])
+    subprocess.run(['bash','minecraft.bash'])
     print("completed")
 
 
