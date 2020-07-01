@@ -737,6 +737,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send("📤 Uploading **body** of **"+str(user)+"**.")
         else:
             await message.channel.send("📤 Uploading **"+str(var)+"** of **"+str(user)+"**.")
+        MCSkin(user,var)
         try:
             await message.channel.send(file=discord.File('skin.png'))
         except Exception as e:
