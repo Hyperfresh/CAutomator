@@ -721,7 +721,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     var = "helm"
                 elif str(args[1]) == "head":
                     var = "cube"
-                elif str(args[1]) == "bust" or "skin" or "helm" or "cube":
+                elif str(args[1]) == "bust":
+                    var = "armor/bust"
+                elif str(args[1]) == "skin" or "helm" or "cube":
                     var = str(args[1])
                 else:
                     var = "helm"
@@ -735,6 +737,10 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             return
         if var == "armor/body":
             await message.channel.send("📤 Uploading **body** of **"+str(user)+"**.")
+        elif var == "helm":
+            await message.channel.send("📤 Uploading **avatar** of **"+str(user)+"**.")
+        elif var == "bust":
+            await message.channel.send("📤 Uploading **bust** of **"+str(user)+"**.")
         else:
             await message.channel.send("📤 Uploading **"+str(var)+"** of **"+str(user)+"**.")
         MCSkin(user,var)
