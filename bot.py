@@ -143,6 +143,8 @@ def wttr():
     subprocess.run(['curl','wttr.in/'+str(location)+'.png','--output','weather.png'])
     print("completed")
 
+def MCSkin(user,var):
+    subprocess.run(['curl','https://minotar.net/'+str(var)+'/'+str(user)+'.png','--output','skin.png'])
 
 def readlog(logfile):
     logmessage = """"""
@@ -151,6 +153,12 @@ def readlog(logfile):
         logmessage = logmessage + line + """\n"""
     log.close
     return(logmessage)
+
+# Start minecraft server
+def StartServer():
+    print("trying")
+    subprocess.run(['bash','minecraft.bash'])
+    print("completed")
 
 # Read Game Dev emails
 
@@ -688,5 +696,58 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
         await message.channel.send("> ✅ > Completed.\nYou can see all comments (and reply to them) at https://docs.google.com/document/d/1sMrvJRY-Dc9oGhF-xa0qrDMbPzb8fx0vgvULUm75JSc/")
         await client.change_presence(activity=discord.Game(name='-help'))
+
+######################################################
+# Boot minecraft server
+#
+    if message.content.startswith('-mcserv'):
+        if str(message.author) == "Hyperfresh#8080" or "Kayon#1151":
+            StartServer()
+            await message.channel.send("> ✅ > **Server is up**.")
+        else:
+            await message.channel.send("> :x: > **Sorry, only Hyperfresh or Kayon can use this command**")
+
+######################################################
+# Get skin
+#
+    if message.content.startswith('-mcskin'): # -mcskin user type
+        user = ""
+        var = ""
+        try:
+            if len(args) == 2:
+                if str(args[1]) == "body":
+                    var = "armor/body"
+                elif str(args[1]) == "avatar":
+                    var = "helm"
+                elif str(args[1]) == "head":
+                    var = "cube"
+                elif str(args[1]) == "bust":
+                    var = "armor/bust"
+                elif str(args[1]) == "skin" or "helm" or "cube":
+                    var = str(args[1])
+                else:
+                    var = "helm"
+            else:
+                var = "helm"
+            user = str(args[0])
+        except:
+            print()
+        if user == "":
+            await message.channel.send("> :x: > **That didn't work**\nEither you:\n - provided too many or few arguments\n - or didn't provide a username")
+            return
+        if var == "armor/body":
+            await message.channel.send("📤 Uploading **body** of **"+str(user)+"**.")
+        elif var == "helm":
+            await message.channel.send("📤 Uploading **avatar** of **"+str(user)+"**.")
+        elif var == "armor/bust":
+            await message.channel.send("📤 Uploading **bust** of **"+str(user)+"**.")
+        else:
+            await message.channel.send("📤 Uploading **"+str(var)+"** of **"+str(user)+"**.")
+        MCSkin(user,var)
+        try:
+            await message.channel.send(file=discord.File('skin.png'))
+        except Exception as e:
+            await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
+        
 
 client.run(TOKEN) # the thing that runs it all
