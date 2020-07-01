@@ -739,7 +739,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send("📤 Uploading **body** of **"+str(user)+"**.")
         elif var == "helm":
             await message.channel.send("📤 Uploading **avatar** of **"+str(user)+"**.")
-        elif var == "bust":
+        elif var == "armor/bust":
             await message.channel.send("📤 Uploading **bust** of **"+str(user)+"**.")
         else:
             await message.channel.send("📤 Uploading **"+str(var)+"** of **"+str(user)+"**.")
