@@ -315,7 +315,7 @@ async def on_message(message):
 ######################################################
 # ABOUT SPEEDTEST MODULE
     if message.content.startswith('-abspeed'):
-        speedabout = '''**Speedtest CLI by Ookla** (speedtest.exe) is the official command line client for testing the speed and performance of an internet connection, provided by Ookla.
+        speedabout = '''**Speedtest CLI by Ookla** (speedtest-cli pypi) is the official command line client for testing the speed and performance of an internet connection, provided by Ookla.
 Your use of the `-speed` command is subject to the Speedtest End User License Agreement, Terms of Use and Privacy Policy at these URLs:
         https://www.speedtest.net/about/eula
         https://www.speedtest.net/about/terms
@@ -333,7 +333,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-speed'):
         if testing == False:
             testing = True
-            await message.channel.send('> :bullettrain_side: > **Testing speed...**\nI\'ll send results shortly!')
+            await message.add_reaction('<a:Typing:459588536841011202>')
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(ThreadPoolExecutor(), TestSpeed)
             downspeed = float((results['download'])/1000000)
@@ -426,12 +426,12 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-ping'):
         if len(args) == 1:
 
-            tpb = ['pirate','thepiratebay.org','piratebay','proxybay','proxy','bay']
+            tpb = ['pirate','thepiratebay.org','piratebay','proxybay','proxy','bay','isis','isil']
 
             if str(args[0]) in tpb:
                 await message.channel.send("> :x: **You can't do that**\nDue to ISP Terms and Conditions, you cannot ping this website.")
                 return
-            await message.channel.send('> :ping_pong: > **Ping...**')
+            await message.add_reaction('<a:Typing:459588536841011202>')
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             separator = " "
             pingme = separator.join(args)
@@ -500,6 +500,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         if str(message.author) == 'Hyperfresh#8080':
             separator = " "
             code = separator.join(args)
+            await message.add_reaction('<a:Typing:459588536841011202>')
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             print(os.system(str(code) + ' > sh.log'))
             try:
@@ -520,7 +521,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             if len(args) > 1:
                 await message.channel.send(":x: > More than one argument was provided.")
             else:
-                await message.channel.send("Attempting to upload...")
+                await message.add_reaction('<a:Typing:459588536841011202>')
                 try:
                     await message.channel.send(file=discord.File(str(args[0])))
                 except Exception as e:
@@ -535,6 +536,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         if str(message.author) == 'Hyperfresh#8080':
             separator = " "
             code = separator.join(args)
+            await message.add_reaction('<a:Typing:459588536841011202>')
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             try:
                 os.system('python3 -c "' + str(code) + '" > code.log')
@@ -581,7 +583,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         if len(args) == 0:
             await message.channel.send(":x: > You didn't specify a location.")
         else:
-            await message.channel.send("Getting weather, please wait...")
+            await message.add_reaction('<a:Typing:459588536841011202>')
             separator = "%20"
             location = separator.join(args)
             loop = asyncio.get_event_loop()
@@ -591,7 +593,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 location = str(args[0])
             await loop.run_in_executor(ThreadPoolExecutor(), wttr)
             if notbom == True:
-                await message.channel.send("This isn't a location where I can get weather from BOM.")
+                await message.channel.send(":x: > This isn't a location where I can get weather from BOM.")
                 return
             try:
                 await message.channel.send(file=discord.File('weather.png'))
@@ -693,13 +695,14 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         await message.channel.send("📬 > I found **"+str(tries)+" emails** to read from the **"+str(totalmess)+" total emails** in the inbox.")
         while loop != tries:
             loop = loop + 1
-            await message.channel.send("📤 Uploading **email "+str(loop)+"**.")
+            #await message.channel.send("📤 Uploading **email "+str(loop)+"**.")
             await client.change_presence(activity=discord.Game(name='Uploading email '+str(loop)+'...'))
             try:
                 await message.channel.send(file=discord.File('out'+str(loop)+'.png'))
             except Exception as e:
                 await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
-        await message.channel.send("> ✅ > Completed.\nYou can see all comments (and reply to them) at https://docs.google.com/document/d/1sMrvJRY-Dc9oGhF-xa0qrDMbPzb8fx0vgvULUm75JSc/")
+        await message.add_reaction('✅')
+        #await message.channel.send("> ✅ > Completed.\nYou can see all comments (and reply to them) at https://docs.google.com/document/d/1sMrvJRY-Dc9oGhF-xa0qrDMbPzb8fx0vgvULUm75JSc/")
         await client.change_presence(activity=discord.Game(name='-help'))
 
 ######################################################
@@ -740,15 +743,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         if user == "":
             await message.channel.send("> :x: > **That didn't work**\nEither you:\n - provided too many or few arguments\n - or didn't provide a username")
             return
-        if var == "armor/body":
-            await message.channel.send("📤 Uploading **body** of **"+str(user)+"**.")
-        elif var == "helm":
-            await message.channel.send("📤 Uploading **avatar** of **"+str(user)+"**.")
-        elif var == "armor/bust":
-            await message.channel.send("📤 Uploading **bust** of **"+str(user)+"**.")
-        else:
-            await message.channel.send("📤 Uploading **"+str(var)+"** of **"+str(user)+"**.")
+        await message.add_reaction('<a:Typing:459588536841011202>')
         MCSkin(user,var)
+        await message.clear_reactions()
         try:
             await message.channel.send(file=discord.File('skin.png'))
         except Exception as e:
