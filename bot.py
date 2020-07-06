@@ -174,20 +174,23 @@ def readmail(count):
     PASS = os.getenv('IMAP_PASSWORD')
     imap = imaplib.IMAP4_SSL("outlook.office365.com")
     imap.login(USER, PASS)
-    status, messages = imap.select("GameDev")
+    status, messages = imap.select("GetDev")
 
     # total number of emails
     N = int(count)
     messages = int(messages[0])
     totalmess = messages
-    count = 0
+    mess = 0
     try:
-        for i in range(messages-4, messages-N-4, -1):
-            count = count + 1
-            res, msg = imap.fetch(str(i), "(RFC822)")
+        while mess != N:
+        #for i in range(N): #range(messages-4, messages-N-4, -1):
+            mess = mess + 1
+            res, msg = imap.fetch(str(mess), "(RFC822)")
 
-            os.system('rm ~/CAutomator/out'+str(count)+'.txt')
-            writeto = open("out"+str(count)+".txt",'a+')
+            os.system('rm ~/CAutomator/out'+str(mess)+'.txt')
+            os.system('rm ~/CAutomator/out'+str(mess)+'.png')
+            os.system('rm ~/CAutomator/out'+str(mess)+'.html')
+            writeto = open("out"+str(mess)+".txt",'a+')
 
             for response in msg:
                 if isinstance(response, tuple):
@@ -246,11 +249,11 @@ def readmail(count):
                             body = msg.get_payload(decode=True).decode()
                         except:
                             pass
-                        filename = "out.html"
+                        filename = "out"+str(mess)+".html"
                         filepath = os.path.join(filename)
                         # write the file
                         open(filepath, "w").write(body)
-                        imgkit.from_file(filepath, 'out'+str(count)+'.png')
+                        imgkit.from_file(filepath, 'out'+str(mess)+'.png')
                     writeto.close()
     except Exception as e:
         messerr = str(e)
@@ -681,10 +684,12 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
         await message.channel.send("ℹ️ > You asked me to read **"+str(args[0])+" emails.**\n<a:Typing:459588536841011202> > Please wait while I check the inbox.")
         loop = 0
-        tries = readmail(args[0])
+        tries = int(readmail(args[0]))
         if messerr != "":
             await message.channel.send(":x: > An error occured. ```" + str(messerr) + "```")
             return
+        if tries > totalmess:
+            tries = totalmess
         await message.channel.send("📬 > I found **"+str(tries)+" emails** to read from the **"+str(totalmess)+" total emails** in the inbox.")
         while loop != tries:
             loop = loop + 1
