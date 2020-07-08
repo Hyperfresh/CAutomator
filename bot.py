@@ -1,4 +1,4 @@
-"""       _
+info = """       _
      /\__| |_/\
      \   ___ \/ ___                 _                                     _
    /\/  /   \  /   \              _| |_                                 _| |_
@@ -15,6 +15,8 @@
 
                                 github.com/Hyperfresh8080/CAutomator
 """
+print(info)
+print("importing core")
 ##########################################
 # IMPORTS, DEFINITIONS AND DECLARATIONS
 
@@ -38,10 +40,12 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import subprocess  
 
+print("loading dotenv")
 # IMPORT, START | dotenv
 from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv() # loads the dotenv
 
+print("declaring special variables")
 # DECLARATIONS | special things
 db = TinyDB('db.json') # declare database exists
 TOKEN = os.getenv('DISCORD_TOKEN') # declare the bot token. CHECK YOUR .env FILE!
@@ -49,6 +53,7 @@ lvl30ID = 547360918930194443 # the ID for the level 30 role
 bot = commands.Bot(command_prefix='-') # declare the prefix
 client = discord.Client() # stuff
 
+print("declaring other variables")
 # DECLARATIONS | types, just declare what type the variable is.
 # if boolean, assume False
 # if integer, assume 0
@@ -67,11 +72,13 @@ location = ""
 messerr = ""
 linecount = 0 
 
+print("defining exit")
 # DEFINITIONS | closes the program (yeah, not intuitive.)
 def crashcrash():
     exit()
     crashcrash()
 
+print("defining time")
 # IMPORT, DEF | get the current time, or record the time a speedtest was done.
 import time
 def UpdateTime(speed):
@@ -81,6 +88,7 @@ def UpdateTime(speed):
     if speed == True: # record this as the time the speedtest was done
         SpeedPerformTime = CurrentTime
 
+print("defining speed")
 # IMPORT, DEF | test speed of host using Ookla's Speedtest CLI via pypi.
 import speedtest
 def TestSpeed():
@@ -93,6 +101,7 @@ def TestSpeed():
     s.results.share()
     results = s.results.dict()
 
+print("defining ytdl")
 # IMPORT, DEF | download things off youtube.
 # THIS REQUIRES youtube-dl INSTALLED (on the command prompt, not pypi)
 import glob
@@ -124,6 +133,7 @@ def ytdl():
         print("complete")     
         upload = glob.glob('/home/hyperfresh/CAutomator/output.*')
 
+print("defining conv")
 # DEFINITIONS | convert to mp3/mp4.
 # THIS REQUIRES HandBrakeCLI AND ffmpeg INSTALLED (via apt)
 def conv():
@@ -142,6 +152,7 @@ def conv():
         subprocess.run(['HandBrakeCLI','-Z',"Discord Tiny 5 Minutes 240p30",'-i',str(upload[0]),'-o','/home/hyperfresh/CAutomator/compress.mp4'])
         print("completed")
 
+print("defining wttr")
 # DEFINITIONS | get the weather, either from BOM or wttr.in
 def wttr():
     global location
@@ -174,10 +185,12 @@ def wttr():
     print("completed")
 
 # DEFINITIONS | get a minecraft skin
+print("defining mcskin")
 def MCSkin(user,var):
     subprocess.run(['curl','https://minotar.net/'+str(var)+'/'+str(user)+'.png','--output','skin.png'])
 
 # DEFINITIONS | read a log
+print("defining readlog")
 def readlog(logfile):
     logmessage = """"""
     log = open(logfile,'r')
@@ -187,11 +200,13 @@ def readlog(logfile):
     return(logmessage)
 
 # DEFINITIONS | start the minecraft server
+print("defining server start")
 def StartServer():
     print("trying")
     subprocess.run(['bash','minecraft.bash'])
     print("completed")
 
+print("defining gamedev")
 # IMPORT, DEF | read the emails for the game dev document
 import imaplib
 import email
@@ -295,6 +310,7 @@ def readmail(count):
 
 UpdateTime(True)
 
+print("attempting to start...")
 @client.event
 async def on_ready():
     
