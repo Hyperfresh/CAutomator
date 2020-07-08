@@ -1,63 +1,87 @@
-#discord.py
+"""       _
+     /\__| |_/\
+     \   ___ \/ ___                 _                                     _
+   /\/  /   \  /   \              _| |_                                 _| |_
+   \   /      /     \     _   _  |_   _|  _____   _________   _____ _  |_   _|  _____   _____
+   /   \____ /  /_\  \   | | | |   | |   |  _  | |  _   _  | |  _  | |   | |   |  _  | |  ___|
+   \/\_____ /  /___\  \  | |_| |   | |   | |_| | | | | | | | | |_|   |   | |   | |_| | | |
+           /__/     \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
+
+                CAutomator is a custom discord.py bot built by Hyperfresh#8080
+                            for the Calculated Anarchy Discord Server.
+
+                            You may use this under the LGPLv3 license.
+                               See the LICENSE file for more details
+
+                                github.com/Hyperfresh8080/CAutomator
+"""
+##########################################
+# IMPORTS, DEFINITIONS AND DECLARATIONS
+
+# IMPORT | discord.py modules
 import discord
 from discord.ext import commands
 from discord.utils import get
 
-#tinydb
+# IMPORT | tinydb and query modules for custom roles, including regular expression (regex)
 from tinydb import TinyDB, Query
+import re
 
-#other modules
+# IMPORT | other modules
 import platform # for os info
 import os #dotenv and os info
-
 import sys # for restarting the bot
+import imgkit # for converting webpage to image
 
-import subprocess
+# IMPORT | subprocessing, allowing CAutomator to do multiple things at once
+import asyncio                                   
+from concurrent.futures import ThreadPoolExecutor
+import subprocess  
 
+# IMPORT, START | dotenv
 from dotenv import load_dotenv #dotenv thing which has discord token
-load_dotenv()
+load_dotenv() # loads the dotenv
 
-# Variable declaration
-db = TinyDB('db.json')
-TOKEN = os.getenv('DISCORD_TOKEN') # CHECK YOUR .env FILE!
+# DECLARATIONS | special things
+db = TinyDB('db.json') # declare database exists
+TOKEN = os.getenv('DISCORD_TOKEN') # declare the bot token. CHECK YOUR .env FILE!
+lvl30ID = 547360918930194443 # the ID for the level 30 role
+bot = commands.Bot(command_prefix='-') # declare the prefix
+client = discord.Client() # stuff
+
+# DECLARATIONS | types, just declare what type the variable is.
+# if boolean, assume False
+# if integer, assume 0
 CurrentTime = ""
 SpeedPerformTime = ""
-results = {}
+results = {} # dictionary {}
 testing = False
 convert = ""
 downloading = False
-upload = []
+upload = [] # array []
 ytdl_options = []
 getbom = False
 notbom = False
 totalmess = 0
 location = ""
 messerr = ""
+linecount = 0 
 
-import csv #for reading speedtest results
-import re #regular expression
-
-# So commands don't hang the bot.
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
-
-def read_cell(row, col): # Getting name of entry. Thanks @GradyDal on Repl.it
-	with open('speeds.csv', 'r') as f:
-		data=list(csv.reader(f))
-		return(data[int(row)][int(col)])
-
-def crashcrash(): # closes the program (yeah, not intuitive.)
+# DEFINITIONS | closes the program (yeah, not intuitive.)
+def crashcrash():
     exit()
     crashcrash()
 
+# IMPORT, DEF | get the current time, or record the time a speedtest was done.
 import time
 def UpdateTime(speed):
     global CurrentTime
     global SpeedPerformTime
     CurrentTime = (time.strftime("%d %b %Y %H:%M:%S", time.localtime()))
-    if speed == True:
+    if speed == True: # record this as the time the speedtest was done
         SpeedPerformTime = CurrentTime
 
+# IMPORT, DEF | test speed of host using Ookla's Speedtest CLI via pypi.
 import speedtest
 def TestSpeed():
     global results
@@ -69,6 +93,8 @@ def TestSpeed():
     s.results.share()
     results = s.results.dict()
 
+# IMPORT, DEF | download things off youtube.
+# THIS REQUIRES youtube-dl INSTALLED (on the command prompt, not pypi)
 import glob
 def ytdl():
     global upload
@@ -77,25 +103,29 @@ def ytdl():
     dltype = str(ytdl_options[1])
     video = str(ytdl_options[0])
 
-    os.system('rm -rf ~/CAutomator/yt-pl')
-    os.system('rm ~/CAutomator/output.*')
+    os.system('rm -rf ~/CAutomator/yt-pl') # remove playlist folder
+    os.system('rm ~/CAutomator/output.*') # remove outputs, if existent
     if dltype == "list":
         print("converting list to mp3 zips")
         subprocess.run(['youtube-dl','-x','-o','~/CAutomator/yt-pl/%(title)s.%(ext)s',str(video)])  
         print("zipping")      
         subprocess.run(['zip','-r','~/CAutomator/output.zip','-i',"~/CAutomator/yt-pl/"]) 
         print("complete")       
+
     elif dltype == "aud":
         print("downloading to mp3")
         subprocess.run(['youtube-dl','--no-playlist','-x','--audio-format','mp3','-o','~/CAutomator/output.%(ext)s',str(video)])
         print("complete")
         upload = glob.glob('/home/hyperfresh/CAutomator/output.*')   
-    else:
+
+    else: # assume mp4 if anything else
         print("downloading to mp4")
         subprocess.run(['youtube-dl','--no-playlist','-o','~/CAutomator/output.%(ext)s',str(video)])   
         print("complete")     
         upload = glob.glob('/home/hyperfresh/CAutomator/output.*')
-        
+
+# DEFINITIONS | convert to mp3/mp4.
+# THIS REQUIRES HandBrakeCLI AND ffmpeg INSTALLED (via apt)
 def conv():
     global upload
     global ytdl_options
@@ -112,7 +142,7 @@ def conv():
         subprocess.run(['HandBrakeCLI','-Z',"Discord Tiny 5 Minutes 240p30",'-i',str(upload[0]),'-o','/home/hyperfresh/CAutomator/compress.mp4'])
         print("completed")
 
-import imgkit
+# DEFINITIONS | get the weather, either from BOM or wttr.in
 def wttr():
     global location
     global getbom
@@ -143,9 +173,11 @@ def wttr():
     subprocess.run(['curl','wttr.in/'+str(location)+'.png','--output','weather.png'])
     print("completed")
 
+# DEFINITIONS | get a minecraft skin
 def MCSkin(user,var):
     subprocess.run(['curl','https://minotar.net/'+str(var)+'/'+str(user)+'.png','--output','skin.png'])
 
+# DEFINITIONS | read a log
 def readlog(logfile):
     logmessage = """"""
     log = open(logfile,'r')
@@ -154,14 +186,13 @@ def readlog(logfile):
     log.close
     return(logmessage)
 
-# Start minecraft server
+# DEFINITIONS | start the minecraft server
 def StartServer():
     print("trying")
     subprocess.run(['bash','minecraft.bash'])
     print("completed")
 
-# Read Game Dev emails
-
+# IMPORT, DEF | read the emails for the game dev document
 import imaplib
 import email
 from email.header import decode_header
@@ -183,7 +214,7 @@ def readmail(count):
     mess = 0
     try:
         while mess != N:
-        #for i in range(N): #range(messages-4, messages-N-4, -1):
+        #for i in range(N): #range(messages-4, messages-N-4, -1): this didn't work for some reasaon, so yeah.
             mess = mess + 1
             res, msg = imap.fetch(str(mess), "(RFC822)")
 
@@ -262,15 +293,6 @@ def readmail(count):
 
     return count
 
-
-linecount = 0
-lvl30ID = 547360918930194443
-
-bot = commands.Bot(command_prefix='-')
-
-#the code
-client = discord.Client()
-
 UpdateTime(True)
 
 @client.event
@@ -331,19 +353,21 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     global testing
 
     if message.content.startswith('-speed'):
-        if testing == False:
+        if testing == False: # so that there aren't multiple speedtests
             testing = True
-            await message.add_reaction('<a:Typing:459588536841011202>')
-            loop = asyncio.get_event_loop()
+            await message.add_reaction('<a:Typing:459588536841011202>') # react to message and indicate bot is working on it
+            loop = asyncio.get_event_loop() # yep, subprocessing
             await loop.run_in_executor(ThreadPoolExecutor(), TestSpeed)
-            downspeed = float((results['download'])/1000000)
+            downspeed = float((results['download'])/1000000) # convert the results down to mbps (instead of true bits)
             upspeed = float((results['upload'])/1000000)
-            downspeed = round(downspeed,2)
+            downspeed = round(downspeed,2) # then round
             upspeed = round(upspeed,2)
             await message.channel.send('> :white_check_mark: > **Results**\nPerformed: **' + str(SpeedPerformTime) + '** (South Australia Time)\nServer: **' + str(results['server']['sponsor']) + " " + str(results['server']['name'])  + '**\nPing: **' + str(results['ping']) + " ms**\nDownload: **" + str(downspeed) + " Mbps**\nUpload: **" + str(upspeed) + " Mbps**\n\n*Conducted using Ookla's Speedtest CLI: https://speedtest.net\nSpeeds are converted from bits to megabits, and rounded to two decimal places.*")
+            await message.clear_reactions()
+            await message.add_reaction('✅') # react to message indicating done
             testing = False
         else:
-            await message.channel.send(':x: > I\'m still testing speed! Please be patient.')
+            await message.add_reaction('❌') # react to message if already doing speedtest
 
 
 ######################################################
@@ -358,8 +382,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         #print("user has: " + str(member.roles))
 
         if str(lvl30ID) in str(member.roles): # check if the member has level 30 role
-
-
             User = Query()
             result = db.search(User.memberId == member.id)
 
@@ -428,7 +450,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 
             tpb = ['pirate','thepiratebay.org','piratebay','proxybay','proxy','bay','isis','isil']
 
-            if str(args[0]) in tpb:
+            if str(args[0]) in tpb: # if it's in the list, don't do it.
                 await message.channel.send("> :x: **You can't do that**\nDue to ISP Terms and Conditions, you cannot ping this website.")
                 return
             await message.add_reaction('<a:Typing:459588536841011202>')
@@ -441,6 +463,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         if len(args) == 0:
             await message.channel.send('> :ping_pong: > **Pong!** I recorded ' + str(bot.latency) + ' ms.')
         await message.channel.send('```' + str(readlog('ping.txt')) + '```')
+        await message.clear_reactions()
         await client.change_presence(activity=discord.Game('-help'))
 
 ######################################################
@@ -461,12 +484,11 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # UPDATE MODULE
 #
-
     if message.content.startswith('-update'):
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send('<a:Typing:459588536841011202> > Updating...')
             await client.change_presence(activity=discord.Game('Updating...'),status=discord.Status.idle)
-            os.system('sh update.sh > update.log')
+            os.system('bash update.bash > update.log') # fetch and pull boys. fetch and pull.
             await message.channel.send('```' + str(readlog('update.log')) + '```')
             time.sleep(3)
             await message.channel.send(':red_circle: > Restarting...')
@@ -479,7 +501,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # RESTART MODULE
 #           
-    
     if message.content.startswith('-rb'):
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send(':red_circle: > Restarting...')
@@ -502,13 +523,18 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             code = separator.join(args)
             await message.add_reaction('<a:Typing:459588536841011202>')
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
-            print(os.system(str(code) + ' > sh.log'))
+            os.system('rm ~/CAutomator/test.sh')
+            testfile = open('test.sh','w')
+            testfile.write(str(code))
+            testfile.close()
+            print(os.system('sh test.sh > sh.log'))
             try:
                 await message.channel.send('```' + str(readlog('sh.log')) + '```')
             except Exception as e:
                 await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
                 await message.channel.send(file=discord.File('sh.log'))
             await client.change_presence(activity=discord.Game('-help'))
+            await message.clear_reactions()
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
 
@@ -526,6 +552,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     await message.channel.send(file=discord.File(str(args[0])))
                 except Exception as e:
                     await message.channel.send(":x: > An error occurred when sending this file.\n```" + str(e) + "```")
+                await message.clear_reactions()
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
 
@@ -548,6 +575,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             except Exception as e:
                 await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
             await client.change_presence(activity=discord.Game('-help'))
+            await message.clear_reactions()
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
 
@@ -558,6 +586,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         if str(message.author) == 'Hyperfresh#8080':
             separator = " "
             code = separator.join(args)
+            await message.add_reaction('<a:Typing:459588536841011202>')
             await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
             try:
                 os.system('powershell -c "' + str(code) + '" > code.log')
@@ -569,6 +598,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             except Exception as e:
                 await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
             await client.change_presence(activity=discord.Game('-help'))
+            await message.clear_reactions()
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
 
@@ -591,6 +621,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             if str(args[-1]) == "-bom":
                 getbom = True
                 location = str(args[0])
+                await message.add_reaction('📡')
             await loop.run_in_executor(ThreadPoolExecutor(), wttr)
             if notbom == True:
                 await message.channel.send(":x: > This isn't a location where I can get weather from BOM.")
@@ -599,6 +630,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await message.channel.send(file=discord.File('weather.png'))
             except Exception as e:
                 await message.channel.send(":x: > Can't get weather. Is http://wttr.in out of queries?\n\nError: ```" + str(e) + "```")
+            await message.clear_reactions()
 
 ######################################################
 # Download music from YouTube
@@ -634,9 +666,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 ytdl_options = [str(args[0]),'aud']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
-                #await message.channel.send("Converting audio to mp3...")
-                #await client.change_presence(activity=discord.Game(name='Converting...')) # Don't need the convert anymore
-                #await loop.run_in_executor(ThreadPoolExecutor(), conv)
                 await message.channel.send("Uploading to Discord...")
                 await client.change_presence(activity=discord.Game(name='Uploading...'))
                 print("attempting to upload")
@@ -725,21 +754,34 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             if len(args) == 2:
                 if str(args[1]) == "body":
                     var = "armor/body"
+                    await message.add_reaction('🧍‍♂️')
                 elif str(args[1]) == "avatar":
                     var = "helm"
+                    await message.add_reaction('🙂')
                 elif str(args[1]) == "head":
                     var = "cube"
+                    await message.add_reaction('👦')
                 elif str(args[1]) == "bust":
                     var = "armor/bust"
+                    await message.add_reaction('👤')
                 elif str(args[1]) == "skin" or "helm" or "cube":
                     var = str(args[1])
+                    if str(args[1]) == "skin":
+                        await message.add_reaction('🖼')
+                    elif str(args[1]) == "helm":
+                        await message.add_reaction('🙂')
+                    else:
+                        await message.add_reaction('👦')
                 else:
                     var = "helm"
+                    await message.add_reaction('🙂')
             else:
                 var = "helm"
+                await message.add_reaction('🙂')
             user = str(args[0])
-        except:
-            print()
+        except Exception as e:
+            print("whoops, something went wrong")
+            print(e)
         if user == "":
             await message.channel.send("> :x: > **That didn't work**\nEither you:\n - provided too many or few arguments\n - or didn't provide a username")
             return
