@@ -664,12 +664,15 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             downloading = True
             if len(args) == 1: args = [str(args[0]), "mp3"]
             if("list" in str(args[0]) and "watch" not in str(args[0])):
-                await message.channel.send("Downloading playlist as a zip of MP3s.")
+                await message.add_reaction('<a:Typing:459588536841011202>')
+                await message.add_reaction('🎵')
+                await message.add_reaction('🗒')
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
                 ytdl_options = [str(args[0]),'list']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
                 await client.change_presence(activity=discord.Game(name='Uploading...'))
+                await message.add_reaction('📤')
                 await message.channel.send("Downloaded playlist. Uploading to Discord...")
                 try:
                     await message.channel.send(file=discord.File('output.zip'))
@@ -678,12 +681,13 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await client.change_presence(activity=discord.Game(name='-help'))
                 downloading = False
             elif str(args[1]) == "mp3":
-                await message.channel.send("Downloading video as audio.")
+                await message.add_reaction('<a:Typing:459588536841011202>')
+                await message.add_reaction('🎵')
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
                 ytdl_options = [str(args[0]),'aud']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
-                await message.channel.send("Uploading to Discord...")
+                await message.add_reaction('📤')
                 await client.change_presence(activity=discord.Game(name='Uploading...'))
                 print("attempting to upload")
                 try:
@@ -697,15 +701,16 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await client.change_presence(activity=discord.Game(name='-help'))
                 downloading = False
             else:
-                await message.channel.send("Downloading and compressing video.")
+                await message.add_reaction('<a:Typing:459588536841011202>')
+                await message.add_reaction('🎬')
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
                 ytdl_options = [str(args[0]),'vid']
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(ThreadPoolExecutor(), ytdl)
-                await message.channel.send("Compressing video...")
+                await message.add_reaction('🗜')
                 await client.change_presence(activity=discord.Game(name='Compressing...'))
                 await loop.run_in_executor(ThreadPoolExecutor(), conv)
-                await message.channel.send("Uploading to Discord...")
+                await message.add_reaction('📤')
                 await client.change_presence(activity=discord.Game(name='Uploading...'))
                 try:
                     await message.channel.send(file=discord.File('compress.mp4'))
