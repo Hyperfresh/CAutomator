@@ -124,11 +124,18 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# don't sync speedtest, ping, speeds or the user database
+# Here's some extra stuff I don't want syncing:
+# *.json - the user database for custom colours/roles
+# *.txt - just all the text files created for outputting dev doc comments
+# *.sh - legacy shell stuff that I can't be bothered to remove locally lol.
+# *.png - any images, like the dev doc comments, weather, minecraft skin images
+# output.* and *.mp3 - anything created by the youtube command
+# out*.* and *.html - anything created by the dev doc command
+
 *.json
 *.txt
 *.sh
-weather.png
+*.png
 output.*
 out*.*
 *.html
