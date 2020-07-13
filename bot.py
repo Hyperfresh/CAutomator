@@ -231,6 +231,7 @@ def readmail(count):
     messages = int(messages[0])
     totalmess = messages
     mess = 0
+
     try:
         #while mess != N:
         for i in range(messages-4, messages-N-4, -1):
@@ -358,7 +359,7 @@ async def on_message(message):
 # ABOUT SPEEDTEST MODULE
     if message.content.startswith('-abspeed'):
         speedabout = '''**Speedtest CLI by Ookla** (speedtest-cli pypi) is the official command line client for testing the speed and performance of an internet connection, provided by Ookla.
-Your use of the `-speed` command is subject to the Speedtest End User License Agreement, Terms of Use and Privacy Policy at these URLs:
+Your use of the `-speed` command is subject to the Speedtest End User License Agreement, Terms of Use and Privacy Policy found at these URLs:
         https://www.speedtest.net/about/eula
         https://www.speedtest.net/about/terms
         https://www.speedtest.net/about/privacy
@@ -763,14 +764,17 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         await client.change_presence(activity=discord.Game(name='-help'))
 
 ######################################################
-# Boot minecraft server
+# Boot minecraft server - currently disabled.
 #
-    if message.content.startswith('-mcserv'):
-        if str(message.author) == "Hyperfresh#8080" or "Kayon#1151":
-            StartServer()
-            await message.channel.send("> ✅ > **Server is up**.")
-        else:
-            await message.channel.send("> :x: > **Sorry, only Hyperfresh or Kayon can use this command**")
+
+#    if message.content.startswith('-mcserv'):
+ #       if str(message.author) == "Hyperfresh#8080" or "Kayon#1151":
+  #          StartServer()
+   #         await message.channel.send("> ✅ > **Server is up**.")
+    #    else:
+     #       await message.channel.send("> :x: > **Sorry, only Hyperfresh or Kayon can use this command**")
+
+
 
 ######################################################
 # Get skin
