@@ -920,7 +920,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 ######################################################
 # Swap email fetching method
 #
-    global devswitch
     b = []
 
     if message.content.startswith('-devswitch'):
