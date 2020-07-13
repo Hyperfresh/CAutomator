@@ -71,7 +71,12 @@ notbom = False
 totalmess = 0
 location = ""
 messerr = ""
-linecount = 0 
+linecount = 0
+devswitch = 0
+# integer "devswitch" ranges from 0 to 2 to switch the type of dev email fetching.
+# 0 = for i in range(messages, messages-N, -1)
+# 1 = for i in range(N)
+# 2 = while mess != N
 
 print("defining exit")
 # DEFINITIONS | closes the program (yeah, not intuitive.)
@@ -216,6 +221,7 @@ import webbrowser
 def readmail(count):
     global totalmess
     global messerr
+    global devswitch
 
     os.system('rm ~/CAutomator/out*.*')
 
@@ -233,79 +239,225 @@ def readmail(count):
     mess = 0
 
     try:
-        #while mess != N:
-        for i in range(messages-4, messages-N-4, -1):
-            mess = mess + 1
-            res, msg = imap.fetch(str(i), "(RFC822)")
+        if devswitch == 0:
+            for i in range(messages-4, messages-N-4, -1):
+                mess = mess + 1
+                res, msg = imap.fetch(str(i), "(RFC822)")
 
-            os.system('rm ~/CAutomator/out'+str(mess)+'.txt')
-            os.system('rm ~/CAutomator/out'+str(mess)+'.png')
-            os.system('rm ~/CAutomator/out'+str(mess)+'.html')
-            writeto = open("out"+str(mess)+".txt",'a+')
+                os.system('rm ~/CAutomator/out'+str(mess)+'.txt')
+                os.system('rm ~/CAutomator/out'+str(mess)+'.png')
+                os.system('rm ~/CAutomator/out'+str(mess)+'.html')
+                writeto = open("out"+str(mess)+".txt",'a+')
 
-            for response in msg:
-                if isinstance(response, tuple):
-                    # parse a bytes email into a message object
-                    msg = email.message_from_bytes(response[1])
-                    # decode the email subject
-                    subject = decode_header(msg["Subject"])[0][0]
-                    if isinstance(subject, bytes):
-                        # if it's a bytes, decode to str
-                        subject = subject.decode()
-                    # email sender
-                    from_ = msg.get("From")
-                    writeto.write("Subject: "+str(subject)+"\nFrom: "+str(from_)+"\n\n")
-                    # if the email message is multipart
-                    if msg.is_multipart():
-                        # iterate over email parts
-                        for part in msg.walk():
-                            # extract content type of email
-                            content_type = part.get_content_type()
-                            content_disposition = str(part.get("Content-Disposition"))
-                            try:
-                                # get the email body
-                                body = part.get_payload(decode=True).decode()
-                            except:
-                                pass
-                            if content_type == "text/plain" and "attachment" not in content_disposition:
-                                # print text/plain emails and skip attachments
-                                writeto.write(body)
-                            elif "attachment" in content_disposition:
-                                # download attachment
-                                filename = part.get_filename()
-                                if filename:
-                                    if not os.path.isdir(subject):
-                                        # make a folder for this email (named after the subject)
-                                        os.mkdir(subject)
-                                    filepath = os.path.join(subject, filename)
-                                    # download attachment and save it
-                                    open(filepath, "wb").write(part.get_payload(decode=True))
-                    else:
-                        # extract content type of email
-                        content_type = msg.get_content_type()
-                        # get the email body
-                        try:
-                            body = msg.get_payload(decode=True).decode()
-                        except:
-                            pass
-                        if content_type == "text/plain":
-                            # print only text email parts
-                            writeto.write(body)
-                    if content_type == "text/html":
-                        # if it's HTML, create a new HTML file and open it in browser
+                for response in msg:
+                    if isinstance(response, tuple):
+                        # parse a bytes email into a message object
+                        msg = email.message_from_bytes(response[1])
+                        # decode the email subject
+                        subject = decode_header(msg["Subject"])[0][0]
                         if isinstance(subject, bytes):
                             # if it's a bytes, decode to str
                             subject = subject.decode()
-                        try:
-                            body = msg.get_payload(decode=True).decode()
-                        except:
-                            pass
-                        filename = "out"+str(mess)+".html"
-                        filepath = os.path.join(filename)
-                        # write the file
-                        open(filepath, "w").write(body)
-                        imgkit.from_file(filepath, 'out'+str(mess)+'.png')
-                    writeto.close()
+                        # email sender
+                        from_ = msg.get("From")
+                        writeto.write("Subject: "+str(subject)+"\nFrom: "+str(from_)+"\n\n")
+                        # if the email message is multipart
+                        if msg.is_multipart():
+                            # iterate over email parts
+                            for part in msg.walk():
+                                # extract content type of email
+                                content_type = part.get_content_type()
+                                content_disposition = str(part.get("Content-Disposition"))
+                                try:
+                                    # get the email body
+                                    body = part.get_payload(decode=True).decode()
+                                except:
+                                    pass
+                                if content_type == "text/plain" and "attachment" not in content_disposition:
+                                    # print text/plain emails and skip attachments
+                                    writeto.write(body)
+                                elif "attachment" in content_disposition:
+                                    # download attachment
+                                    filename = part.get_filename()
+                                    if filename:
+                                        if not os.path.isdir(subject):
+                                            # make a folder for this email (named after the subject)
+                                            os.mkdir(subject)
+                                        filepath = os.path.join(subject, filename)
+                                        # download attachment and save it
+                                        open(filepath, "wb").write(part.get_payload(decode=True))
+                        else:
+                            # extract content type of email
+                            content_type = msg.get_content_type()
+                            # get the email body
+                            try:
+                                body = msg.get_payload(decode=True).decode()
+                            except:
+                                pass
+                            if content_type == "text/plain":
+                                # print only text email parts
+                                writeto.write(body)
+                        if content_type == "text/html":
+                            # if it's HTML, create a new HTML file and open it in browser
+                            if isinstance(subject, bytes):
+                                # if it's a bytes, decode to str
+                                subject = subject.decode()
+                            try:
+                                body = msg.get_payload(decode=True).decode()
+                            except:
+                                pass
+                            filename = "out"+str(mess)+".html"
+                            filepath = os.path.join(filename)
+                            # write the file
+                            open(filepath, "w").write(body)
+                            imgkit.from_file(filepath, 'out'+str(mess)+'.png')
+                        writeto.close()
+        elif devswitch == 1:
+            for i in range(N):
+                mess = mess + 1
+                res, msg = imap.fetch(str(i), "(RFC822)")
+
+                os.system('rm ~/CAutomator/out'+str(mess)+'.txt')
+                os.system('rm ~/CAutomator/out'+str(mess)+'.png')
+                os.system('rm ~/CAutomator/out'+str(mess)+'.html')
+                writeto = open("out"+str(mess)+".txt",'a+')
+
+                for response in msg:
+                    if isinstance(response, tuple):
+                        # parse a bytes email into a message object
+                        msg = email.message_from_bytes(response[1])
+                        # decode the email subject
+                        subject = decode_header(msg["Subject"])[0][0]
+                        if isinstance(subject, bytes):
+                            # if it's a bytes, decode to str
+                            subject = subject.decode()
+                        # email sender
+                        from_ = msg.get("From")
+                        writeto.write("Subject: "+str(subject)+"\nFrom: "+str(from_)+"\n\n")
+                        # if the email message is multipart
+                        if msg.is_multipart():
+                            # iterate over email parts
+                            for part in msg.walk():
+                                # extract content type of email
+                                content_type = part.get_content_type()
+                                content_disposition = str(part.get("Content-Disposition"))
+                                try:
+                                    # get the email body
+                                    body = part.get_payload(decode=True).decode()
+                                except:
+                                    pass
+                                if content_type == "text/plain" and "attachment" not in content_disposition:
+                                    # print text/plain emails and skip attachments
+                                    writeto.write(body)
+                                elif "attachment" in content_disposition:
+                                    # download attachment
+                                    filename = part.get_filename()
+                                    if filename:
+                                        if not os.path.isdir(subject):
+                                            # make a folder for this email (named after the subject)
+                                            os.mkdir(subject)
+                                        filepath = os.path.join(subject, filename)
+                                        # download attachment and save it
+                                        open(filepath, "wb").write(part.get_payload(decode=True))
+                        else:
+                            # extract content type of email
+                            content_type = msg.get_content_type()
+                            # get the email body
+                            try:
+                                body = msg.get_payload(decode=True).decode()
+                            except:
+                                pass
+                            if content_type == "text/plain":
+                                # print only text email parts
+                                writeto.write(body)
+                        if content_type == "text/html":
+                            # if it's HTML, create a new HTML file and open it in browser
+                            if isinstance(subject, bytes):
+                                # if it's a bytes, decode to str
+                                subject = subject.decode()
+                            try:
+                                body = msg.get_payload(decode=True).decode()
+                            except:
+                                pass
+                            filename = "out"+str(mess)+".html"
+                            filepath = os.path.join(filename)
+                            # write the file
+                            open(filepath, "w").write(body)
+                            imgkit.from_file(filepath, 'out'+str(mess)+'.png')
+                        writeto.close()
+        else:
+            while mess != N:
+                mess = mess + 1
+                res, msg = imap.fetch(str(i), "(RFC822)")
+
+                os.system('rm ~/CAutomator/out'+str(mess)+'.txt')
+                os.system('rm ~/CAutomator/out'+str(mess)+'.png')
+                os.system('rm ~/CAutomator/out'+str(mess)+'.html')
+                writeto = open("out"+str(mess)+".txt",'a+')
+
+                for response in msg:
+                    if isinstance(response, tuple):
+                        # parse a bytes email into a message object
+                        msg = email.message_from_bytes(response[1])
+                        # decode the email subject
+                        subject = decode_header(msg["Subject"])[0][0]
+                        if isinstance(subject, bytes):
+                            # if it's a bytes, decode to str
+                            subject = subject.decode()
+                        # email sender
+                        from_ = msg.get("From")
+                        writeto.write("Subject: "+str(subject)+"\nFrom: "+str(from_)+"\n\n")
+                        # if the email message is multipart
+                        if msg.is_multipart():
+                            # iterate over email parts
+                            for part in msg.walk():
+                                # extract content type of email
+                                content_type = part.get_content_type()
+                                content_disposition = str(part.get("Content-Disposition"))
+                                try:
+                                    # get the email body
+                                    body = part.get_payload(decode=True).decode()
+                                except:
+                                    pass
+                                if content_type == "text/plain" and "attachment" not in content_disposition:
+                                    # print text/plain emails and skip attachments
+                                    writeto.write(body)
+                                elif "attachment" in content_disposition:
+                                    # download attachment
+                                    filename = part.get_filename()
+                                    if filename:
+                                        if not os.path.isdir(subject):
+                                            # make a folder for this email (named after the subject)
+                                            os.mkdir(subject)
+                                        filepath = os.path.join(subject, filename)
+                                        # download attachment and save it
+                                        open(filepath, "wb").write(part.get_payload(decode=True))
+                        else:
+                            # extract content type of email
+                            content_type = msg.get_content_type()
+                            # get the email body
+                            try:
+                                body = msg.get_payload(decode=True).decode()
+                            except:
+                                pass
+                            if content_type == "text/plain":
+                                # print only text email parts
+                                writeto.write(body)
+                        if content_type == "text/html":
+                            # if it's HTML, create a new HTML file and open it in browser
+                            if isinstance(subject, bytes):
+                                # if it's a bytes, decode to str
+                                subject = subject.decode()
+                            try:
+                                body = msg.get_payload(decode=True).decode()
+                            except:
+                                pass
+                            filename = "out"+str(mess)+".html"
+                            filepath = os.path.join(filename)
+                            # write the file
+                            open(filepath, "w").write(body)
+                            imgkit.from_file(filepath, 'out'+str(mess)+'.png')
+                        writeto.close()
     except Exception as e:
         messerr = str(e)
     imap.close()
@@ -319,7 +471,7 @@ print("attempting to start...")
 @client.event
 async def on_ready():
     
-    await client.change_presence(activity=discord.Game(name='-help'))
+    await client.change_presence(activity=discord.Game(name='-?'))
     print('We have logged in as {0.user}'.format(client))
 
 @client.event
@@ -342,12 +494,12 @@ async def on_message(message):
 ######################################################
 # HELP MODULE now redirects to the bot's wiki on commands
 
-    if message.content.startswith('-help'):
+    if message.content.startswith('-help' or '-?'):
         await message.channel.send("> :information_source: > **Check here**\nhttps://github.com/Hyperfresh8080/CAutomator/wiki/Commands")
 
 ######################################################
 # SHUTDOWN MODULE
-    if message.content.startswith('-shutdown'):
+    if message.content.startswith('-stop'):
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send(':wave: > See ya, ' + str(message.author) + '!')
             await client.change_presence(activity=None,status=discord.Status.offline)
@@ -487,7 +639,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send('> :ping_pong: > **Pong!** I recorded ' + str(bot.latency) + ' ms.')
         await message.channel.send('```' + str(readlog('ping.txt')) + '```')
         await message.clear_reactions()
-        await client.change_presence(activity=discord.Game('-help'))
+        await client.change_presence(activity=discord.Game('-?'))
 
 ######################################################
 # GET TIME MODULE
@@ -556,7 +708,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             except Exception as e:
                 await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
                 await message.channel.send(file=discord.File('sh.log'))
-            await client.change_presence(activity=discord.Game('-help'))
+            await client.change_presence(activity=discord.Game('-?'))
             await message.clear_reactions()
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
@@ -597,7 +749,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     await message.channel.send(file=discord.File('code.log'))
             except Exception as e:
                 await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
-            await client.change_presence(activity=discord.Game('-help'))
+            await client.change_presence(activity=discord.Game('-?'))
             await message.clear_reactions()
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
@@ -620,7 +772,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     await message.channel.send(file=discord.File('code.log'))
             except Exception as e:
                 await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
-            await client.change_presence(activity=discord.Game('-help'))
+            await client.change_presence(activity=discord.Game('-?'))
             await message.clear_reactions()
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
@@ -665,7 +817,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 
     if message.content.startswith('-ytdl'): # -ytdl <video> <mp4/mp3>
         if downloading == True: await message.add_reaction('❌')
-        if len(args) > 2: await message.add_reaction('❗️')
+        if len(args) > 2: await message.add_reaction('⚠️')
         else:
             downloading = True
             if len(args) == 1: args = [str(args[0]), "mp3"]
@@ -683,7 +835,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     await message.channel.send(file=discord.File('output.zip'))
                 except Exception as e:
                     await message.channel.send(":x: > Upload failed. The ZIP might be too big to upload here.\n\nError: ```" + str(e) + "```")
-                await client.change_presence(activity=discord.Game(name='-help'))
+                await client.change_presence(activity=discord.Game(name='-?'))
                 downloading = False
             elif str(args[1]) == "mp3":
                 await message.add_reaction('<a:Typing:459588536841011202>')
@@ -703,7 +855,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     print("fail")
                     await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
                     print("done")
-                await client.change_presence(activity=discord.Game(name='-help'))
+                await client.change_presence(activity=discord.Game(name='-?'))
                 downloading = False
             else:
                 await message.add_reaction('<a:Typing:459588536841011202>')
@@ -721,7 +873,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     await message.channel.send(file=discord.File('compress.mp4'))
                 except Exception as e:
                     await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
-                await client.change_presence(activity=discord.Game(name='-help'))
+                await client.change_presence(activity=discord.Game(name='-?'))
                 downloading = False
             await message.clear_reactions()
             await message.add_reaction('✅')
@@ -761,7 +913,39 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
         await message.add_reaction('✅')
         #await message.channel.send("> ✅ > Completed.\nYou can see all comments (and reply to them) at https://docs.google.com/document/d/1sMrvJRY-Dc9oGhF-xa0qrDMbPzb8fx0vgvULUm75JSc/")
-        await client.change_presence(activity=discord.Game(name='-help'))
+        await client.change_presence(activity=discord.Game(name='-?'))
+
+######################################################
+# Swap email fetching method
+#
+    global devswitch
+    methods = ['0 for i in range(messages, messages-N, -1)','1 for i in range(N)','2 while mess != N']
+    b = []
+
+    if message.content.startswith('-devswitch'):
+        if str(message.author) == 'Hyperfresh#8080':
+            if len(args) > 1:
+                b = [x for i,x in enumerate(methods) if i!=devswitch]
+                await message.channel.send('> ⚙️ > **Current settings:**\n```diff\n+ Enabled:\n'+str(methods[devswitch])+'\n- Disabled:\n'+str(b[0])+'\n'+str(b[1])+'\n```')
+            else:
+                if len(args) == 0:
+                    b = [x for i,x in enumerate(methods) if i!=devswitch]
+                    await message.channel.send('> ⚙️ > **Current settings:**\n```diff\n+ Enabled:\n'+str(methods[devswitch])+'\n- Disabled:\n'+str(b[0])+'\n'+str(b[1])+'\n```')
+                else:
+                    try:
+                        test = int(args[0])
+                    except:
+                        await message.add_reaction('⚠️')
+                        return
+                    if 0 <= test <= 2:
+                        devswitch = test
+                        b = [x for i,x in enumerate(methods) if i!=devswitch]
+                        await message.channel.send('> ✅ > **Settings changed.** Here are the new settings:\n```diff\n+ Enabled:\n'+str(methods[devswitch])+'\n- Disabled:\n'+str(b[0])+'\n'+str(b[1])+'\n```')
+                    else:
+                        await message.add_reaction('⚠️')
+                        return
+        else:
+            await message.channel.send('> ⚙️ > **Current settings:**\n```diff\n+ Enabled:\n'+str(methods[devswitch])+'\n- Disabled:\n'+str(b[0])+'\n'+str(b[1])+'\n```This command shows you the current mail fetch method for the `-getdevcom` command.\n> :warning: > __Information is for debugging only.__\nTo change the fetch method, please contact Hyperfresh.')
 
 ######################################################
 # Boot minecraft server - currently disabled.
@@ -773,8 +957,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
    #         await message.channel.send("> ✅ > **Server is up**.")
     #    else:
      #       await message.channel.send("> :x: > **Sorry, only Hyperfresh or Kayon can use this command**")
-
-
 
 ######################################################
 # Get skin
