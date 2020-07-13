@@ -161,6 +161,9 @@ import webbrowser
 def readmail(count):
     global totalmess
     global messerr
+
+    os.system('rm ~/CAutomator/out*.*')
+
     messerr = ""
     USER = os.getenv('IMAP_USERNAME') # CHECK YOUR .env FILE!!!
     PASS = os.getenv('IMAP_PASSWORD')
