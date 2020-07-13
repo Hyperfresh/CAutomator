@@ -883,6 +883,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 #
     global totalmess
     global messerr
+    global devswitch
+    methods = ['0 for i in range(messages, messages-N, -1)','1 for i in range(N)','2 while mess != N']
 
     if message.content.startswith('-getdevcom'):
         if len(args) != 1:
@@ -894,7 +896,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(":x: > Not a number.")
             return
         await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
-        await message.channel.send("ℹ️ > You asked me to read **"+str(args[0])+" emails.**\n<a:Typing:459588536841011202> > Please wait while I check the inbox.")
+        await message.channel.send("ℹ️ > You asked me to read **"+str(args[0])+" emails.**\n:warning: > ||`"+str(methods[devswitch])+"`||\n<a:Typing:459588536841011202> > Please wait while I check the inbox.")
         loop = 0
         tries = int(readmail(args[0]))
         if messerr != "":
@@ -919,7 +921,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 # Swap email fetching method
 #
     global devswitch
-    methods = ['0 for i in range(messages, messages-N, -1)','1 for i in range(N)','2 while mess != N']
     b = []
 
     if message.content.startswith('-devswitch'):
