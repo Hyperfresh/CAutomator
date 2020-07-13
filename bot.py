@@ -235,7 +235,7 @@ def readmail(count):
         #while mess != N:
         for i in range(messages-4, messages-N-4, -1):
             mess = mess + 1
-            res, msg = imap.fetch(str(mess), "(RFC822)")
+            res, msg = imap.fetch(str(i), "(RFC822)")
 
             os.system('rm ~/CAutomator/out'+str(mess)+'.txt')
             os.system('rm ~/CAutomator/out'+str(mess)+'.png')
