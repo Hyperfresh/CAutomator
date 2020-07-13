@@ -232,8 +232,8 @@ def readmail(count):
     totalmess = messages
     mess = 0
     try:
-        while mess != N:
-        #for i in range(N): #range(messages-4, messages-N-4, -1): this didn't work for some reasaon, so yeah.
+        #while mess != N:
+        for i in range(N): #range(messages-4, messages-N-4, -1):
             mess = mess + 1
             res, msg = imap.fetch(str(mess), "(RFC822)")
 
