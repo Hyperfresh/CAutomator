@@ -414,12 +414,14 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
                     role = message.guild.get_role(result[0]['roleId'])
                     await role.edit(name=roleName, colour=roleColour)
+                    await member.add_roles(role)
                     await message.channel.send("> :white_check_mark: > **Role edited**\n<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
                 else:
                     print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' without colour change')
                     role = message.guild.get_role(result[0]['roleId'])
                     roleName = roleName + args[len(args)-1]
                     await role.edit(name=roleName)
+                    await member.add_roles(role)
                     await message.channel.send("> :white_check_mark: > **Role edited**\n<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
             else: # assign new role
                 roleName = ""
@@ -658,14 +660,13 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     global convert
 
     if message.content.startswith('-ytdl'): # -ytdl <video> <mp4/mp3>
-        if downloading == True: await message.channel.send(":x: > In the process of downloading something. Please try again later.")
-        if len(args) > 2: await message.channel.send(":x: > Too many arguments provided.")
+        if downloading == True: await message.add_reaction('❌')
+        if len(args) > 2: await message.add_reaction('❗️')
         else:
             downloading = True
             if len(args) == 1: args = [str(args[0]), "mp3"]
             if("list" in str(args[0]) and "watch" not in str(args[0])):
                 await message.add_reaction('<a:Typing:459588536841011202>')
-                await message.add_reaction('🎵')
                 await message.add_reaction('🗒')
                 await client.change_presence(activity=discord.Game(name='Downloading...'))
                 ytdl_options = [str(args[0]),'list']
@@ -718,6 +719,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
                 await client.change_presence(activity=discord.Game(name='-help'))
                 downloading = False
+            await message.clear_reactions()
+            await message.add_reaction('✅')
 
 ######################################################
 # Get comments from Game Development document
