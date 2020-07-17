@@ -10,13 +10,14 @@ info = """
            /__/     \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
 """
 print(info)
-print('\nPlease wait while requirements for running CAutomator are being checked.')
+print('\nPlease wait while requirements for running CAutomator are being checked.\n')
 import os
 import platform
 import time
 log.write(' -- START OF LOG -- \n')
 log.write(time.strftime("%d %b %Y %H:%M:%S", time.localtime())+"\n")
-log.write(os.name(),platform.system(),platform.release(),"\n")
+
+log.write(str(os.name)+" "+str(platform.system())+" "+str(platform.release())+"\n")
 
 nocolour = False
 try:
@@ -50,43 +51,46 @@ def message(t,s): # null = none, 0 = done, -1 = fatal, 1 = warn
 
     
 
-if os.name() == "nt":
-    log.write("FATAL > Not a posix system.\n")
+if os.name == "nt":
+    log.write("FATAL > Attempted to run on Windows system.\n")
     message(-1,"You are running Windows, which is not supported. Please use Windows Subsystem for Linux.\nFor install instructions, see http://aka.ms/wsl. Check CAN NOT CONTINUE and will now STOP.")
     log.write("\n -- END OF LOG -- ")
     log.close
+    input("Press enter to exit.")
     exit()
 
 try:
     import discord
-    log.write('discord.py was imported')
+    log.write('discord.py was imported\n')
 except Exception as e:
     log.write("FATAL > Discord.py import error. Detail:\n"+str(e))
-    message(-1,"The discord library could not be imported. This library may not be imported, so please install it using pip.\nMore details are in log. Check CAN NOT CONTINUE and will now STOP.")
+    message(-1,"The discord library could not be imported. This library may not be install, so please install it using pip.\nMore details are in log. Check CAN NOT CONTINUE and will now STOP.")
     log.write("\n -- END OF LOG -- ")
     log.close
+    input("Press enter to exit.")
     exit()
 
 try:
     import dotenv
-    log.write('dotenv was imported')
+    log.write('dotenv was imported\n')
 except Exception as e:
     log.write("FATAL > Dotenv import error. Detail:\n"+str(e))
-    message(-1,"The dotenv library could not be imported. This library may not be imported, so please install it using pip.\nMore details are in log. Check CAN NOT CONTINUE and will now STOP.")
+    message(-1,"The dotenv library could not be imported. This library may not be installed, so please install it using pip.\nMore details are in log. Check CAN NOT CONTINUE and will now STOP.")
     log.write("\n -- END OF LOG -- ")
     log.close
+    input("Press enter to exit.")
     exit()
 
 try:
     import tinydb
-    log.write('tinydb was imported')
+    log.write('tinydb was imported\n')
 except Exception as e:
     log.write("WARN > TinyDB import error. Detail:\n"+str(e))
     message(1,"The tinydb library could not be imported. The -role command may not function.\nMore details are in log. Check will now continue.")
 
 try:
     import imgkit
-    log.write('imgkit was impoted')
+    log.write('imgkit was impoted\n')
     message(1,"The imgkit library requires an external package. A check for this package may be performed after the initial library check.")
 except Exception as e:
     log.write("WARN > imgkit import error. Detail:\n"+str(e))
@@ -94,29 +98,34 @@ except Exception as e:
 
 try:
     import speedtest
-    log.write('speedtest was imported')
+    log.write('speedtest was imported\n')
 except Exception as e:
     log.write("WARN > speedtest import error. Detail:\n"+str(e))
     message(1,"The speedtest library could not be imported. The -speed command may not function.\nMore details are in log. Check will now continue.")
 
-log.write("DONE > Initial library check.")
+log.write("DONE > Initial library check.\n")
 message(0,"Initial library check complete. A package check can now be performed.")
 print("The package check MAY install missing packages for you, but this may require your su password.\n")
 def check():
-    e = input("To perform package check, please enter 'pack'.\nTo skip package check and close this program, please enter 'stop'.")
+    e = input("To perform package check, please enter 'pack'.\nTo skip package check and close this program, please enter 'stop'. ")
     if e == "stop":
         log.write("\n -- END OF LOG -- ")
         log.close
+        print("Exiting.")
         exit()
     elif e == "pack": return
     else: check()
 check()
 
-if platform.sytem() == "Darwin":
-    os.system("which brew")
+if platform.system() == "Darwin":
+    try:
+        os.remove("brew.log")
+    except: pass
+    os.system("which brew >> brew.log")
+    print("\n")
     message(1," THIS IS IMPORTANT. Do you see a directory or 'no brew'?")
     def check2():
-        e = input("enter 'dir' or 'not'")
+        e = input("enter 'dir' or 'not' ")
         if e == "not":
             message(-1,"You indicated that 'brew' does not exist. Please install Homebrew at http://brew.sh.\nCheck CAN NOT CONTINUE and will now STOP.")
             log.write("FATAL > User indicated no Homebrew\n")
@@ -126,7 +135,6 @@ if platform.sytem() == "Darwin":
         elif e == "dir": return
         else: check2()
     check2()
-    os.remove("brew.log")
     print("Brew will now check for installed packages.")
     message(1,"If there's no output after indicating which formulae/cask brew is looking for, it's probably installed!")
 
@@ -134,8 +142,8 @@ if platform.sytem() == "Darwin":
     os.system('brew cask list wkhtmltopdf >> brew.log')
     log.write("BREW > wkhtmltopdf\n")
     def check3():
-        e = input("install this formulae/cask? (y/n)")
-        if e != "y" or "n" or "Y" or "N": check3()
+        e = input("install this formulae/cask? (y/n) ")
+        if e not in "ynYN": check3()
         else:
             if e == "y" or "Y": e = True
             else: e = False 
@@ -193,7 +201,7 @@ if platform.sytem() == "Darwin":
     else:
         log.write("BREW > powershell not installing\n")
 
-elif platform.sytem() == "Linux":
+elif platform.system() == "Linux":
     message(1," THIS IS IMPORTANT. Are you using Ubuntu/Debian?")
     def check2():
         e = input("enter 'y' or 'n'")
@@ -203,11 +211,14 @@ elif platform.sytem() == "Linux":
             log.write('FATAL > User indicated non-Debian distro\n')
             log.write("\n -- END OF LOG -- ")
             log.close
+            input("Press enter to exit.")
             exit()
         elif e == "dir": return
         else: check2()
     check2()
-    os.remove("apt.log")
+    try:
+        os.remove("apt.log")
+    except: pass
     print("Apt will now check for installed packages.")
 
     print("Checking for package wkhtmltopdf. Required for library imgkit.")
@@ -215,7 +226,7 @@ elif platform.sytem() == "Linux":
     log.write("APT > wkhtmltopdf\n")
     def check3():
         e = input("install this package? (y/n)")
-        if e != "y" or "n" or "Y" or "N": check3()
+        if e not in "ynYN": check3()
         else:
             if e == "y" or "Y": e = True
             else: e = False 
@@ -268,9 +279,9 @@ elif platform.sytem() == "Linux":
     log.write("SNAP > powershell\n")
     if check3() == True:
         log.write("SNAP > powershell installing\n")
-        os.system("snap install powershell-classic >> brew.log")
+        os.system("snap install powershell-classic >> snap.log")
     else:
-        log.write("BREW > powershell not installing\n")
+        log.write("SNAP > powershell not installing\n")
 else:
     message(-1,"Check has concluded that you are not running a *nix or nt system, and cannot install packages for you.")
     message(-1,"Check will also assume that you're running an OS that CAutomator may not support. Please proceed at own risk.\n")
@@ -278,4 +289,12 @@ else:
     log.write('FATAL > Check indicated non-normal OS\n')
     log.write("\n -- END OF LOG -- ")
     log.close
+    input("Press enter to exit.")
     exit()
+
+message(0,"Check has completed.")
+log.write('All checks completed.\n')
+log.write("\n -- END OF LOG -- ")
+log.close
+input("Press enter to exit.")
+exit()
