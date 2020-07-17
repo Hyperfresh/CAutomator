@@ -263,12 +263,12 @@ elif platform.sytem() == "Linux":
     else:
         log.write("APT > python3 not installing\n")
     
-    print("Checking for cask powershell. Required for command -ps.")
-    os.system('brew cask list powershell >> brew.log')
-    log.write("BREW > powershell\n")
+    print("Checking for snap powershell. Required for command -ps.")
+    os.system('snap list powershell >> snap.log')
+    log.write("SNAP > powershell\n")
     if check3() == True:
-        log.write("BREW > powershell installing\n")
-        os.system("brew cask install powershell >> brew.log")
+        log.write("SNAP > powershell installing\n")
+        os.system("snap install powershell-classic >> brew.log")
     else:
         log.write("BREW > powershell not installing\n")
 else:
