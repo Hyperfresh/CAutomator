@@ -35,9 +35,10 @@ import platform # for os info
 import os #dotenv and os info
 import sys # for restarting the bot
 import imgkit # for converting webpage to image
+from random import randint # 😉
 
 # IMPORT | subprocessing, allowing CAutomator to do multiple things at once
-import asyncio                                   
+import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import subprocess  
 
@@ -73,6 +74,7 @@ location = ""
 messerr = ""
 linecount = 0
 devswitch = 0
+sick = False
 # integer "devswitch" ranges from 0 to 2 to switch the type of dev email fetching.
 # 0 = for i in range(messages, messages-N, -1)
 # 1 = for i in range(N)
@@ -217,7 +219,6 @@ print("defining gamedev")
 import imaplib
 import email
 from email.header import decode_header
-import webbrowser
 def readmail(count):
     global totalmess
     global messerr
@@ -479,7 +480,15 @@ async def on_message(message):
 
     if message.author.bot: return #avoid every bot instead of only itself
 
-    if(not message.content.startswith('-')): return
+    response = ["Hy doesn't feel sick today.","Please stop.","Not now.","Maybe another time.","🛑"]
+    global sick
+    if(not message.content.startswith('-')):
+        if "<@352668050111201291>" in message.content:
+            if message.channel.id == '697336978361942057':
+                if sick == True: await message.channel.send('😉')
+                else: await message.channel.send(str(response[randint(0,4)]))
+            else: return
+        else: return
 
     args = message.content.split()
     args.pop(0) # removes the command from arguments
@@ -898,7 +907,11 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
         await message.channel.send("ℹ️ > You asked me to read **"+str(args[0])+" emails.**\n:warning: > ||`"+str(methods[devswitch])+"`||\n<a:Typing:459588536841011202> > Please wait while I check the inbox.")
         loop = 0
-        tries = int(readmail(args[0]))
+        try:
+            tries = int(readmail(args[0]))
+        except Exception as e:
+            await message.channel.send(":x: > An error occured. The command might've timed out? ```"+str(e)+"```")
+            return
         if messerr != "":
             await message.channel.send(":x: > An error occured. ```" + str(messerr) + "```")
             return
@@ -1006,6 +1019,23 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(file=discord.File('skin.png'))
         except Exception as e:
             await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
-        
+
+# namelists
+#    if message.content.startswith('-snl'):
+#        if str(message.author) != 'Hyperfresh#8080': return
+#        embedVar = discord.Embed(title="Title", description="Desc", color=0x00ff00)
+#        embedVar.add_field(name="Field1", value="hi", inline=False)
+#        embedVar.add_field(name="Field2", value="hi2", inline=False)
+#        await message.channel.send(embed=embedVar)        
+
+    if message.content.startswith('-sick'):
+        if str(message.author) == 'Hyperfresh#8080':
+            if sick == False:
+                sick = True
+            else:
+                sick = False
+            await message.channel.send(str(sick))
+        else: return
+
 
 client.run(TOKEN) # the thing that runs it all
