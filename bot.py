@@ -483,8 +483,11 @@ async def on_message(message):
     response = ["Hy doesn't feel sick today.","Please stop.","Not now.","Maybe another time.","🛑"]
     global sick
     if(not message.content.startswith('-')):
-        if "<@!352668050111201291>" or "<@352668050111201291>" in message.content:
-            if message.channel.id == '267817764989698048' or "697336978361942057":
+        if message.channel.id == 697336978361942057:
+            if "<@!352668050111201291>" in message.content:
+                if sick == True: await message.channel.send('😉')
+                else: await message.channel.send(str(response[randint(0,4)]))
+            elif "<@352668050111201291>" in message.content:
                 if sick == True: await message.channel.send('😉')
                 else: await message.channel.send(str(response[randint(0,4)]))
             else: return
