@@ -145,7 +145,7 @@ if platform.system() == "Darwin":
         e = input("install this formulae/cask? (y/n) ")
         if e not in "ynYN": check3()
         else:
-            if e == "y" or "Y": e = True
+            if e in "yY": e = True
             else: e = False 
             return e
     if check3() == True:
@@ -204,8 +204,8 @@ if platform.system() == "Darwin":
 elif platform.system() == "Linux":
     message(1," THIS IS IMPORTANT. Are you using Ubuntu/Debian?")
     def check2():
-        e = input("enter 'y' or 'n'")
-        if e == "n" or "N":
+        e = input("enter 'y' or 'n' ")
+        if e in 'nN':
             message(-1,"You indicated that you're not using Ubuntu/Debian. Check cannot install packages for you.")
             message(1,"Please install the following packages: [ 'wkhtmltopdf', 'youtube-dl', 'git', 'python3', 'powershell' ].")
             log.write('FATAL > User indicated non-Debian distro\n')
@@ -213,22 +213,24 @@ elif platform.system() == "Linux":
             log.close
             input("Press enter to exit.")
             exit()
-        elif e == "dir": return
+        elif e in 'Yy': return
         else: check2()
     check2()
     try:
         os.remove("apt.log")
     except: pass
+    print("Apt will now update package list.")
+    os.system('sudo apt update >> apt.log')
     print("Apt will now check for installed packages.")
-
+    message(1,"If there's no output after indicating which package apt is looking for, it's probably installed!")
     print("Checking for package wkhtmltopdf. Required for library imgkit.")
     os.system('dpkg -l wkhtmltopdf >> apt.log')
     log.write("APT > wkhtmltopdf\n")
     def check3():
-        e = input("install this package? (y/n)")
+        e = input("install this package? (y/n) ")
         if e not in "ynYN": check3()
         else:
-            if e == "y" or "Y": e = True
+            if e in "yY": e = True
             else: e = False 
             return e
     if check3() == True:
@@ -243,7 +245,7 @@ elif platform.system() == "Linux":
     log.write("APT > youtube-dl\n")
     if check3() == True:
         log.write("APT > youtube-dl installing\n")
-        os.system("sudo apt install youtube-dl >> apt.log")
+        os.system("sudo apt -y install youtube-dl >> apt.log")
     else:
         log.write("APT > youtube-dl not installing\n")
     
@@ -252,7 +254,7 @@ elif platform.system() == "Linux":
     log.write("APT > handbrake\n")
     if check3() == True:
         log.write("APT > handbrake installing\n")
-        os.system("sudo apt install handbrake-cli >> apt.log")
+        os.system("sudo apt -y install handbrake-cli >> apt.log")
     else:
         log.write("APT > handbrake not installing\n")
     
@@ -261,7 +263,7 @@ elif platform.system() == "Linux":
     log.write("APT > git\n")
     if check3() == True:
         log.write("APT > git installing\n")
-        os.system("sudo apt install git-all >> apt.log")
+        os.system("sudo apt -y install git-all >> apt.log")
     else:
         log.write("APT > git not installing\n")
 
@@ -270,7 +272,7 @@ elif platform.system() == "Linux":
     log.write("APT > python3\n")
     if check3() == True:
         log.write("APT > python3 installing\n")
-        os.system("sudo apt install python3 >> apt.log")
+        os.system("sudo apt -y install python3 >> apt.log")
     else:
         log.write("APT > python3 not installing\n")
     
