@@ -9,7 +9,7 @@ info = """
            /__/     \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
 
                 CAutomator is a custom discord.py bot built by Hyperfresh#8080
-                            for the Calculated Anarchy Discord Server.
+            for the Calculated Anarchy Discord Server. https://discord.gg/cRVKFye
 
                             You may use this under the LGPLv3 license.
                                See the LICENSE file for more details
@@ -35,6 +35,8 @@ import platform # for os info
 import os #dotenv and os info
 import sys # for restarting the bot
 import imgkit # for converting webpage to image
+from random import randint # 😉
+from random import choice
 
 # IMPORT | subprocessing, allowing CAutomator to do multiple things at once
 import asyncio                                   
@@ -1006,6 +1008,29 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(file=discord.File('skin.png'))
         except Exception as e:
             await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
-        
+
+# namelists
+#    if message.content.startswith('-snl'):
+#        if str(message.author) != 'Hyperfresh#8080': return
+#        embedVar = discord.Embed(title="Title", description="Desc", color=0x00ff00)
+#        embedVar.add_field(name="Field1", value="hi", inline=False)
+#        embedVar.add_field(name="Field2", value="hi2", inline=False)
+#        await message.channel.send(embed=embedVar)        
+
+    if message.content.startswith('-sick'):
+        if str(message.author) == 'Hyperfresh#8080':
+            if sick == False:
+                sick = True
+            else:
+                sick = False
+            await message.channel.send(str(sick))
+        else: return
+
+    if message.conent.startswith('-someone'):
+        user = choice(message.channel.guild.members)
+        await message.channel.send("I pick **"+str(user)+"**!")
+
+
+
 
 client.run(TOKEN) # the thing that runs it all
