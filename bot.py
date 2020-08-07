@@ -35,7 +35,6 @@ import platform # for os info
 import os #dotenv and os info
 import sys # for restarting the bot
 import imgkit # for converting webpage to image
-from random import randint # 😉
 from random import choice
 
 # IMPORT | subprocessing, allowing CAutomator to do multiple things at once
@@ -75,7 +74,6 @@ location = ""
 messerr = ""
 linecount = 0
 devswitch = 0
-sick = False
 # integer "devswitch" ranges from 0 to 2 to switch the type of dev email fetching.
 # 0 = for i in range(messages, messages-N, -1)
 # 1 = for i in range(N)
@@ -481,15 +479,7 @@ async def on_message(message):
 
     if message.author.bot: return #avoid every bot instead of only itself
 
-    response = ["Hy doesn't feel sick today.","Please stop.","Not now.","Maybe another time.","🛑"]
-    global sick
-    if(not message.content.startswith('-')):
-        if "<@!352668050111201291>" or "<@352668050111201291>" in message.content:
-            if message.channel.id == '267817764989698048' or "697336978361942057":
-                if sick == True: await message.channel.send('😉')
-                else: await message.channel.send(str(response[randint(0,4)]))
-            else: return
-        else: return
+    if(not message.content.startswith('-')): return
 
     args = message.content.split()
     args.pop(0) # removes the command from arguments
@@ -1028,15 +1018,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 #        embedVar.add_field(name="Field1", value="hi", inline=False)
 #        embedVar.add_field(name="Field2", value="hi2", inline=False)
 #        await message.channel.send(embed=embedVar)        
-
-    if message.content.startswith('-sick'):
-        if str(message.author) == 'Hyperfresh#8080':
-            if sick == False:
-                sick = True
-            else:
-                sick = False
-            await message.channel.send(str(sick))
-        else: return
 
     if message.content.startswith('-someone'):
         user = choice(message.channel.guild.members)
