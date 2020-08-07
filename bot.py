@@ -9,7 +9,7 @@ info = """
            /__/     \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
 
                 CAutomator is a custom discord.py bot built by Hyperfresh#8080
-                            for the Calculated Anarchy Discord Server.
+            for the Calculated Anarchy Discord Server. https://discord.gg/cRVKFye
 
                             You may use this under the LGPLv3 license.
                                See the LICENSE file for more details
@@ -36,6 +36,7 @@ import os #dotenv and os info
 import sys # for restarting the bot
 import imgkit # for converting webpage to image
 from random import randint # 😉
+from random import choice
 
 # IMPORT | subprocessing, allowing CAutomator to do multiple things at once
 import asyncio
@@ -1037,5 +1038,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(str(sick))
         else: return
 
+    if message.content.startswith('-someone'):
+        user = choice(message.channel.guild.members)
+        await message.channel.send("I pick **"+str(user.mention)+"**!")
 
 client.run(TOKEN) # the thing that runs it all
