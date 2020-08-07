@@ -494,7 +494,7 @@ async def on_message(message):
 ######################################################
 # HELP MODULE now redirects to the bot's wiki on commands
 
-    if message.content.startswith('-help' or '-?'):
+    if message.content.startswith('-help') or message.content.startswith('-?'):
         await message.channel.send("> :information_source: > **Check here**\nhttps://github.com/Hyperfresh8080/CAutomator/wiki/Commands")
 
 ######################################################
