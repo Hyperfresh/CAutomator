@@ -1026,7 +1026,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(str(sick))
         else: return
 
-    if message.conent.startswith('-someone'):
+    if message.content.startswith('-someone'):
         user = choice(message.channel.guild.members)
         await message.channel.send("I pick **"+str(user)+"**!")
 
