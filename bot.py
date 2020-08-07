@@ -39,7 +39,7 @@ from random import randint # 😉
 from random import choice
 
 # IMPORT | subprocessing, allowing CAutomator to do multiple things at once
-import asyncio                                   
+import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import subprocess  
 
@@ -75,6 +75,7 @@ location = ""
 messerr = ""
 linecount = 0
 devswitch = 0
+sick = False
 # integer "devswitch" ranges from 0 to 2 to switch the type of dev email fetching.
 # 0 = for i in range(messages, messages-N, -1)
 # 1 = for i in range(N)
@@ -219,7 +220,6 @@ print("defining gamedev")
 import imaplib
 import email
 from email.header import decode_header
-import webbrowser
 def readmail(count):
     global totalmess
     global messerr
@@ -390,7 +390,7 @@ def readmail(count):
         else:
             while mess != N:
                 mess = mess + 1
-                res, msg = imap.fetch(str(i), "(RFC822)")
+                res, msg = imap.fetch(str(mess), "(RFC822)")
 
                 os.system('rm ~/CAutomator/out'+str(mess)+'.txt')
                 os.system('rm ~/CAutomator/out'+str(mess)+'.png')
@@ -481,7 +481,15 @@ async def on_message(message):
 
     if message.author.bot: return #avoid every bot instead of only itself
 
-    if(not message.content.startswith('-')): return
+    response = ["Hy doesn't feel sick today.","Please stop.","Not now.","Maybe another time.","🛑"]
+    global sick
+    if(not message.content.startswith('-')):
+        if "<@!352668050111201291>" or "<@352668050111201291>" in message.content:
+            if message.channel.id == '267817764989698048' or "697336978361942057":
+                if sick == True: await message.channel.send('😉')
+                else: await message.channel.send(str(response[randint(0,4)]))
+            else: return
+        else: return
 
     args = message.content.split()
     args.pop(0) # removes the command from arguments
@@ -900,7 +908,11 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
         await message.channel.send("ℹ️ > You asked me to read **"+str(args[0])+" emails.**\n:warning: > ||`"+str(methods[devswitch])+"`||\n<a:Typing:459588536841011202> > Please wait while I check the inbox.")
         loop = 0
-        tries = int(readmail(args[0]))
+        try:
+            tries = int(readmail(args[0]))
+        except Exception as e:
+            await message.channel.send(":x: > An error occured. The command might've timed out? ```"+str(e)+"```")
+            return
         if messerr != "":
             await message.channel.send(":x: > An error occured. ```" + str(messerr) + "```")
             return
@@ -1029,8 +1041,5 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-someone'):
         user = choice(message.channel.guild.members)
         await message.channel.send("I pick **"+str(user.mention)+"**!")
-
-
-
 
 client.run(TOKEN) # the thing that runs it all
