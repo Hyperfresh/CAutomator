@@ -479,7 +479,11 @@ async def on_message(message):
 
     if message.author.bot: return #avoid every bot instead of only itself
 
-    if(not message.content.startswith('-')): return
+    if(not message.content.startswith('-')):
+        if "@someone" in message.content:
+            user = choice(message.channel.guild.members)
+            await message.channel.send("I pick **"+str(user.mention)+"**!")
+        else: return
 
     args = message.content.split()
     args.pop(0) # removes the command from arguments
