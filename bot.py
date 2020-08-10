@@ -74,6 +74,7 @@ location = ""
 messerr = ""
 linecount = 0
 devswitch = 0
+someoneDisable = False
 # integer "devswitch" ranges from 0 to 2 to switch the type of dev email fetching.
 # 0 = for i in range(messages, messages-N, -1)
 # 1 = for i in range(N)
@@ -476,14 +477,16 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-
+    global someoneDisable
     if message.author.bot: return #avoid every bot instead of only itself
 
     if(not message.content.startswith('-')):
         if "@someone" in message.content or "<@&742301786198769714>" in message.content:
-            while "295463016248377344" in str(user.roles):
-                user = choice(message.channel.guild.members)
-            await message.channel.send("I pick **"+str(user.mention)+"**!")
+            if someoneDisable == True: await message.channel.send("This feature is disabled.")
+            else:
+                while "295463016248377344" in str(user.roles):
+                    user = choice(message.channel.guild.members)
+                await message.channel.send("I pick **"+str(user.mention)+"**!")
         else: return
 
     args = message.content.split()
@@ -1025,7 +1028,16 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 #        await message.channel.send(embed=embedVar)        
 
     if message.content.startswith('-someone'):
-        user = choice(message.channel.guild.members)
-        await message.channel.send("I pick **"+str(user.mention)+"**!")
+        if someoneDisable == True: await message.channel.send("This feature is disabled.")
+        else:
+            while "295463016248377344" in str(user.roles):
+                user = choice(message.channel.guild.members)
+            await message.channel.send("I pick **"+str(user.mention)+"**!")
+
+    if message.content.startswith('disomeone'):
+        if "295459816468381697" in str(message.author.roles):
+            if someoneDisable == True: someoneDisable = False
+            else: someoneDisable = True
+        else: return
 
 client.run(TOKEN) # the thing that runs it all
