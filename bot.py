@@ -1038,6 +1038,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         if "295459816468381697" in str(message.author.roles):
             if someoneDisable == True: someoneDisable = False
             else: someoneDisable = True
-        else: return
+            await message.channel.send(str(someoneDisable))
+        else: await message.channel.send(str(someoneDisable))
 
 client.run(TOKEN) # the thing that runs it all
