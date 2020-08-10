@@ -1032,7 +1032,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else:
             while "295463016248377344" in str(user.roles):
                 user = choice(message.channel.guild.members)
-            await message.channel.send("I pick **"+str(user.mention)+"**!")
+            await message.channel.send("I pick **"+str(user)+"**!")
 
     if message.content.startswith('disomeone'):
         if "295459816468381697" in str(message.author.roles):
