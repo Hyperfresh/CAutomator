@@ -481,7 +481,8 @@ async def on_message(message):
 
     if(not message.content.startswith('-')):
         if "@someone" in message.content or "<@&742301786198769714>" in message.content:
-            user = choice(message.channel.guild.members)
+            while "295463016248377344" in str(user.roles):
+                user = choice(message.channel.guild.members)
             await message.channel.send("I pick **"+str(user.mention)+"**!")
         else: return
 
