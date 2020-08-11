@@ -484,6 +484,7 @@ async def on_message(message):
         if "@someone" in message.content or "<@&742301786198769714>" in message.content:
             if someoneDisable == True: await message.channel.send("This feature is disabled.")
             else:
+                user = choice(message.channel.guild.members)
                 while "295463016248377344" in str(user.roles):
                     user = choice(message.channel.guild.members)
                 await message.channel.send("I pick **"+str(user.mention)+"**!")
@@ -1030,6 +1031,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-someone'):
         if someoneDisable == True: await message.channel.send("This feature is disabled.")
         else:
+            user = choice(message.channel.guild.members)
             while "295463016248377344" in str(user.roles):
                 user = choice(message.channel.guild.members)
             await message.channel.send("I pick **"+str(user)+"**!")
