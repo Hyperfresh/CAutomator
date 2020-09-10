@@ -487,7 +487,7 @@ async def on_message(message):
                 user = choice(message.channel.guild.members)
                 while "295463016248377344" in str(user.roles):
                     user = choice(message.channel.guild.members)
-                await message.channel.send("I pick **"+str(user)+"**!")
+                await message.channel.send("I pick **"+str(user.mention)+"**!")
         else: return
 
     args = message.content.split()
