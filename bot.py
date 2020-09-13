@@ -51,7 +51,8 @@ print("declaring special variables")
 # DECLARATIONS | special things
 db = TinyDB('db.json') # declare database exists
 TOKEN = os.getenv('DISCORD_TOKEN') # declare the bot token. CHECK YOUR .env FILE!
-lvl30ID = [547360918930194443,741919152587145277] # the ID for the level 30 role
+lvl30ID = 547360918930194443 # the ID for the level 30 role
+fwiends = 741919152587145277
 bot = commands.Bot(command_prefix='-') # declare the prefix
 client = discord.Client() # stuff
 
@@ -557,13 +558,14 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 #
 # Thanks to https://github.com/iwa for helping me out with this module :)
 
-    global lvl30ID # used for -role and -delrole
+    global lvl30ID
+    global fwiends # used for -role and -delrole
 
     if message.content.startswith('-role'): # assign or edit role
         member = message.author
         #print("user has: " + str(member.roles))
 
-        if lvl30ID in str(member.roles): # check if the member has level 30 role
+        if (str(lvl30ID) in str(member.roles)) or (str(fwiends) in str(member.roles)): # check if the member has level 30 role
             User = Query()
             result = db.search(User.memberId == member.id)
 
@@ -609,7 +611,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 
     if message.content.startswith('-delrole'):
         member = message.author
-        if lvl30ID in str(member.roles): # check if the member has level 30 role
+        if (str(lvl30ID) in str(member.roles)) or (str(fwiends) in str(member.roles)): # check if the member has level 30 role
 
             User = Query()
             result = db.search(User.memberId == member.id)
