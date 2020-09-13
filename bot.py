@@ -51,7 +51,7 @@ print("declaring special variables")
 # DECLARATIONS | special things
 db = TinyDB('db.json') # declare database exists
 TOKEN = os.getenv('DISCORD_TOKEN') # declare the bot token. CHECK YOUR .env FILE!
-lvl30ID = 547360918930194443 # the ID for the level 30 role
+lvl30ID = [547360918930194443,741919152587145277] # the ID for the level 30 role
 bot = commands.Bot(command_prefix='-') # declare the prefix
 client = discord.Client() # stuff
 
