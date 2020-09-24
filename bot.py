@@ -1032,22 +1032,22 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 
     if message.content.startswith('-spoilers'):
         print("I heard spoilers!")
-        if (message.channel.id != "507466333496147978"):
+        if (message.channel.id != 507466333496147978):
             print("Never mind.")
             return
         if "758604551787118603" in str(message.author.roles):
             print("Person has role. Removing!")
-            await member.remove_roles("758604551787118603")
+            await member.remove_roles(758604551787118603)
             await message.channel.send("<@{0}>, you can **no longer** read the message history of #spoilers. You need to change channels for this to take effect.")
         elif len(args) > 1: await message.add_reaction('⚠️')
         elif len(args) == 1:
             if args[0] == "show":
                 print("Adding!.")
-                await member.add_roles("758604551787118603")
+                await member.add_roles(758604551787118603)
                 await message.channel.send("<@{0}>, you can **now** read the message history of #spoilers. You need to change channels for this to take effect.")
             elif args[0] == "hide":
                 print("Removing!")
-                await member.remove_roles("758604551787118603")
+                await member.remove_roles(758604551787118603)
                 await message.channel.send("<@{0}>, you can **no longer** read the message history of #spoilers. You need to change channels for this to take effect.")
             else: await message.add_reaction('⚠️') 
             return
