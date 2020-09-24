@@ -1,20 +1,26 @@
 info = """
-          _
-     /\__| |_/\ 
-     \   ___  / ___                 _                                     _
-   /\/  /   \  /   \              _| |_                                 _| |_
-   \   /      /  .  \     _   _  |_   _|  _____   _________   _____ _  |_   _|  _____   _____
-   /   \____ /  /_\  \   | | | |   | |   |  _  | |  _   _  | |  _  | |   | |   |  _  | |  ___|
-   \/\_____ /  /___\  \  | |_| |   | |   | |_| | | | | | | | | |_|   |   | |   | |_| | | |
-           /__/     \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
+       _
+  /\__| |__/\ 
+  \   ___   / __                 _                                     _
+ _/  /   \  \/  \              _| |_                                 _| |_
+|_  |     \ /    \     _   _  |_   _|  _____   _________   _____ _  |_   _|  _____   _____
+ _\  \_____/  /\  \   | | | |   | |   |  _  | |  _   _  | |  _  | |   | |   |  _  | |  ___|
+ \________/  /__\  \  | |_| |   | |   | |_| | | | | | | | | |_|   |   | |   | |_| | | |
+         /__/    \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
 
-                CAutomator is a custom discord.py bot built by Hyperfresh#8080
-            for the Calculated Anarchy Discord Server. https://discord.gg/cRVKFye
+CAutomator - the custom-built Discord bot, coded in Python
+Copyright (C) 2020 Hyperfresh | https://github.com/Hyperfresh8080/CAutomator/
 
-                            You may use this under the LGPLv3 license.
-                               See the LICENSE file for more details
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-                                github.com/Hyperfresh8080/CAutomator
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License for more details.
+
 """
 print(info)
 print("importing core")
@@ -564,7 +570,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-role'): # assign or edit role
         member = message.author
         #print("user has: " + str(member.roles))
-
         if (str(lvl30ID) in str(member.roles)) or (str(fwiends) in str(member.roles)): # check if the member has level 30 role
             User = Query()
             result = db.search(User.memberId == member.id)

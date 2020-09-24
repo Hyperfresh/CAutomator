@@ -8,6 +8,23 @@ info = """
    /   \____ /  /_\  \   | | | |   | |   |  _  | |  _   _  | |  _  | |   | |   |  _  | |  ___|
    \/\_____ /  /___\  \  | |_| |   | |   | |_| | | | | | | | | |_|   |   | |   | |_| | | |
            /__/     \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
+                                     __       __  __      __ ___      __
+                                    |   |__| |__ |   |_/ |__  |  |   |__
+                                    |__ |  | |__ |__ | \ |   _|_ |__ |__
+
+CAutomator - the custom-built Discord bot, coded in Python
+Copyright (C) 2020 Hyperfresh | https://github.com/Hyperfresh8080/CAutomator/
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License for more details.
+
 """
 print(info)
 print('\nPlease wait while requirements for running CAutomator are being checked.\n')
