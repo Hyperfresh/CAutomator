@@ -1037,19 +1037,20 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             print("Never mind.")
             return
         member = message.author
+        role = message.guild.get_role(758604551787118603)
         if "758604551787118603" in str(message.author.roles):
             print("Person has role. Removing!")
-            await member.remove_roles(758604551787118603)
+            await member.remove_roles(role)
             await message.channel.send("> 🔒 **You were locked out.**\n<@{0}>, you can **no longer** read the message history of #spoilers.\nYou need to change channels for this to take effect.".format(member.id))
         elif len(args) > 1: await message.add_reaction('⚠️')
         elif len(args) == 1:
             if args[0] == "show":
                 print("Adding!")
-                await member.add_roles(758604551787118603)
+                await member.add_roles(role)
                 await message.channel.send("> 🔓 **You were let in.**\n<@{0}>, you can **now** read the message history of #spoilers.\nYou need to change channels for this to take effect.".format(member.id))
             elif args[0] == "hide":
                 print("Removing!")
-                await member.remove_roles(758604551787118603)
+                await member.remove_roles(role)
                 await message.channel.send("> 🔒 **You were locked out.**\n<@{0}>, you can **no longer** read the message history of #spoilers.\nYou need to change channels for this to take effect.".format(member.id))
             else: await message.add_reaction('⚠️') 
             return
