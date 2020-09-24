@@ -1031,21 +1031,28 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else: await message.channel.send(str(someoneDisable))
 
     if message.content.startswith('-spoilers'):
-        if (message.channel.id != "507466333496147978"): return
+        print("I heard spoilers!")
+        if (message.channel.id != "507466333496147978"):
+            print("Never mind.")
+            return
         if "758604551787118603" in str(message.author.roles):
+            print("Person has role. Removing!")
             await member.remove_roles("758604551787118603")
             await message.channel.send("<@{0}>, you can **no longer** read the message history of #spoilers. You need to change channels for this to take effect.")
         elif len(args) > 1: await message.add_reaction('⚠️')
         elif len(args) == 1:
             if args[0] == "show":
+                print("Adding!.")
                 await member.add_roles("758604551787118603")
                 await message.channel.send("<@{0}>, you can **now** read the message history of #spoilers. You need to change channels for this to take effect.")
             elif args[0] == "hide":
+                print("Removing!")
                 await member.remove_roles("758604551787118603")
                 await message.channel.send("<@{0}>, you can **no longer** read the message history of #spoilers. You need to change channels for this to take effect.")
             else: await message.add_reaction('⚠️') 
             return
         else:
+            print("Instructions printed.")
             await message.channel.send("> :warning: **Spoilers ahead!**\n<@{0}>, if you want to see the message history of this channel, please enter `-spoilers show`.")
 
 client.run(TOKEN) # the thing that runs it all
