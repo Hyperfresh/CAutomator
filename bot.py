@@ -585,6 +585,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     roleColour = discord.Colour(int(args[len(args)-1][1:], 16))
                     print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
                     role = message.guild.get_role(result[0]['roleId'])
+                    print(role)
                     await role.edit(name=roleName, colour=roleColour)
                     await member.add_roles(role)
                     await message.channel.send("> :white_check_mark: > **Role edited**\n<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
@@ -604,7 +605,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 
                 if hexColorMatch:
                     roleColour = discord.Colour(int(args[len(args)-1][1:], 16))
-                    print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
+                    print('ROLE CREATE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
                     role = await message.guild.create_role(name=roleName, colour=roleColour)
                     await member.add_roles(role)
                     db.insert({'memberId': member.id, 'roleId': role.id})
@@ -1038,17 +1039,17 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         member = message.author
         if "758604551787118603" in str(message.author.roles):
             print("Person has role. Removing!")
-            await member.remove_roles("758604551787118603")
+            await member.remove_roles(758604551787118603)
             await message.channel.send("> 🔒 **You were locked out.**\n<@{0}>, you can **no longer** read the message history of #spoilers.\nYou need to change channels for this to take effect.".format(member.id))
         elif len(args) > 1: await message.add_reaction('⚠️')
         elif len(args) == 1:
             if args[0] == "show":
-                print("Adding!.")
-                await member.add_roles("758604551787118603")
+                print("Adding!")
+                await member.add_roles(758604551787118603)
                 await message.channel.send("> 🔓 **You were let in.**\n<@{0}>, you can **now** read the message history of #spoilers.\nYou need to change channels for this to take effect.".format(member.id))
             elif args[0] == "hide":
                 print("Removing!")
-                await member.remove_roles("758604551787118603")
+                await member.remove_roles(758604551787118603)
                 await message.channel.send("> 🔒 **You were locked out.**\n<@{0}>, you can **no longer** read the message history of #spoilers.\nYou need to change channels for this to take effect.".format(member.id))
             else: await message.add_reaction('⚠️') 
             return
