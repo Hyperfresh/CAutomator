@@ -967,18 +967,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else:
             await message.channel.send('> ⚙️ > **Current settings:**\n```diff\n+ Enabled:\n'+str(methods[devswitch])+'\n- Disabled:\n'+str(b[0])+'\n'+str(b[1])+'\n```This command shows you the current mail fetch method for the `-getdevcom` command.\n> :warning: > __Information is for debugging only.__\nTo change the fetch method, please contact Hyperfresh.')
 
-######################################################
-# Boot minecraft server - currently disabled.
-#
-
-#    if message.content.startswith('-mcserv'):
- #       if str(message.author) == "Hyperfresh#8080" or "Kayon#1151":
-  #          StartServer()
-   #         await message.channel.send("> ✅ > **Server is up**.")
-    #    else:
-     #       await message.channel.send("> :x: > **Sorry, only Hyperfresh or Kayon can use this command**")
-
-######################################################
 # Get skin
 #
     if message.content.startswith('-mcskin'): # -mcskin user type
@@ -1025,15 +1013,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         try:
             await message.channel.send(file=discord.File('skin.png'))
         except Exception as e:
-            await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
-
-# namelists
-#    if message.content.startswith('-snl'):
-#        if str(message.author) != 'Hyperfresh#8080': return
-#        embedVar = discord.Embed(title="Title", description="Desc", color=0x00ff00)
-#        embedVar.add_field(name="Field1", value="hi", inline=False)
-#        embedVar.add_field(name="Field2", value="hi2", inline=False)
-#        await message.channel.send(embed=embedVar)        
+            await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")    
 
     if message.content.startswith('-someone'):
         if someoneDisable == True: await message.channel.send("This feature is disabled.")
