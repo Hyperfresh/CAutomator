@@ -1030,7 +1030,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(str(someoneDisable))
         else: await message.channel.send(str(someoneDisable))
 
-    if message.content.startswith('-spoilers') and (message.channel.id == "507466333496147978"):
+    if message.content.startswith('-spoilers'):
+        if (message.channel.id != "507466333496147978"): return
         if "758604551787118603" in str(message.author.roles):
             await member.remove_roles("758604551787118603")
             await message.channel.send("<@{0}>, you can **no longer** read the message history of #spoilers. You need to change channels for this to take effect.")
