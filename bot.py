@@ -1034,6 +1034,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
     if message.content.startswith('-spoilers'):
         print("I heard spoilers!")
         if (message.channel.id != 507466333496147978):
+            await message.channel.send("<@{0}>, please run this command in <#507466333496147978>.".format(member.id))
             print("Never mind.")
             return
         member = message.author
