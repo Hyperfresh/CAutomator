@@ -9,7 +9,7 @@ info = """
          /__/    \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
 
 CAutomator - the custom-built Discord bot, coded in Python
-Copyright (C) 2020 Hyperfresh | https://github.com/Hyperfresh8080/CAutomator/
+Copyright (C) 2020 Hyperfresh | https://github.com/Hyperfresh/CAutomator/
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -505,13 +505,13 @@ async def on_message(message):
 
     if message.content.startswith('-about'):
         await message.channel.send(file=discord.File('resources/logo.png'))
-        await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh8080/CAutomator\n Also, thanks to https://github.com/iwa for some errands :)')
+        await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh/CAutomator\n Also, thanks to https://github.com/iwa for some errands :)')
 
 ######################################################
 # HELP MODULE now redirects to the bot's wiki on commands
 
     if message.content.startswith('-help') or message.content.startswith('-?'):
-        await message.channel.send("> :information_source: > **Check here**\nhttps://github.com/Hyperfresh8080/CAutomator/wiki/Commands")
+        await message.channel.send("> :information_source: > **Check here**\nhttps://github.com/Hyperfresh/CAutomator/wiki/Commands")
 
 ######################################################
 # SHUTDOWN MODULE
