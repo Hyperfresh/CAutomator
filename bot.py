@@ -488,6 +488,7 @@ async def on_message(message):
     if message.author.bot: return #avoid every bot instead of only itself
 
     if(not message.content.startswith('-')):
+        theString = message.content.lower
         if "@someone" in message.content or "<@&742301786198769714>" in message.content:
             if someoneDisable == True: await message.channel.send("This feature is disabled.")
             else:
@@ -495,7 +496,7 @@ async def on_message(message):
                 while "295463016248377344" in str(user.roles):
                     user = choice(message.channel.guild.members)
                 await message.channel.send("I pick **"+str(user.mention)+"**!")
-        elif "intro car" in message.content.lower:
+        elif "Intro Car".lower() in message.content.lower():
             await message.channel.send("https://vignette.wikia.nocookie.net/celestegame/images/a/a8/Introcar.PNG/revision/latest/scale-to-width-down/340?cb=20200808035503")
         else: return
 
