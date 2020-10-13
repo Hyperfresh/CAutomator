@@ -1,0 +1,18 @@
+# environment
+*.env
+
+# databases
+*.json
+
+# logs
+*.log
+
+# ytdl files
+*.zip
+*.mp3
+*.mp4
+
+# getdevcom files
+*.html
+*.png
+*.txt
