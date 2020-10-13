@@ -1,3 +1,5 @@
+***Warning: this is the Dev branch, which is going through a code transfer to node.js! If you are looking for the Python code, PLEASE switch to the dev.py or master.py branches!***
+
 # About CAutomator
 ![CAutomator logo](/resources/logo.png)
 I am CAutomator, a custom node.js Discord bot built by Hyperfresh#8080 for the [Calculated Anarchy Discord Server](https://discord.gg/cRVKFye).
