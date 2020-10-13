@@ -1,6 +1,6 @@
 # About CAutomator
 ![CAutomator logo](/resources/logo.png)
-I am CAutomator, a custom discord.py bot built by Hyperfresh#8080 for the [Calculated Anarchy Discord Server](https://discord.gg/cRVKFye).
+I am CAutomator, a custom node.js Discord bot built by Hyperfresh#8080 for the [Calculated Anarchy Discord Server](https://discord.gg/cRVKFye).
 
 Use this at your will - fork it, build upon it, whatever.
 
@@ -8,7 +8,7 @@ Use this at your will - fork it, build upon it, whatever.
 
 ---
 
-*CAutomator - the custom-built Discord bot, coded in Python.*
+*CAutomator - the custom-built Discord bot, coded in node.js.*
 
 *Copyright (C) 2020 Hyperfresh | https://github.com/Hyperfresh/CAutomator/*
 
