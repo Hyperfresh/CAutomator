@@ -1,20 +1,26 @@
 info = """
-          _
-     /\__| |_/\ 
-     \   ___  / ___                 _                                     _
-   /\/  /   \  /   \              _| |_                                 _| |_
-   \   /      /  .  \     _   _  |_   _|  _____   _________   _____ _  |_   _|  _____   _____
-   /   \____ /  /_\  \   | | | |   | |   |  _  | |  _   _  | |  _  | |   | |   |  _  | |  ___|
-   \/\_____ /  /___\  \  | |_| |   | |   | |_| | | | | | | | | |_|   |   | |   | |_| | | |
-           /__/     \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
+       _
+  /\__| |__/\ 
+  \   ___   / __                 _                                     _
+ _/  /   \  \/  \              _| |_                                 _| |_
+|_  |     \ /    \     _   _  |_   _|  _____   _________   _____ _  |_   _|  _____   _____
+ _\  \_____/  /\  \   | | | |   | |   |  _  | |  _   _  | |  _  | |   | |   |  _  | |  ___|
+ \________/  /__\  \  | |_| |   | |   | |_| | | | | | | | | |_|   |   | |   | |_| | | |
+         /__/    \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
 
-                CAutomator is a custom discord.py bot built by Hyperfresh#8080
-            for the Calculated Anarchy Discord Server. https://discord.gg/cRVKFye
+CAutomator - the custom-built Discord bot, coded in Python
+Copyright (C) 2020 Hyperfresh | https://github.com/Hyperfresh/CAutomator/
 
-                            You may use this under the LGPLv3 license.
-                               See the LICENSE file for more details
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-                                github.com/Hyperfresh8080/CAutomator
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License for more details.
+
 """
 print(info)
 print("importing core")
@@ -52,6 +58,7 @@ print("declaring special variables")
 db = TinyDB('db.json') # declare database exists
 TOKEN = os.getenv('DISCORD_TOKEN') # declare the bot token. CHECK YOUR .env FILE!
 lvl30ID = 547360918930194443 # the ID for the level 30 role
+fwiends = 741919152587145277
 bot = commands.Bot(command_prefix='-') # declare the prefix
 client = discord.Client() # stuff
 
@@ -74,6 +81,7 @@ location = ""
 messerr = ""
 linecount = 0
 devswitch = 0
+someoneDisable = False
 # integer "devswitch" ranges from 0 to 2 to switch the type of dev email fetching.
 # 0 = for i in range(messages, messages-N, -1)
 # 1 = for i in range(N)
@@ -476,13 +484,20 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-
+    global someoneDisable
     if message.author.bot: return #avoid every bot instead of only itself
 
     if(not message.content.startswith('-')):
-        if "@someone" in message.content:
-            user = choice(message.channel.guild.members)
-            await message.channel.send("I pick **"+str(user.mention)+"**!")
+        theString = message.content.lower
+        if "@someone" in message.content or "<@&742301786198769714>" in message.content:
+            if someoneDisable == True: await message.channel.send("This feature is disabled.")
+            else:
+                user = choice(message.channel.guild.members)
+                while "295463016248377344" in str(user.roles):
+                    user = choice(message.channel.guild.members)
+                await message.channel.send("I pick **"+str(user.mention)+"**!")
+        elif "Intro Car".lower() in message.content.lower():
+            await message.channel.send("https://vignette.wikia.nocookie.net/celestegame/images/a/a8/Introcar.PNG/revision/latest/scale-to-width-down/340?cb=20200808035503")
         else: return
 
     args = message.content.split()
@@ -493,13 +508,13 @@ async def on_message(message):
 
     if message.content.startswith('-about'):
         await message.channel.send(file=discord.File('resources/logo.png'))
-        await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh8080/CAutomator\n Also, thanks to https://github.com/iwa for some errands :)')
+        await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh/CAutomator\n Also, thanks to https://github.com/iwa for some errands :)')
 
 ######################################################
 # HELP MODULE now redirects to the bot's wiki on commands
 
     if message.content.startswith('-help') or message.content.startswith('-?'):
-        await message.channel.send("> :information_source: > **Check here**\nhttps://github.com/Hyperfresh8080/CAutomator/wiki/Commands")
+        await message.channel.send("> :information_source: > **Check here**\nhttps://github.com/Hyperfresh/CAutomator/wiki/Commands")
 
 ######################################################
 # SHUTDOWN MODULE
@@ -552,13 +567,13 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 #
 # Thanks to https://github.com/iwa for helping me out with this module :)
 
-    global lvl30ID # used for -role and -delrole
+    global lvl30ID
+    global fwiends # used for -role and -delrole
 
     if message.content.startswith('-role'): # assign or edit role
         member = message.author
         #print("user has: " + str(member.roles))
-
-        if str(lvl30ID) in str(member.roles): # check if the member has level 30 role
+        if (str(lvl30ID) in str(member.roles)) or (str(fwiends) in str(member.roles)): # check if the member has level 30 role
             User = Query()
             result = db.search(User.memberId == member.id)
 
@@ -573,6 +588,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                     roleColour = discord.Colour(int(args[len(args)-1][1:], 16))
                     print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
                     role = message.guild.get_role(result[0]['roleId'])
+                    print(role)
                     await role.edit(name=roleName, colour=roleColour)
                     await member.add_roles(role)
                     await message.channel.send("> :white_check_mark: > **Role edited**\n<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
@@ -592,7 +608,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 
                 if hexColorMatch:
                     roleColour = discord.Colour(int(args[len(args)-1][1:], 16))
-                    print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
+                    print('ROLE CREATE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
                     role = await message.guild.create_role(name=roleName, colour=roleColour)
                     await member.add_roles(role)
                     db.insert({'memberId': member.id, 'roleId': role.id})
@@ -604,7 +620,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
 
     if message.content.startswith('-delrole'):
         member = message.author
-        if str(lvl30ID) in str(member.roles): # check if the member has level 30 role
+        if (str(lvl30ID) in str(member.roles)) or (str(fwiends) in str(member.roles)): # check if the member has level 30 role
 
             User = Query()
             result = db.search(User.memberId == member.id)
@@ -954,18 +970,6 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else:
             await message.channel.send('> ⚙️ > **Current settings:**\n```diff\n+ Enabled:\n'+str(methods[devswitch])+'\n- Disabled:\n'+str(b[0])+'\n'+str(b[1])+'\n```This command shows you the current mail fetch method for the `-getdevcom` command.\n> :warning: > __Information is for debugging only.__\nTo change the fetch method, please contact Hyperfresh.')
 
-######################################################
-# Boot minecraft server - currently disabled.
-#
-
-#    if message.content.startswith('-mcserv'):
- #       if str(message.author) == "Hyperfresh#8080" or "Kayon#1151":
-  #          StartServer()
-   #         await message.channel.send("> ✅ > **Server is up**.")
-    #    else:
-     #       await message.channel.send("> :x: > **Sorry, only Hyperfresh or Kayon can use this command**")
-
-######################################################
 # Get skin
 #
     if message.content.startswith('-mcskin'): # -mcskin user type
@@ -1012,18 +1016,49 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         try:
             await message.channel.send(file=discord.File('skin.png'))
         except Exception as e:
-            await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
-
-# namelists
-#    if message.content.startswith('-snl'):
-#        if str(message.author) != 'Hyperfresh#8080': return
-#        embedVar = discord.Embed(title="Title", description="Desc", color=0x00ff00)
-#        embedVar.add_field(name="Field1", value="hi", inline=False)
-#        embedVar.add_field(name="Field2", value="hi2", inline=False)
-#        await message.channel.send(embed=embedVar)        
+            await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")    
 
     if message.content.startswith('-someone'):
-        user = choice(message.channel.guild.members)
-        await message.channel.send("I pick **"+str(user.mention)+"**!")
+        if someoneDisable == True: await message.channel.send("This feature is disabled.")
+        else:
+            user = choice(message.channel.guild.members)
+            while "295463016248377344" in str(user.roles):
+                user = choice(message.channel.guild.members)
+            await message.channel.send("I pick **"+str(user)+"**!")
+
+    if message.content.startswith('-disomeone'):
+        if "295459816468381697" in str(message.author.roles):
+            if someoneDisable == True: someoneDisable = False
+            else: someoneDisable = True
+            await message.channel.send(str(someoneDisable))
+        else: await message.channel.send(str(someoneDisable))
+
+    if message.content.startswith('-spoilers'):
+        print("I heard spoilers!")
+        member = message.author
+        if (message.channel.id != 507466333496147978):
+            await message.channel.send("<@{0}>, please run this command in <#507466333496147978>.".format(member.id))
+            print("Never mind.")
+            return
+        role = message.guild.get_role(758604551787118603)
+        if "758604551787118603" in str(message.author.roles):
+            print("Person has role. Removing!")
+            await member.remove_roles(role)
+            await message.channel.send("> 🔒 **You were locked out.**\n<@{0}>, you can **no longer** read the message history of #spoilers.\nYou need to relaunch Discord for this to take effect.".format(member.id))
+        elif len(args) > 1: await message.add_reaction('⚠️')
+        elif len(args) == 1:
+            if args[0] == "show":
+                print("Adding!")
+                await member.add_roles(role)
+                await message.channel.send("> 🔓 **You were let in.**\n<@{0}>, you can **now** read the message history of #spoilers.\nYou need to relaunch Discord for this to take effect.".format(member.id))
+            elif args[0] == "hide":
+                print("Removing!")
+                await member.remove_roles(role)
+                await message.channel.send("> 🔒 **You were locked out.**\n<@{0}>, you can **no longer** read the message history of #spoilers.\nYou need to relauch Discord for this to take effect.".format(member.id))
+            else: await message.add_reaction('⚠️') 
+            return
+        else:
+            print("Instructions printed.")
+            await message.channel.send("> :warning: **Spoilers ahead!**\n<@{0}>, if you want to see the message history of this channel, please enter `-spoilers show`.".format(member.id))
 
 client.run(TOKEN) # the thing that runs it all
