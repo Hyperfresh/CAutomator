@@ -22,6 +22,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License for more details.
 `)
 
+var stop = 0
+
 console.log(info)
 
 const { exception } = require("console");
@@ -44,6 +46,17 @@ function ready() {
 
 client.on("ready", function() {
         ready()
+        while (true) {
+                if (stop == 1) {
+                        console.log("Shutdown requested!");
+                        message.channel.send("🟥 > Shutting down.");
+                        client.user.setPresence({status: "invisible"});
+                        setTimeout(() => {
+                                client.destroy();
+                                throw new Error("🟥 > Bot has now shut down.");
+                        }, 5000);
+                }
+        } 
 });
 
 client.on("message", function(message) { 
@@ -60,13 +73,17 @@ client.on("message", function(message) {
         }
         if (command === "about") {
                 message.channel.send(`https://github.com/Hyperfresh/CAutomator/blob/dev/resources/logo.png?raw=true`);
-                message.channel.send(`> 👋 > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh/CAutomator\nAlso, thanks to https://github.com/iwa for some errands :)\n\n*This program is licensed under AGPLv3. See https://github.com/Hyperfresh/CAutomator/blob/dev/LICENSE*`);
+                message.channel.send(`> 👋 > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\n
+                I am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\n
+                You can find more information on my GitHub: https://github.com/Hyperfresh/CAutomator\n
+                Also, thanks to https://github.com/iwa for helping me with some things c:\n\n
+                *I am licensed under AGPLv3. See https://github.com/Hyperfresh/CAutomator/blob/dev/LICENSE*`);
         }
         if (command === "time") {
                 var utcSeconds = (Date.now()/1000);
                 var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
                 d.setUTCSeconds(utcSeconds);
-                message.channel.send(String(d));
+                message.channel.send(`It is **`,String(d),`**.`);
         }
         if (command === "stop") {
                 if (!message.user == "Hyperfresh#8080") { return; }
