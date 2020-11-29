@@ -1112,7 +1112,7 @@ async def on_message(message):
                         else:    
                             await message.channel.send("That's not something you can edit.")
                     else:
-                        message.channel.send("Couldn't find you in the database. Did you register?")
+                        await message.channel.send("Couldn't find you in the database. Did you register?")
             else:
                 User = Query()
                 result = pf.search(User.disc == args[0])
