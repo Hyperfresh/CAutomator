@@ -8,7 +8,8 @@
     "discord.js": "^12.4.1",
     "forever": "^3.0.2",
     "node-fetch": "^2.6.1",
-    "setimmediate": "^1.0.5"
+    "setimmediate": "^1.0.5",
+    "zangodb": "^1.0.8"
   },
   "devDependencies": {},
   "scripts": {

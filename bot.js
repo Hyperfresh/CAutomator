@@ -22,15 +22,18 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License for more details.
 `)
 
-var stop = 0
+var profile_edit = 0
 
 console.log(info)
 
-const { exception } = require("console");
+const { exception, profile } = require("console");
 const Discord = require("discord.js");
 const { exit } = require("process");
-const config = require("./config.json")
+const config = require("./config.json");
 const client = new Discord.Client();
+const zangodb = require("zangodb");
+let profiles = zangodb.Db('profiles');
+let db = zangodb.Db('db');
 
 const prefix = "~";
 
@@ -61,7 +64,15 @@ client.on("ready", function() {
 
 client.on("message", function(message) { 
         if (message.author.bot) return;
-        if (!message.content.startsWith(prefix)) return;
+        if (!message.content.startsWith(prefix)) {
+                if ("@someone" in message.content) {
+                        user = choice(message.channel.guild.members);
+                        while ("295463016248377344" in str(user.roles)) {
+                                user = choice(message.channel.guild.members);
+                        }
+                        message.channel.send("I pick **" + String(user.mention) + "**!");
+                } else return;
+        }
 
         const commandBody = message.content.slice(prefix.length);
         const args = commandBody.split(' ');
@@ -81,7 +92,7 @@ client.on("message", function(message) {
         }
         if (command === "time") {
                 var utcSeconds = (Date.now()/1000);
-                var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+                var d = new Date(0);
                 d.setUTCSeconds(utcSeconds);
                 message.channel.send(`It is **`,String(d),`**.`);
         }
@@ -94,8 +105,6 @@ client.on("message", function(message) {
                         client.destroy();
                         throw new Error("🟥 > Bot has now shut down.");
                 }, 5000);
-                
-
         }
         if (command === "reboot") {
                 if (!message.user == "Hyperfresh#8080") { return; }
@@ -116,6 +125,67 @@ client.on("message", function(message) {
                         }, 3000);
                 }, 5000);
                 
+        }
+        // if (command === "register") {
+        //         profiles.search(user)
+        // }
+
+
+
+
+        if (command === "role") {
+                member = message.author;
+                if ("547360918930194443" in str(member.roles)) {
+        //     User = Query()
+        //     result = db.search(User.memberId == member.id)
+
+                        if(len(result) == 1) {
+                                roleName = ""
+                                for(x in range(0, len(args)-1)) {
+                                        roleName = roleName + args[x] + " "
+                                }
+                                let re = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
+                                hexColorMatch = re.match(args[length(args)-1])
+
+                                if(hexColorMatch) {
+                                        print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
+                                        role = message.guild.get_role(result[0]['roleId'])
+                                        role.edit({
+                                                name: roleName,
+                                                colour: args[len(args)-1]
+                                        })
+                                        message.channel.send("> :white_check_mark: > **Role edited**\n<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
+                                } else {
+                                        print('ROLE CHANGE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' without colour change')
+                                        role = message.guild.get_role(result[0]['roleId'])
+                                        role.edit({name: roleName})
+                                        message.channel.send("> :white_check_mark: > **Role edited**\n<@{0}>, I edited your role **<@&{1}>**".format(message.author.id, role.id))
+                                }
+                        } else {
+                                roleName = ""
+                                for(x in range(0, len(args)-1)) {
+                                        roleName = roleName + args[x] + " "
+                                }
+                                let re = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
+                                hexColorMatch = re.match(args[length(args)-1])
+
+                                if(hexColorMatch) {
+                                print('ROLE CREATE REQUESTED for ' + member.name + "#" + member.discriminator + ': ' + str(roleName) + ' with colour ' + str(roleColour))
+                                
+                                role = message.guild.create_role(name=roleName, colour=roleColour)
+                                member.add_roles(new role(client, {
+                                        name: roleName,
+                                        colour: args[len(args)-1]
+                                }))
+                                db.insert({'memberId': member.id, 'roleId': role.id})
+                                message.channel.send("> :white_check_mark: > **Role given**\n<@{0}>, I gave you the role **<@&{1}>**".format(message.author.id, role.id))
+                                } else {
+                                message.channel.send("> :x: > **Something went wrong**\n <@{.author.id}>, the colour hex code you entered is incorrect!\nDid you forget the `#` at the start of your hex code?".format(message))
+                                }
+                        }
+                } else {
+                        message.channel.send("> :x: > **You can't do that**\nThis is for Level 30+ use only.")
+                }
         }
 });         
 client.login(config.BOT_TOKEN);
