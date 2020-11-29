@@ -1,6 +1,6 @@
 # Databases
-*.json
-!package.json
+config.json
+data/
 
 # Logs
 logs
