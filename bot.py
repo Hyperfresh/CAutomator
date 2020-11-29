@@ -56,6 +56,7 @@ load_dotenv() # loads the dotenv
 print("declaring special variables")
 # DECLARATIONS | special things
 db = TinyDB('db.json') # declare database exists
+pf = TinyDB('pf.json') # Profiles
 TOKEN = os.getenv('DISCORD_TOKEN') # declare the bot token. CHECK YOUR .env FILE!
 lvl30ID = 547360918930194443 # the ID for the level 30 role
 fwiends = 741919152587145277
@@ -96,6 +97,7 @@ def crashcrash():
 print("defining time")
 # IMPORT, DEF | get the current time, or record the time a speedtest was done.
 import time
+import datetime
 def UpdateTime(speed):
     global CurrentTime
     global SpeedPerformTime
@@ -214,9 +216,6 @@ def readlog(logfile):
     log.close
     return(logmessage)
 
-# DEFINITIONS | start the minecraft server
-print("defining server start")
-def StartServer():
     print("trying")
     subprocess.run(['bash','minecraft.bash'])
     print("completed")
@@ -505,19 +504,20 @@ async def on_message(message):
 
 ######################################################
 # ABOUT MODULE
-
+#
     if message.content.startswith('-about'):
         await message.channel.send(file=discord.File('resources/logo.png'))
         await message.channel.send('> :wave: > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\nI am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\nYou can find more information on my GitHub: https://github.com/Hyperfresh/CAutomator\n Also, thanks to https://github.com/iwa for some errands :)')
 
 ######################################################
 # HELP MODULE now redirects to the bot's wiki on commands
-
+#
     if message.content.startswith('-help') or message.content.startswith('-?'):
         await message.channel.send("> :information_source: > **Check here**\nhttps://github.com/Hyperfresh/CAutomator/wiki/Commands")
 
 ######################################################
 # SHUTDOWN MODULE
+#
     if message.content.startswith('-stop'):
         if str(message.author) == 'Hyperfresh#8080':
             await message.channel.send(':wave: > See ya, ' + str(message.author) + '!')
@@ -525,17 +525,6 @@ async def on_message(message):
             crashcrash()
         else:
             await message.channel.send(':x: > Nice try, ' + str(message.author) + ". <:squinteyes:563998593460076544>")
-
-######################################################
-# ABOUT SPEEDTEST MODULE
-    if message.content.startswith('-abspeed'):
-        speedabout = '''**Speedtest CLI by Ookla** (speedtest-cli pypi) is the official command line client for testing the speed and performance of an internet connection, provided by Ookla.
-Your use of the `-speed` command is subject to the Speedtest End User License Agreement, Terms of Use and Privacy Policy found at these URLs:
-        https://www.speedtest.net/about/eula
-        https://www.speedtest.net/about/terms
-        https://www.speedtest.net/about/privacy
-        '''
-        await message.channel.send(str(speedabout))
 
 ######################################################
 # SPEEDTEST MODULE
@@ -653,17 +642,13 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             separator = " "
             pingme = separator.join(args)
             os.system('ping -c 4 ' + str(pingme) + ' > ping.txt')
-        else:
-            os.system('ping -c 1 discord.com > ping.txt')
         if len(args) == 0:
             await message.channel.send('> :ping_pong: > **Pong!** I recorded ' + str(bot.latency) + ' ms.')
+            return
         await message.channel.send('```' + str(readlog('ping.txt')) + '```')
         await message.clear_reactions()
         await client.change_presence(activity=discord.Game('-?'))
 
-######################################################
-# GET TIME MODULE
-#
     global CurrentTime
 
     if message.content.startswith('-time'):
@@ -706,11 +691,9 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             os.execl(sys.executable, sys.executable, * sys.argv)
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
-            
-            
 
 ######################################################
-# shell
+# SHELL MODULE
 #
     if message.content.startswith('-sh'):
         if str(message.author) == 'Hyperfresh#8080':
@@ -734,7 +717,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(':x: > Only the bot author can do this.')
 
 ######################################################
-# Get a file on the HYWS
+# FILE-RETR MODULE
 #
 
     if message.content.startswith('-file'):
@@ -751,32 +734,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else:
             await message.channel.send(':x: > Only the bot author can do this.')
 
-######################################################
-# python
-#
-    if message.content.startswith('-py'):
-        if str(message.author) == 'Hyperfresh#8080':
-            separator = " "
-            code = separator.join(args)
-            await message.add_reaction('<a:Typing:459588536841011202>')
-            await client.change_presence(activity=discord.Game('Busy, please wait...'),status=discord.Status.dnd)
-            try:
-                os.system('python3 -c "' + str(code) + '" > code.log')
-                try:
-                    await message.channel.send('```py\n' + str(readlog('code.log')) + '```')
-                except Exception as e:
-                    await message.channel.send(':x: > Something went wrong when sending the output of the command here. Did it hit the 2000 character limit?\nError:```' + str(e) + "```Here's a copy of what was output:")
-                    await message.channel.send(file=discord.File('code.log'))
-            except Exception as e:
-                await message.channel.send(":x: > That didn't work.\n\nCode: ```" + str(code) + '```\nError:```' + str(e) + "```")
-            await client.change_presence(activity=discord.Game('-?'))
-            await message.clear_reactions()
-        else:
-            await message.channel.send(':x: > Only the bot author can do this.')
 
-######################################################
-# powershell
-#
     if message.content.startswith('-ps'):
         if str(message.author) == 'Hyperfresh#8080':
             separator = " "
@@ -798,7 +756,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.channel.send(':x: > Only the bot author can do this.')
 
 ######################################################
-# Weather
+# WEATHER MODULE
 #
     global location
     global getbom
@@ -828,7 +786,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.clear_reactions()
 
 ######################################################
-# Download music from YouTube
+# YTDL MODULE
 #
     global upload
     global downloading
@@ -899,7 +857,7 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
             await message.add_reaction('✅')
 
 ######################################################
-# Get comments from Game Development document
+# GETDEVCOM MODULE
 #
     global totalmess
     global messerr
@@ -939,10 +897,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
                 await message.channel.send(":x: > Upload failed. The file might be too big to upload here.\n\nError: ```" + str(e) + "```")
         await message.channel.send("✅ > Done.")
         await client.change_presence(activity=discord.Game(name='-?'))
-
-######################################################
-# Swap email fetching method
-#
+    
+    # Switch email method
     b = []
 
     if message.content.startswith('-devswitch'):
@@ -970,7 +926,8 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else:
             await message.channel.send('> ⚙️ > **Current settings:**\n```diff\n+ Enabled:\n'+str(methods[devswitch])+'\n- Disabled:\n'+str(b[0])+'\n'+str(b[1])+'\n```This command shows you the current mail fetch method for the `-getdevcom` command.\n> :warning: > __Information is for debugging only.__\nTo change the fetch method, please contact Hyperfresh.')
 
-# Get skin
+######################################################
+# MINECRAFT SKIN MODULE
 #
     if message.content.startswith('-mcskin'): # -mcskin user type
         user = ""
@@ -1060,5 +1017,154 @@ Your use of the `-speed` command is subject to the Speedtest End User License Ag
         else:
             print("Instructions printed.")
             await message.channel.send("> :warning: **Spoilers ahead!**\n<@{0}>, if you want to see the message history of this channel, please enter `-spoilers show`.".format(member.id))
+
+######################################################
+# PROFILE MODULE
+#
+    if message.content.startswith("-profile"):
+        member = message.author
+        if len(args) != 0:
+            if args[0] == "register":
+                User = Query()
+                result = pf.search(User.memberID == member.id)
+                if len(result) != 1:
+                    pronoun = []
+                    if ("754901377406337085" in str(member.roles)): pronoun.append("he/him")
+                    if ("754901568624525372" in str(member.roles)): pronoun.append("she/her")
+                    if ("754901688669700106" in str(member.roles)): pronoun.append("they/them")
+                    if ("754901986205237358" in str(member.roles)): pronoun.append("other")
+                    try:
+                        pronouns = pronoun[0]
+                    except:
+                        await message.channel.send("Please assign yourself a pronoun. You can do this here: https://discord.com/channels/267817764989698048/723112022425731093/760706868657520730")
+                        return
+                    if len(pronoun) > 1:
+                        pronouns = ""
+                        for item in pronoun:
+                            pronouns = item + ", " + pronouns
+                    pf.insert({
+                        'memberID': member.id,
+                        "disc": "{0}#{1}".format(member.name,member.discriminator),
+                        "name": "Anonymous",
+                        "bday": "--",
+                        "switch": "None",
+                        "pronouns": pronouns,
+                        "bioT": None,
+                        "bioD": None,
+                        "colour": 0,
+                        "avatar": str(member.avatar_url)
+                    })
+                    User = Query()
+                    result = pf.search(User.memberID == member.id)
+                    await message.channel.send("Done! Here's what your profile looks like:")
+                    embed = discord.Embed(
+                        title=str(result[0]["disc"]),
+                        colour=discord.Colour(result[0]["colour"]),
+                        description="""**Name**: {0}
+                        **Pronouns**: {1}
+                        **Birthday**: {2}
+                        **Switch FC**: {3}""".format(result[0]["name"],result[0]["pronouns"],result[0]["bday"],result[0]["switch"]),
+                    )
+                    embed.set_thumbnail(url=result[0]["avatar"])
+                    embed.set_author(name="Calculated Anarchy Profile", icon_url="https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png")
+                    #embed.add_field(name="Hey! I'm Hy, the friendly enby Octoling!", value="I'm the one behind CAutomator.")
+                    await message.channel.send(embed=embed)
+                else:
+                    await message.channel.send("You're already registered on the database!")
+            elif args[0] == "edit":
+                    User = Query()
+                    result = pf.search(User.memberID == member.id)
+                    if len(result) == 1:
+                        if args[1] == "name":
+                            name = ""
+                            for i in range(2, len(args)):
+                                name = name + args[i] + " "
+                            pf.update({"name": name}, (User.memberID == member.id))
+                            await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))   
+                        elif args[1] == "bday":
+                            if len(args) != 4:
+                                await message.channel.send("Check your birthdate. Make sure it's in the format \"12 August\"")
+                            else:
+                                pf.update({"bday": "{0} {1}".format(args[2],args[3])}, (User.memberID == member.id))
+                                await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))   
+                        elif args[1] == "fc":
+                            pf.update({"switch": str(args[2])}, (User.memberID == member.id))
+                            await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))
+                        elif args[1] == "bio":
+                            text = ""
+                            for i in range(2, len(args)):
+                                if args[i] == "|":
+                                    title = text
+                                    text = ""
+                                else:
+                                    text = text + args[i] + " "
+                            pf.update({"bioT": title, "bioD": text}, (User.memberID == member.id))
+                            await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))   
+                        elif args[1] == "color":
+                            hexColorMatch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1]) # check if hex can be parsed
+                            if hexColorMatch:
+                                pf.update({"colour": int(args[len(args)-1][1:], 16)}, (User.memberID == member.id))
+                                await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))   
+                            else: await message.channel.send("Check the colour you gave me. Is it right?")
+                        elif args[1] == "avatar":
+                            pf.update({"avatar": member.avatar_url}, (User.memberID == member.id))
+                            await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))
+                        else:    
+                            await message.channel.send("That's not something you can edit.")
+                    else:
+                        message.channel.send("Couldn't find you in the database. Did you register?")
+            else:
+                User = Query()
+                result = pf.search(User.disc == args[0])
+                if len(result) == 1:
+                    embed = discord.Embed(
+                        title=str(result[0]["disc"]),
+                        colour=discord.Colour(result[0]["colour"]),
+                        description="""**Name**: {0}
+                        **Pronouns**: {1}
+                        **Birthday**: {2}
+                        **Switch FC**: {3}""".format(result[0]["name"],result[0]["pronouns"],result[0]["bday"],result[0]["switch"]),
+                    )
+                    embed.set_thumbnail(url=result[0]["avatar"])
+                    embed.set_author(name="Calculated Anarchy Profile", icon_url="https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png")
+                    if result[0]["bioT"] != None:
+                        embed.add_field(name=result[0]["bioT"], value=result[0]["bioD"])
+                        await message.channel.send(embed=embed)
+                else: await message.channel.send("Seems they aren't on the database.")
+        else:
+            User = Query()
+            result = result = pf.search(User.memberID == member.id)
+            if len(result) == 1:
+                embed = discord.Embed(
+                    title=str(result[0]["disc"]),
+                    colour=discord.Colour(result[0]["colour"]),
+                    description="""**Name**: {0}
+                    **Pronouns**: {1}
+                    **Birthday**: {2}
+                    **Switch FC**: {3}""".format(result[0]["name"],result[0]["pronouns"],result[0]["bday"],result[0]["switch"]),
+                )
+                embed.set_thumbnail(url=member.avatar_url)
+                embed.set_author(name="Calculated Anarchy Profile", icon_url="https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png")
+                if result[0]["bioT"] != None:
+                    embed.add_field(name=result[0]["bioT"], value=result[0]["bioD"])
+                await message.channel.send(embed=embed)
+            else: await message.channel.send("Seems they aren't on the database.")
+        
+    if message.content.startswith("-namelist"):
+        if str(message.author) != "Hyperfresh#8080": return
+        for item in pf:
+            embed = discord.Embed(
+                title=str(item["disc"]),
+                colour=discord.Colour(item["colour"]),
+                description="""**Name**: {0}
+                **Pronouns**: {1}
+                **Birthday**: {2}
+                **Switch FC**: {3}""".format(item["name"],item["pronouns"],item["bday"],item["switch"]),
+            )
+            embed.set_thumbnail(url=item["avatar"])
+            embed.set_author(name="Calculated Anarchy Profile", icon_url="https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png")
+            if item["bioT"] != None:
+                embed.add_field(name=item["bioT"], value=item["bioD"])
+            await message.channel.send(embed=embed)
 
 client.run(TOKEN) # the thing that runs it all
