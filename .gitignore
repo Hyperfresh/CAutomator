@@ -1,6 +1,7 @@
 # Databases
 config.json
 data/
+.vscode
 
 # Logs
 logs
