@@ -1,13 +1,13 @@
-info = """
-       _
-  /\__| |__/\ 
-  \   ___   / __                 _                                     _
- _/  /   \  \/  \              _| |_                                 _| |_
-|_  |     \ /    \     _   _  |_   _|  _____   _________   _____ _  |_   _|  _____   _____
- _\  \_____/  /\  \   | | | |   | |   |  _  | |  _   _  | |  _  | |   | |   |  _  | |  ___|
- \________/  /__\  \  | |_| |   | |   | |_| | | | | | | | | |_|   |   | |   | |_| | | |
-         /__/    \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
+#        _
+#   /\__| |__/\ 
+#   \   ___   / __                 _                                     _
+#  _/  /   \  \/  \              _| |_                                 _| |_
+# |_  |     \ /    \     _   _  |_   _|  _____   _________   _____ _  |_   _|  _____   _____
+#  _\  \_____/  /\  \   | | | |   | |   |  _  | |  _   _  | |  _  | |   | |   |  _  | |  ___|
+#  \________/  /__\  \  | |_| |   | |   | |_| | | | | | | | | |_|   |   | |   | |_| | | |
+#          /__/    \__\ |_____|   |_|   |_____| |_| |_| |_| |_____|_|   |_|   |_____| |_|
 
+info = """
 CAutomator - the custom-built Discord bot, coded in Python
 Copyright (C) 2020 Hyperfresh | https://github.com/Hyperfresh/CAutomator/
 
@@ -20,7 +20,6 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Lesser General Public License for more details.
-
 """
 print(info)
 print("importing core")
@@ -46,7 +45,7 @@ from random import choice
 # IMPORT | subprocessing, allowing CAutomator to do multiple things at once
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
-import subprocess  
+import subprocess
 
 print("loading dotenv")
 # IMPORT, START | dotenv
@@ -138,20 +137,27 @@ def ytdl():
     if dltype == "list":
         print("converting list to mp3 zips")
         subprocess.run(['youtube-dl','-x','-o','~/CAutomator/yt-pl/%(title)s.%(ext)s',str(video)])  
-        print("zipping")      
-        subprocess.run(['zip','-r','~/CAutomator/output.zip','-i',"~/CAutomator/yt-pl/"]) 
-        print("complete")       
+        print("zipping")
+        subprocess.run(['zip','-r','~/CAutomator/output.zip','-i',"~/CAutomator/yt-pl/"])
+        print("complete")
 
     elif dltype == "aud":
         print("downloading to mp3")
-        subprocess.run(['youtube-dl','--no-playlist','-x','--audio-format','mp3','-o','~/CAutomator/output.%(ext)s',str(video)])
+        subprocess.run(['youtube-dl',
+        '--no-playlist',
+        '-x','--audio-format','mp3',
+        '-o','~/CAutomator/output.%(ext)s',
+        str(video)])
         print("complete")
-        upload = glob.glob('/home/hyperfresh/CAutomator/output.*')   
+        upload = glob.glob('/home/hyperfresh/CAutomator/output.*')
 
     else: # assume mp4 if anything else
         print("downloading to mp4")
-        subprocess.run(['youtube-dl','--no-playlist','-o','~/CAutomator/output.%(ext)s',str(video)])   
-        print("complete")     
+        subprocess.run(['youtube-dl',
+        '--no-playlist',
+        '-o','~/CAutomator/output.%(ext)s',
+        str(video)])
+        print("complete")
         upload = glob.glob('/home/hyperfresh/CAutomator/output.*')
 
 print("defining conv")
@@ -166,11 +172,17 @@ def conv():
     os.system('rm ~/CAutomator/compress.mp4 ~/CAutomator/audio.mp3')
     if dltype == "aud":
         print("converting to mp3")
-        subprocess.run(['ffmpeg','-i',str(upload[0]),'-map','0:a:0','-b:a','96k','/home/hyperfresh/CAutomator/audio.mp3'])
+        subprocess.run(['ffmpeg',
+        '-i',str(upload[0]),
+        '-map','0:a:0','-b:a','96k',
+        '/home/hyperfresh/CAutomator/audio.mp3'])
         print("completed")
     else:
         print("compressing")
-        subprocess.run(['HandBrakeCLI','-Z',"Discord Tiny 5 Minutes 240p30",'-i',str(upload[0]),'-o','/home/hyperfresh/CAutomator/compress.mp4'])
+        subprocess.run(['HandBrakeCLI',
+        '-Z',"Discord Tiny 5 Minutes 240p30",
+        '-i',str(upload[0]),
+        '-o','/home/hyperfresh/CAutomator/compress.mp4'])
         print("completed")
 
 print("defining wttr")
@@ -191,16 +203,14 @@ def wttr():
             forecast = au_cities.index(location)
             imgkit.from_url('http://bom.gov.au/'+str(au_states[forecast])+'/forecasts/'+str(au_cities[forecast])+'.shtml', 'weather.png')
             print("got results from bom")
-            return
         elif location in au_states:
             print("au location detected")
             forecast = au_states.index(location)
             imgkit.from_url('http://bom.gov.au/'+str(au_states[forecast])+'/forecasts/'+str(au_cities[forecast])+'.shtml', 'weather.png')
             print("got results from bom")
-            return
         else:
             notbom = True
-            return
+        return
 
     subprocess.run(['curl','wttr.in/'+str(location)+'.png','--output','weather.png'])
     print("completed")
@@ -224,12 +234,7 @@ def readlog(logfile):
     subprocess.run(['bash','minecraft.bash'])
     print("completed")
 
-print("defining gamedev")
-# IMPORT, DEF | read the emails for the game dev document
-import imaplib
-import email
-from email.header import decode_header
-def readmail(count):
+
     global totalmess
     global messerr
     global devswitch
@@ -868,9 +873,6 @@ async def on_message(message):
             await message.clear_reactions()
             await message.add_reaction('✅')
 
-######################################################
-# GETDEVCOM MODULE
-#
     global totalmess
     global messerr
     global devswitch
