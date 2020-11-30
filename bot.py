@@ -506,14 +506,6 @@ async def on_message(message):
                 while "295463016248377344" in str(user.roles):
                     user = choice(message.channel.guild.members)
                 await message.channel.send("I pick **"+str(user.mention)+"**!")
-        elif "Intro Car".lower() in message.content.lower():
-            await message.channel.send("https://vignette.wikia.nocookie.net/celestegame/images/a/a8/Introcar.PNG/revision/latest/scale-to-width-down/340?cb=20200808035503")
-
-        elif "the game" in message.content.lower():
-            if int(time.time()) > theGameEP:
-                await message.channel.send("**You have lost the game.** Thanks a lot, <@{0}>!\nYou last lost it at {1}; or {2} seconds ago.".format(message.author.id,theGameD, (int(time.time()) - theGameEP)))
-                theGameEP = int(time.time())
-                theGameD = (time.strftime("%d %b %Y %H:%M:%S", time.localtime()))
         else: return
 
     args = message.content.split()
