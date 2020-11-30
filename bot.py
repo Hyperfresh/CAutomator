@@ -53,6 +53,10 @@ print("loading dotenv")
 from dotenv import load_dotenv #dotenv thing which has discord token
 load_dotenv() # loads the dotenv
 
+# IMPORT | time
+import time
+import datetime
+
 print("declaring special variables")
 # DECLARATIONS | special things
 db = TinyDB('db.json') # declare database exists
@@ -83,6 +87,8 @@ messerr = ""
 linecount = 0
 devswitch = 0
 someoneDisable = False
+theGameEP = int(time.time())
+theGameD = (time.strftime("%d %b %Y %H:%M:%S", time.localtime()))
 # integer "devswitch" ranges from 0 to 2 to switch the type of dev email fetching.
 # 0 = for i in range(messages, messages-N, -1)
 # 1 = for i in range(N)
@@ -96,8 +102,6 @@ def crashcrash():
 
 print("defining time")
 # IMPORT, DEF | get the current time, or record the time a speedtest was done.
-import time
-import datetime
 def UpdateTime(speed):
     global CurrentTime
     global SpeedPerformTime
@@ -484,6 +488,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
     global someoneDisable
+    global theGameEP
+    global theGameD
     if message.author.bot: return #avoid every bot instead of only itself
 
     if(not message.content.startswith('-')):
@@ -497,6 +503,12 @@ async def on_message(message):
                 await message.channel.send("I pick **"+str(user.mention)+"**!")
         elif "Intro Car".lower() in message.content.lower():
             await message.channel.send("https://vignette.wikia.nocookie.net/celestegame/images/a/a8/Introcar.PNG/revision/latest/scale-to-width-down/340?cb=20200808035503")
+
+        elif "the game" in message.content.lower():
+            if int(time.time()) > theGameEP:
+                await message.channel.send("**You have lost the game.** Thanks a lot, <@{0}>!\nYou last lost it at {1}; or {2} seconds ago.".format(message.author.id,theGameD, (int(time.time()) - theGameEP)))
+                theGameEP = int(time.time())
+                theGameD = (time.strftime("%d %b %Y %H:%M:%S", time.localtime()))
         else: return
 
     args = message.content.split()
@@ -1056,7 +1068,6 @@ async def on_message(message):
                     })
                     User = Query()
                     result = pf.search(User.memberID == member.id)
-                    await message.channel.send("Done! Here's what your profile looks like:")
                     embed = discord.Embed(
                         title=str(result[0]["disc"]),
                         colour=discord.Colour(result[0]["colour"]),
@@ -1068,7 +1079,16 @@ async def on_message(message):
                     embed.set_thumbnail(url=result[0]["avatar"])
                     embed.set_author(name="Calculated Anarchy Profile", icon_url="https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png")
                     #embed.add_field(name="Hey! I'm Hy, the friendly enby Octoling!", value="I'm the one behind CAutomator.")
-                    await message.channel.send(embed=embed)
+                    await message.channel.send(message="All set up! Here's what your profile looks like:",embed=embed)
+                    await message.channel.send("""To edit your profile, do `-profile edit`. Here's what you can edit:
+ ```md
+name - edit IRL name. eg, *Paul "Hy" Asencion* (but you do it how you want to do it.)
+pronouns - (cannot be edited, they're given based on the roles you have)
+bday - edit birthday, in the format *12 August*
+fc - edit Switch friend code. eg, *SW-6873-6407-1599*
+color - set colour of the card, in the format *#00ff00*. **#hex required**
+bio - set a quick about yourself section, in the format *Bio Title | Description*. **`|` required**
+```""")
                 else:
                     await message.channel.send("You're already registered on the database!")
             elif args[0] == "edit":
@@ -1113,6 +1133,17 @@ async def on_message(message):
                             await message.channel.send("That's not something you can edit.")
                     else:
                         await message.channel.send("Couldn't find you in the database. Did you register?")
+            elif args[0] == "help":
+                await message.channel.send("""**Register**: `-profile register`\n**Your profile**: `-profile`\n**Another profile**: `-profile Hyperfresh#8080`\n**Edit**:`-profile edit`. Here's what you can edit:
+```md
+name - edit IRL name. eg, *Paul "Hy" Asencion* (but you do it how you want to do it.)
+pronouns - (cannot be edited, they're given based on the roles you have)
+bday - edit birthday, in the format *12 August*
+fc - edit Switch friend code. eg, *SW-6873-6407-1599*
+color - set colour of the card, in the format *#00ff00*. **#hex required**
+bio - set a quick about yourself section, in the format *Bio Title | Description*. **`|` required**
+```""")
+                return
             else:
                 User = Query()
                 result = pf.search(User.disc == args[0])
@@ -1130,7 +1161,7 @@ async def on_message(message):
                     if result[0]["bioT"] != None:
                         embed.add_field(name=result[0]["bioT"], value=result[0]["bioD"])
                         await message.channel.send(embed=embed)
-                else: await message.channel.send("Seems they aren't on the database.")
+                else: await message.channel.send("Seems **{0}** isn't on the database.".format(args[0]))
         else:
             User = Query()
             result = result = pf.search(User.memberID == member.id)
@@ -1148,7 +1179,7 @@ async def on_message(message):
                 if result[0]["bioT"] != None:
                     embed.add_field(name=result[0]["bioT"], value=result[0]["bioD"])
                 await message.channel.send(embed=embed)
-            else: await message.channel.send("Seems they aren't on the database.")
+            else: await message.channel.send("Seems you aren't on the database. Run `-profile register` to do that!")
         
     if message.content.startswith("-namelist"):
         if str(message.author) != "Hyperfresh#8080": return
