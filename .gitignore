@@ -1,3 +1,6 @@
+# node modules, no cross-contamination for cauto.js and cauto.py
+node_modules/
+
 # environment
 *.env
 
