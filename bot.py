@@ -1034,21 +1034,23 @@ async def on_message(message):
                 User = Query()
                 result = pf.search(User.memberID == member.id)
                 if len(result) != 1:
+                    # check assigned pronouns via roles, make it easier
                     pronoun = []
                     if ("754901377406337085" in str(member.roles)): pronoun.append("he/him")
                     if ("754901568624525372" in str(member.roles)): pronoun.append("she/her")
                     if ("754901688669700106" in str(member.roles)): pronoun.append("they/them")
                     if ("754901986205237358" in str(member.roles)): pronoun.append("other")
-                    try:
+                    try: # any pronouns?
                         pronouns = pronoun[0]
-                    except:
+                    except: # if not, assign some first!
                         await message.channel.send("Please assign yourself a pronoun. You can do this here: https://discord.com/channels/267817764989698048/723112022425731093/760706868657520730")
                         return
-                    if len(pronoun) > 1:
+                    if len(pronoun) > 1: # more than one pronoun?
                         pronouns = ""
                         for item in pronoun:
                             pronouns = item + ", " + pronouns
-                    pf.insert({
+                            
+                    pf.insert({ # insert into database
                         'memberID': member.id,
                         "disc": "{0}#{1}".format(member.name,member.discriminator),
                         "name": "Anonymous",
@@ -1062,20 +1064,23 @@ async def on_message(message):
                     })
                     User = Query()
                     result = pf.search(User.memberID == member.id)
-                    embed = discord.Embed(
+                    embed = discord.Embed( # build profile card from database
                         title=str(result[0]["disc"]),
                         colour=discord.Colour(result[0]["colour"]),
-                        description="""**Name**: {0}
-                        **Pronouns**: {1}
-                        **Birthday**: {2}
-                        **Switch FC**: {3}""".format(result[0]["name"],result[0]["pronouns"],result[0]["bday"],result[0]["switch"]),
+                        description="""
+**Name**: {0}
+**Pronouns**: {1}
+**Birthday**: {2}
+**Switch FC**: {3}
+""".format(result[0]["name"],result[0]["pronouns"],result[0]["bday"],result[0]["switch"]),
                     )
                     embed.set_thumbnail(url=result[0]["avatar"])
                     embed.set_author(name="Calculated Anarchy Profile", icon_url="https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png")
-                    #embed.add_field(name="Hey! I'm Hy, the friendly enby Octoling!", value="I'm the one behind CAutomator.")
+                    # send built card
                     await message.channel.send(message="All set up! Here's what your profile looks like:",embed=embed)
+                    # what can be edited
                     await message.channel.send("""To edit your profile, do `-profile edit`. Here's what you can edit:
- ```md
+```md
 name - edit IRL name. eg, *Paul "Hy" Asencion* (but you do it how you want to do it.)
 pronouns - (cannot be edited, they're given based on the roles you have)
 bday - edit birthday, in the format *12 August*
@@ -1094,16 +1099,16 @@ bio - set a quick about yourself section, in the format *Bio Title | Description
                             for i in range(2, len(args)):
                                 name = name + args[i] + " "
                             pf.update({"name": name}, (User.memberID == member.id))
-                            await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))   
+                            await message.channel.send("Updated **{0}**.".format(args[1]))
                         elif args[1] == "bday":
                             if len(args) != 4:
                                 await message.channel.send("Check your birthdate. Make sure it's in the format \"12 August\"")
                             else:
                                 pf.update({"bday": "{0} {1}".format(args[2],args[3])}, (User.memberID == member.id))
-                                await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))   
+                                await message.channel.send("Updated **{0}**.".format(args[1]))
                         elif args[1] == "fc":
                             pf.update({"switch": str(args[2])}, (User.memberID == member.id))
-                            await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))
+                            await message.channel.send("Updated **{0}**.".format(args[1]))
                         elif args[1] == "bio":
                             text = ""
                             for i in range(2, len(args)):
@@ -1113,18 +1118,32 @@ bio - set a quick about yourself section, in the format *Bio Title | Description
                                 else:
                                     text = text + args[i] + " "
                             pf.update({"bioT": title, "bioD": text}, (User.memberID == member.id))
-                            await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))   
+                            await message.channel.send("Updated **{0}**.".format(args[1]))  
                         elif args[1] == "color":
                             hexColorMatch = re.search(r'^#(?:[0-9a-fA-F]{3}){1,2}$', args[len(args)-1]) # check if hex can be parsed
                             if hexColorMatch:
                                 pf.update({"colour": int(args[len(args)-1][1:], 16)}, (User.memberID == member.id))
-                                await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))   
+                                await message.channel.send("Updated **{0}**.".format(args[1])) 
                             else: await message.channel.send("Check the colour you gave me. Is it right?")
-                        elif args[1] == "avatar":
-                            pf.update({"avatar": member.avatar_url}, (User.memberID == member.id))
-                            await message.channel.send("(Attemped to update {0}. Check if it was successful by running `-profile`.)".format(args[1]))
+                        elif args[1] == "update":
+                            pronoun = []
+                            if ("754901377406337085" in str(member.roles)): pronoun.append("he/him")
+                            if ("754901568624525372" in str(member.roles)): pronoun.append("she/her")
+                            if ("754901688669700106" in str(member.roles)): pronoun.append("they/them")
+                            if ("754901986205237358" in str(member.roles)): pronoun.append("other")
+                            try: # any pronouns?
+                                pronouns = pronoun[0]
+                            except: # if not, assign some first!
+                                await message.channel.send("Please assign yourself a pronoun. You can do this here: https://discord.com/channels/267817764989698048/723112022425731093/760706868657520730")
+                                return
+                            if len(pronoun) > 1: # more than one pronoun?
+                                pronouns = ""
+                                for item in pronoun:
+                                    pronouns = item + ", " + pronouns
+                            pf.update({"avatar": str(member.avatar_url), "disc": "{0}#{1}".format(member.name,member.discriminator), "pronouns": pronouns}, (User.memberID == member.id))
+                            await message.channel.send("Updated Discord details.")
                         else:    
-                            await message.channel.send("That's not something you can edit.")
+                            await message.channel.send("Can't edit, did you mis-spell?")
                     else:
                         await message.channel.send("Couldn't find you in the database. Did you register?")
             elif args[0] == "help":
@@ -1136,7 +1155,7 @@ bday - edit birthday, in the format *12 August*
 fc - edit Switch friend code. eg, *SW-6873-6407-1599*
 color - set colour of the card, in the format *#00ff00*. **#hex required**
 bio - set a quick about yourself section, in the format *Bio Title | Description*. **`|` required**
-```""")
+```To update avatar, pronouns or Discord details, do `-profile edit update`.""")
                 return
             else:
                 User = Query()
