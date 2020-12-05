@@ -1140,7 +1140,7 @@ bio - set a quick about yourself section, in the format *Bio Title | Description
                 return
             else:
                 User = Query()
-                result = pf.search(User.disc == args[0])
+                result = pf.search(User.memberID in args[0])
                 if len(result) == 1:
                     embed = discord.Embed(
                         title=str(result[0]["disc"]),
