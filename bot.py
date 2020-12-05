@@ -1187,7 +1187,7 @@ bio - set a quick about yourself section, in the format *Bio Title | Description
                     **Birthday**: {2}
                     **Switch FC**: {3}""".format(result[0]["name"],result[0]["pronouns"],result[0]["bday"],result[0]["switch"]),
                 )
-                embed.set_thumbnail(url=member.avatar_url)
+                embed.set_thumbnail(url=result[0]["avatar"])
                 embed.set_author(name="Calculated Anarchy Profile", icon_url="https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png")
                 if result[0]["bioT"] != None:
                     embed.add_field(name=result[0]["bioT"], value=result[0]["bioD"])
