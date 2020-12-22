@@ -4,11 +4,8 @@
   "description": "A custom Discord bot for the Calculated Anarchy Server.",
   "main": "bot.js",
   "dependencies": {
-    "discord": "^0.8.2",
     "discord.js": "^12.4.1",
-    "forever": "^3.0.2",
     "node-fetch": "^2.6.1",
-    "setimmediate": "^1.0.5",
     "zangodb": "^1.0.8"
   },
   "devDependencies": {},
