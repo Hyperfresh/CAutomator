@@ -1,8 +1,8 @@
 # About CAutomator
-CAutomator Legacy is a custom-built bot for Calculated Anarchy. It manages custom roles, server-side profile cards, and several other things.
+**CAutomator (JavaScript)** is a custom-built bot for Calculated Anarchy. It manages custom roles, server-side profile cards, and several other things.
 
 # CAutomator comes in two versions
-CAutomator is being fully rewritten into JavaScript, although the original Python code will continue to be supported while the rewrite is in process - however, it is being called CAutomator Legacy.
+CAutomator was coded in Python originally, before it was rewritten in JavaScript. The Python code lives as "CAutomator Legacy". Although older, it is more stable (NOT reliable!) than CAutomator JS.
 
 ## What version am I looking at?
 **You are currently looking at CAutomator (JavaScript).**
@@ -11,6 +11,7 @@ CAutomator is being fully rewritten into JavaScript, although the original Pytho
 
 ## What are the differences?
 **CAutomator Legacy** is tried and tested to Python. It's a stable bot that does things almost flawlessly.
+
 **CAutomator (JavaScript)** is the fresh new version built on what the web is using now: JavaScript. It has many more features and is expected to be more stable and reliable compared to Python when rewriting is complete.
 
 Keep in mind that **CAutomator Legacy** is licensed under the [GNU **Lesser** GPL](https://www.gnu.org/licenses/lgpl-3.0.html), while **CAutomator (JavaScript)** is licensed under the [GNU **Affero** GPL](https://www.gnu.org/licenses/agpl-3.0.html). The main difference between the two licenses is that if you use **CAutomator (JavaScript)**, you MUST make your modified source code available for viewing if you decide to fork this repository and host a Discord bot with it.
