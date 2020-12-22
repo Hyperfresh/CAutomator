@@ -31,9 +31,9 @@ const Discord = require("discord.js");
 const { exit } = require("process");
 const config = require("./data/config.json");
 const client = new Discord.Client();
-const zangodb = require("zangodb");
-let profiles = zangodb.Db('profiles');
-let db = zangodb.Db('db');
+// const zangodb = require("zangodb");
+// let profiles = zangodb.Db('profiles');
+// let db = zangodb.Db('db');
 
 const prefix = "~";
 
@@ -49,30 +49,19 @@ function ready() {
 
 client.on("ready", function() {
         ready()
-        while (true) {
-                if (stop == 1) {
-                        console.log("Shutdown requested!");
-                        message.channel.send("🟥 > Shutting down.");
-                        client.user.setPresence({status: "invisible"});
-                        setTimeout(() => {
-                                client.destroy();
-                                throw new Error("🟥 > Bot has now shut down.");
-                        }, 5000);
-                }
-        } 
 });
 
 client.on("message", function(message) { 
         if (message.author.bot) return;
-        if (!message.content.startsWith(prefix)) {
-                if ("@someone" in message.content) {
-                        user = choice(message.channel.guild.members);
-                        while ("295463016248377344" in str(user.roles)) {
-                                user = choice(message.channel.guild.members);
-                        }
-                        message.channel.send("I pick **" + String(user.mention) + "**!");
-                } else return;
-        }
+        // if (!message.content.startsWith(prefix)) {
+        //         if ("@someone" in message.content) {
+        //                 user = choice(message.channel.guild.members);
+        //                 while ("295463016248377344" in str(user.roles)) {
+        //                         user = choice(message.channel.guild.members);
+        //                 }
+        //                 message.channel.send("I pick **" + String(user.mention) + "**!");
+        //         } else return;
+        // }
 
         const commandBody = message.content.slice(prefix.length);
         const args = commandBody.split(' ');
@@ -84,11 +73,7 @@ client.on("message", function(message) {
         }
         if (command === "about") {
                 message.channel.send(`https://github.com/Hyperfresh/CAutomator/blob/dev/resources/logo.png?raw=true`);
-                message.channel.send(`> 👋 > **Hello! I am CAutomator, the Calculated Anarchy Automator!**\n
-                I am a bot built by @Hyperfresh#8080, tasked to automate some tasks and make things a little easier on this server!\n
-                You can find more information on my GitHub: https://github.com/Hyperfresh/CAutomator\n
-                Also, thanks to https://github.com/iwa for helping me with some things c:\n\n
-                *I am licensed under AGPLv3. See https://github.com/Hyperfresh/CAutomator/blob/dev/LICENSE*`);
+                message.channel.send(`CAutomator is a custom-built bot for this server. Learn more at http://github.com/hyperfresh/CAutomator.`);
         }
         if (command === "time") {
                 var utcSeconds = (Date.now()/1000);
