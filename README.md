@@ -1,10 +1,19 @@
-# About CAutomator
 ![CAutomator logo](/resources/logo.png)
-I am CAutomator, a custom discord.py bot built by Hyperfresh#8080 for the [Calculated Anarchy Discord Server](https://discord.gg/cRVKFye).
+CAutomator Legacy is a custom-built bot for Calculated Anarchy. It manages custom roles, server-side profile cards, and several other things.
 
-Use this at your will - fork it, build upon it, whatever.
+# CAutomator comes in two versions
+CAutomator is being fully rewritten into JavaScript, although the original Python code will continue to be supported while the rewrite is in process - however, it is being called CAutomator Legacy.
 
-**Want to set this bot up for your own use? [Check the wiki!](https://github.com/Hyperfresh/CAutomator/wiki/Setup)**
+## What version am I looking at?
+**You are currently looking at CAutomator Legacy.**
+
+[Click to look at CAutomator (JavaScript)](htttps://github.com/Hyperfresh/CAutomator)
+
+## What are the differences?
+**CAutomator Legacy** is tried and tested to Python. It's a stable bot that does things almost flawlessly.
+**CAutomator (JavaScript)** is the fresh new version built on what the web is using now: JavaScript. It has many more features and is expected to be more stable and reliable compared to Python when rewriting is complete.
+
+Keep in mind that **CAutomator Legacy** is licensed under the [GNU **Lesser** GPL](), while **CAutomator (JavaScript)** is licensed under the [GNU **Affero** GPL](). The main difference between the two licenses is that if you use **CAutomator (JavaScript)**, you MUST make your modified source code available for viewing if you decide to fork this repository and host a Discord bot with it.
 
 ---
 

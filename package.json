@@ -1,0 +1,28 @@
+{
+  "name": "cautomator",
+  "version": "2.0.0",
+  "description": "A custom Discord bot for the Calculated Anarchy Server.",
+  "main": "bot.js",
+  "dependencies": {
+    "discord": "^0.8.2",
+    "discord.js": "^12.4.1",
+    "forever": "^3.0.2",
+    "node-fetch": "^2.6.1",
+    "setimmediate": "^1.0.5",
+    "zangodb": "^1.0.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hyperfresh/CAutomator.git"
+  },
+  "author": "Hyperfresh",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Hyperfresh/CAutomator/issues"
+  },
+  "homepage": "https://github.com/Hyperfresh/CAutomator#readme"
+}
