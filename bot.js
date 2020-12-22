@@ -29,7 +29,7 @@ console.log(info)
 const { exception, profile } = require("console");
 const Discord = require("discord.js");
 const { exit } = require("process");
-const config = require("./config.json");
+const config = require("./data/config.json");
 const client = new Discord.Client();
 const zangodb = require("zangodb");
 let profiles = zangodb.Db('profiles');
