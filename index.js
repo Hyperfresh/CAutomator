@@ -22,20 +22,17 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License for more details.
 `)
 
-var profile_edit = 0
-
 console.log(info)
 
 const { exception, profile } = require("console");
 const Discord = require("discord.js");
 const { exit } = require("process");
+const fs = require('fs')
 const config = require("./data/config.json");
 const client = new Discord.Client();
 // const zangodb = require("zangodb");
 // let profiles = zangodb.Db('profiles');
-// let db = zangodb.Db('db');
-
-const prefix = "~";
+// let roles = zangodb.Db('db');
 
 function ready() {
         var play = String(prefix+"help");
@@ -49,6 +46,10 @@ function ready() {
 
 client.on("ready", function() {
         ready()
+        const baseFile = 'base.js'
+        const commandBase = require(`./modules/${baseFile}`)
+
+        const readCommands = dir => {}
 });
 
 client.on("message", function(message) { 
@@ -69,7 +70,7 @@ client.on("message", function(message) {
 
         if (command === "ping") {
                 const timeTaken = Date.now() - message.createdTimestamp;
-                message.channel.send(`> 🏓 > **Pong!** I recorded ${timeTaken}ms.`);
+                message.channel.send(`> 🏓 > **Pong!**`);
         }
         if (command === "about") {
                 message.channel.send(`https://github.com/Hyperfresh/CAutomator/blob/dev/resources/logo.png?raw=true`);
@@ -103,12 +104,14 @@ client.on("message", function(message) {
                 console.warn("🟨 > Bot is now rebooting.");
                 setTimeout(() => {
                         client.destroy();
-                        client.login(config.BOT_TOKEN);
-                        console.log(info)
                         setTimeout(() => {
-                                ready();
-                        }, 3000);
-                }, 5000);
+                                client.login(config.BOT_TOKEN);
+                                setTimeout(() => {
+                                        ready();
+                                }, 3000);
+                        }, 5000);
+
+                }, 3000);
                 
         }
         // if (command === "register") {
@@ -119,13 +122,13 @@ client.on("message", function(message) {
 
 
         if (command === "role") {
-                member = message.author;
+                let member = message.author;
                 if ("547360918930194443" in str(member.roles)) {
         //     User = Query()
         //     result = db.search(User.memberId == member.id)
 
                         if(len(result) == 1) {
-                                roleName = ""
+                                let roleName = ""
                                 for(x in range(0, len(args)-1)) {
                                         roleName = roleName + args[x] + " "
                                 }
@@ -173,4 +176,4 @@ client.on("message", function(message) {
                 }
         }
 });         
-client.login(config.BOT_TOKEN);
+client.login(config.TOKEN);
