@@ -1,4 +1,5 @@
-const { prefix } = require('../data/config.json');
+const config = require('../data/config.json');
+const prefix = config.PREFIX
 
 const validatePerm = (permission) => {
     const validPerms = [
@@ -62,30 +63,30 @@ module.exports = (client, commandOptions) => {
 
     client.on('message', function(message) {
         const {member, content, guild} = message
-        for (let alias of commands) {
+        for (const alias of commands) {
             if (content.toLowerCase().startsWith(`${prefix}${alias.toLowerCase()}`)) {
-                for (let permission of perms) {
+                for (const permission of perms) {
                     if (!member.hasPermission(permission)) {
                         message.reply(permissionError)
                         return
                     }
                 }
-                for (let requiredRole of requiredRoles) {
-                    let role = guild.roles.cache.find(role => role.name === requiredRole)
+                for (const requiredRole of requiredRoles) {
+                    const role = guild.roles.cache.find(role => role.name === requiredRole)
                     if (!role || !member.roles.cache.has(role.id)) {
                         message.reply(`Seems you don't have the **${requiredRole}** role.`)
                         return
                     }
                 }
-                const arguments = content.split(/[ ]+/)
-                arguments.shift()
-                if (arguments.length < minArgs || (maxArgs !== null && arguments.length > maxArgs)) {
+                const args = content.split(/[ ]+/)
+                args.shift()
+                if (args.length < minArgs || (maxArgs !== null && args.length > maxArgs)) {
                     message.reply(`Looks like you messed up your command somewhere.`)
                     return
                 }
-                callback(message, arguments, arguments.join(' '))
+                callback(client, message, args, args.join(' '))
                 return
             }
         }
-    })
+    });
 }

@@ -3,7 +3,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     perms: 'ADMINISTRATOR',
-    callback: (message, text) => {
+    callback: (client, message) => {
         console.log(`🟨 > ${message.author} requested REBOOT.`);
         message.reply("🟨 > Rebooting.");
         client.user.setPresence({
