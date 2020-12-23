@@ -34,14 +34,14 @@ const validatePerm = (permission) => {
         'MANAGE_WEBHOOKS',
         'MANAGE_EMJOIS',
     ]
-    for (permission of permissions) {
+    for (permission of validPerms) {
         if (!validPerms.includes(permission)) {
             throw new Error(`Couldn't recognise permission "${permission}".`)
         }
     }
 }
 
-module.export = (client, commandOptions) => {
+module.exports = (client, commandOptions) => {
     let {
         commands,
         expectedArgs = '',
@@ -52,44 +52,40 @@ module.export = (client, commandOptions) => {
         requiredRoles = [],
         callback
     } = commandOptions;
-};
 
-if (typeof commands === "string") {
-    let commands = [commands];
-}
-if (permissions.length) {
-    if (typeof permissions === "string") {
-        let permissions = [permissions];
+    if (typeof commands === "string") commands = [commands];
+    console.log(`Loaded ${commands[0]}`);
+    if (perms.length) {
+        if (typeof perms.length === "string") perms = [perms];
+        validatePerm(perms);
     }
-    validatePerm(permissions);
-}
 
-client.on('message', function(message) {
-    const {member, content, guild} = message
-    for (alias of commands) {
-        if (content.toLowerCase().startswith(`${prefix}${alias.toLowerCase()}`)) {
-            for (permission of permissions) {
-                if (!member.hasPermission(permission)) {
-                    message.reply(permissionError)
+    client.on('message', function(message) {
+        const {member, content, guild} = message
+        for (let alias of commands) {
+            if (content.toLowerCase().startsWith(`${prefix}${alias.toLowerCase()}`)) {
+                for (let permission of perms) {
+                    if (!member.hasPermission(permission)) {
+                        message.reply(permissionError)
+                        return
+                    }
+                }
+                for (let requiredRole of requiredRoles) {
+                    let role = guild.roles.cache.find(role => role.name === requiredRole)
+                    if (!role || !member.roles.cache.has(role.id)) {
+                        message.reply(`Seems you don't have the **${requiredRole}** role.`)
+                        return
+                    }
+                }
+                const arguments = content.split(/[ ]+/)
+                arguments.shift()
+                if (arguments.length < minArgs || (maxArgs !== null && arguments.length > maxArgs)) {
+                    message.reply(`Looks like you messed up your command somewhere.`)
                     return
                 }
-            }
-            for(requiredRole of requiredRoles) {
-                let role = guild.roles.cache.find(role => role.name === requiredRole)
-                if (!role || !member.roles.cache.has(role.id)) {
-                    message.reply(`Seems you don't have the **${requiredRole}** role.`)
-                    return
-                }
-            }
-            const arguments = content.split(/[ ]+/)
-            arguments.shift()
-            if (arguments.length < minArgs || (maxArgs !== null && arguments.length > maxArgs)) {
-                message.reply(`Looks like you messed up your command somewhere.`)
+                callback(message, arguments, arguments.join(' '))
                 return
             }
-            callback(message, arguments, arguments.join(' '))
-            return
         }
-    }
+    })
 }
-});
