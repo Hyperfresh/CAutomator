@@ -3,7 +3,8 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     perms: 'ADMINISTRATOR',
-    callback: (client, message) => {
+    callback: (message) => {
+        let client = message.client
         console.log(`${message.author} requested SHUT DOWN.`);
         console.warn("🟥 > Bot is now SHUTTING DOWN.");
         message.reply("🟥 > Shutting down.");
