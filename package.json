@@ -1,17 +1,16 @@
 {
   "name": "cautomator",
-  "version": "2.0.0",
+  "version": "3.0.0-alpha.1",
   "description": "A custom Discord bot for the Calculated Anarchy Server.",
   "main": "bot.js",
   "dependencies": {
     "discord": "^0.8.2",
     "discord.js": "^12.4.1",
-    "forever": "^3.0.2",
+    "forever": "^0.10.10",
     "node-fetch": "^2.6.1",
-    "setimmediate": "^1.0.5",
+    "shelljs": "^0.8.4",
     "zangodb": "^1.0.8"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
