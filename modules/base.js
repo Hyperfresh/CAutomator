@@ -61,8 +61,8 @@ module.exports = (client, commandOptions) => {
         validatePerm(perms);
     }
 
-    client.on('message', function(message) {
-        const {member, content, guild} = message
+    client.on('message', message => {
+        let {member, content, guild} = message
         for (const alias of commands) {
             if (content.toLowerCase().startsWith(`${prefix}${alias.toLowerCase()}`)) {
                 for (const permission of perms) {
@@ -84,7 +84,7 @@ module.exports = (client, commandOptions) => {
                     message.reply(`Looks like you messed up your command somewhere.`)
                     return
                 }
-                callback(client, message, args, args.join(' '))
+                callback(message, args, args.join(' '))
                 return
             }
         }
