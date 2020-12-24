@@ -4,16 +4,13 @@
   "description": "A custom Discord bot for the Calculated Anarchy Server.",
   "main": "bot.js",
   "dependencies": {
-    "discord": "^0.8.2",
     "discord.js": "^12.4.1",
-    "forever": "^3.0.2",
     "node-fetch": "^2.6.1",
-    "setimmediate": "^1.0.5",
     "zangodb": "^1.0.8"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"If you see this message, it means I didn't see a problem with trying to build CAutomator!\" && exit 0"
   },
   "repository": {
     "type": "git",
