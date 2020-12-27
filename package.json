@@ -6,11 +6,11 @@
   "dependencies": {
     "discord.js": "^12.4.1",
     "node-fetch": "^2.6.1",
-    "shelljs": "^0.8.4",
-    "zangodb": "^1.0.8"
+    "shelljs": "^0.8.4"
   },
   "scripts": {
-    "test": "echo \"If you see this message, it means I didn't see a problem with trying to build CAutomator!\" && exit 0"
+    "test": "echo \"If you see this message, it means I didn't see a problem with trying to build CAutomator!\" && exit 0",
+    "run": "node index.js"
   },
   "repository": {
     "type": "git",
