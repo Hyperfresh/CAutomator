@@ -31,9 +31,6 @@ const fs = require('fs')
 const path = require('path')
 const config = require("./data/config.json");
 const client = new Discord.Client();
-// const zangodb = require("zangodb");
-// let profiles = zangodb.Db('profiles');
-// let roles = zangodb.Db('db');
 
 const prefix = config.PREFIX;
 
