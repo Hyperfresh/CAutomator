@@ -6,7 +6,7 @@ let prefix = config.PREFIX
 // Set up database based on lowdb.
 const lowdb = require("lowdb");
 const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync('database.json')
+const adapter = new FileSync('../../database.json')
 const db = lowdb(adapter)
 db.defaults({ roles: {}, members: {}, count: 0 })
         .write()
@@ -77,6 +77,11 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     callback: (message, args) => {
+
+        message.reply('this command is still being developed. Check back soon!')
+
+        /* To enable this command, delete this line.
+
         let search = db.find('members',{memberid: message.author.id})
         if (args == "") {
             if (search.length() == 1) {
@@ -192,6 +197,9 @@ module.exports = {
             else if (args[1] == "memberid") search = db.find('members',{memberid:args[2]})
             else continue
             if (!search.value()) createEmbed(search)
-        }
-    }
+        } 
+
+        To enable this command, delete this line. */
+
+    } 
 }
