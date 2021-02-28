@@ -31,9 +31,6 @@ const fs = require('fs')
 const path = require('path')
 const config = require("./data/config.json");
 const client = new Discord.Client();
-// const zangodb = require("zangodb");
-// let profiles = zangodb.Db('profiles');
-// let roles = zangodb.Db('db');
 
 const prefix = config.PREFIX;
 
@@ -51,15 +48,15 @@ client.on("ready", function() {
         const baseFile = 'base.js'
         const commandBase = require(`./modules/${baseFile}`)
 
-        const readCommands = (dir) => {
-                const files = fs.readdirSync(path.join(__dirname, dir))
+        function readCommands(dir) {
+                const files = fs.readdirSync(path.join(__dirname, dir));
                 for (let file of files) {
-                        const stat = fs.lstatSync(path.join(__dirname, dir, file))
+                        const stat = fs.lstatSync(path.join(__dirname, dir, file));
                         if (stat.isDirectory()) {
-                                readCommands(path.join(dir, file))
+                                readCommands(path.join(dir, file));
                         } else if (file !== baseFile) {
-                                const option = require(path.join(__dirname,dir,file))
-                                commandBase(client, option)
+                                const option = require(path.join(__dirname, dir, file));
+                                commandBase(client, option);
                         }
                 }
         }
@@ -81,3 +78,4 @@ client.on("ready", function() {
 //         }
 // });         
 client.login(config.TOKEN);
+module.exports.client = client;

@@ -11,6 +11,7 @@ module.exports = {
         client.user.setPresence({status: "invisible"});
         setTimeout(() => {
                client.destroy();
+               process.exit()
         }, 5000);
     },
 }

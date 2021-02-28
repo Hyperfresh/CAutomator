@@ -1,3 +1,16 @@
+const config = require('../../data/config.json');
+let prefix = config.PREFIX
+
+function ready(client) {
+    var play = String(prefix+"help");
+    client.user.setPresence({
+            status: "online",activity:{
+                    name:play,type:"PLAYING"
+            }
+    });
+    console.log("🟩 >",client.user.tag,"is now online.");
+}
+
 module.exports = {
     commands: 'reboot',
     minArgs: 0,
@@ -16,12 +29,11 @@ module.exports = {
         setTimeout(() => {
             client.destroy();
             setTimeout(() => {
-                client.login(config.BOT_TOKEN);
+                client.login(config.TOKEN);
                 setTimeout(() => {
-                        ready();
+                        ready(client);
                 }, 3000);
-        }, 5000);
-
+            }, 5000);
         }, 3000);
     },
 }

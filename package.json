@@ -1,16 +1,17 @@
 {
   "name": "cautomator",
-  "version": "2.0.0",
+  "version": "3.0.0-alpha.1",
   "description": "A custom Discord bot for the Calculated Anarchy Server.",
   "main": "bot.js",
   "dependencies": {
     "discord.js": "^12.4.1",
+    "lowdb": "^1.0.0",
     "node-fetch": "^2.6.1",
-    "zangodb": "^1.0.8"
+    "shelljs": "^0.8.4"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"If you see this message, it means I didn't see a problem with trying to build CAutomator!\" && exit 0"
+    "test": "echo \"If you see this message, it means I didn't see a problem with trying to build CAutomator!\" && exit 0",
+    "run": "node index.js"
   },
   "repository": {
     "type": "git",
