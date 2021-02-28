@@ -78,3 +78,4 @@ client.on("ready", function() {
 //         }
 // });         
 client.login(config.TOKEN);
+module.exports.client = client;
