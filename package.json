@@ -5,6 +5,7 @@
   "main": "bot.js",
   "dependencies": {
     "discord.js": "^12.4.1",
+    "is-image-url": "^1.1.8",
     "lowdb": "^1.0.0",
     "node-fetch": "^2.6.1",
     "shelljs": "^0.8.4"
