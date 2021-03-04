@@ -88,13 +88,14 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
         prideBadgeEmoji.forEach(Element => {
                 if (r.includes(Element)) {
                     badgesToAdd.push(`<:${prideBadgeEmoji[counter]}:${prideBadgeEmoID[counter]}>`)
-                } else if (r.includes("trans")) {
-                    badgesToAdd.push(':transgender_flag:')
                 }
                 counter += 1
             })
     } catch {
         badgesToAdd = "No pride badges assigned"
+    }
+    if (r.includes("trans")) {
+        badgesToAdd.push(':transgender_flag:')
     }
     return badgesToAdd
 }
@@ -168,15 +169,14 @@ module.exports = {
                 if (memberroles.includes("754901568624525372")) pronoun.push("she/her")
                 if (memberroles.includes("754901688669700106")) pronoun.push("they/them")
                 if (memberroles.includes("754901986205237358")) pronoun.push("other")
-                try { // User must have a pronoun to be in the database.
-                    if (pronoun.length > 1) {
-                        let pronouns = ""
-                        pronoun.forEach(Element => {
-                            pronouns = `${Element}, ${pronouns}`
-                        })
-                        pronoun = pronouns
-                    }
-                } catch { // No pronouns?
+                
+                if (pronoun.length >= 1) {
+                    let pronouns = ""
+                    pronoun.forEach(Element => {
+                        pronouns = `${Element}, ${pronouns}`
+                    })
+                    pronoun = pronouns
+                } else {
                     message.reply('looks like you need to assign yourself a pronoun! You can do that in #roles.')
                     return
                 }
@@ -314,10 +314,12 @@ module.exports = {
                 message.channel.send(embed)
             } else message.reply("I didn't find anything. Sorry.")
         } else {
-            let user = getUserFromMention(args[1]);
-            search = dbSearch(user)
-            if (search) createEmbed(search)
-            else message.reply("I didn't find anything. Sorry.")
+            let user = getUserFromMention(args[0]);
+            search = dbSearch(user.id)
+            if (search) {
+                let embed = createEmbed(search)
+                message.channel.send(embed)
+            } else message.reply("I didn't find anything. Sorry.")
         }
     } 
 }
