@@ -315,7 +315,11 @@ module.exports = {
             } else message.reply("I didn't find anything. Sorry.")
         } else {
             let user = getUserFromMention(args[0]);
-            search = dbSearch(user.id)
+            try { search = dbSearch(user.id) }
+            catch {
+                message.reply('I think you messed up your command somewhere. Try again.')
+                return
+            }
             if (search) {
                 let embed = createEmbed(search)
                 message.channel.send(embed)
