@@ -97,6 +97,7 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
     if (r.includes("trans")) {
         badgesToAdd.push(':transgender_flag:')
     }
+    if (badgesToAdd == []) badgesToAdd = "No pride badges assigned"
     return badgesToAdd
 }
 
