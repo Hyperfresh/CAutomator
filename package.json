@@ -1,10 +1,11 @@
 {
   "name": "cautomator",
-  "version": "3.0.0-alpha.1",
+  "version": "3.1.0",
   "description": "A custom Discord bot for the Calculated Anarchy Server.",
-  "main": "bot.js",
+  "main": "index.js",
   "dependencies": {
     "discord.js": "^12.4.1",
+    "is-image-url": "^1.1.8",
     "lowdb": "^1.0.0",
     "node-fetch": "^2.6.1",
     "shelljs": "^0.8.4"
