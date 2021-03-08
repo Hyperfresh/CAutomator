@@ -17,7 +17,7 @@ module.exports = {
         message.channel.send(`🔄 Updating ${args[0]}...`);
         const promise = new Promise((resolve, reject) => {
             console.log(`Attempting to update ${args[0]}.`)
-            exec(`sh ${d}/update.sh ${args[0]} > ${d}/data/update.log`, (error, stdout, stderr) => {
+            exec(`pwsh -File ${d}/update.ps1 ${args[0]} > ${d}/data/update.log`, (error, stdout, stderr) => {
                 if (error) {
                     reject(`Exec error: ${error.message}`)
                     return
