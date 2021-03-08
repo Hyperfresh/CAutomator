@@ -7,7 +7,7 @@ CAutomator was coded in Python originally, before it was rewritten in JavaScript
 ## What version am I looking at?
 **You are currently looking at CAutomator (JavaScript).**
 
-[Click to look at CAutomator Legacy](htttps://github.com/Hyperfresh/CAutomator-Legacy)
+[Click to look at CAutomator Legacy](https://github.com/Hyperfresh/CAutomator-Legacy)
 
 ## What are the differences?
 **CAutomator Legacy** is tried and tested to Python. It's a stable bot that does things almost flawlessly.
