@@ -52,7 +52,7 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
         "<:enby:798917920674676756>","<:pan:798918319238545418>","<:nd:798918686676353034>",
         "<:les1:798920011145281556>","<:les2:798920322828861460>","<:bi:798919094194798622>",
         "<:ace:798919222843146270>","<:gq:798919345836785664>","<:aro:798919620840652870>",
-        ":transgender_flag:"
+        ":transgender_flag:",":rainbow_flag:"
     ]
     let found;
     try { // Is this function being used to construct pride badges for the embed or the database?
@@ -77,6 +77,7 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
                 if (Element == "<:gq:798919345836785664>") temp.push("gq")
                 if (Element == "<:aro:798919620840652870>") temp.push("aro")
                 if (Element == ":transgender_flag:") temp.push("trans")
+                if (Element == ":rainbow_flag:") temp.push('gay')
             })
             r = temp
         }
@@ -96,6 +97,9 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
     }
     if (r.includes("trans")) {
         badgesToAdd.push(':transgender_flag:')
+    }
+    if (r.includes("gay")) {
+        badgesToAdd.push(':rainbow_flag:')
     }
     if (badgesToAdd.length == 0) badgesToAdd = "No pride badges assigned"
     return badgesToAdd
@@ -274,15 +278,22 @@ module.exports = {
 
                 // Edit embed colour
                 } else if (args[1] == ("colour" || "color")) {
-                    if (args[2].test(/^(?:[0-9a-fA-F]{3}){1,2}$/)) {
-                        dbUpdate(message.author.id,{colour: parseInt(args[2], 16)})
+                    try {
+                        if (/^(?:[0-9a-fA-F]{3}){1,2}$/.test(args[2])) {
+                            dbUpdate(message.author.id,{colour: parseInt(args[2], 16)})
+                        }
+                    } catch {
+                        message.reply('seems you forgot to specify a colour to assign!')
+                        return
                     }
-                
                 // Edit bio image
                 } else if (args[1] == "image") {
                     if (img(args[2])) {
                         dbUpdate(message.author.id,{image: args[2]})
-                    } else message.reply('you might want to check that URL again.')
+                    } else {
+                        message.reply('you might want to check that URL again.')
+                        return
+                    }
                 } else if (args[1] == "badges") {
                     dbUpdate(message.author.id,{pbadges: createPrideBadges(args)})
                 } else {
