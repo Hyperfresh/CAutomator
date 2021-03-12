@@ -28,11 +28,15 @@ module.exports = {
             }
             if (/^#(?:[0-9a-fA-F]{3}){1,2}$/.test(args[((args.length)-1)])) {
                 let rolecolour = parseInt(args[((args.length)-1)], 16)
-                let role = guild.roles.create({
+                let y = message.guild.roles.cache.find((role) => {
+                    return role.id === '547360918930194443'
+                })
+                /*let role = message.guild.roles.create({
                     data: {
                       name: rolename,
                       color: rolecolour,
                       hoist: true,
+                      position: ((message.guild.roles.fetch(547360918930194443).members.length)+13)
                     },
                   })
                     .then(console.log)
@@ -40,6 +44,9 @@ module.exports = {
                 db.get('roles')
                   .push({memberid: message.author.id, roleid: role.id})
                   .write()
+                message.member._roles.add(role.id)*/
+                console.log(y)
+                message.reply(`Role given.`)
             }
         }
     }
