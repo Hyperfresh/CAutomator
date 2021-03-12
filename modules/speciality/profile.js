@@ -279,7 +279,7 @@ module.exports = {
                 // Edit embed colour
                 } else if (args[1] == ("colour" || "color")) {
                     try {
-                        if (args[2].test(/^#(?:[0-9a-fA-F]{3}){1,2}$/)) {
+                        if (/^#(?:[0-9a-fA-F]{3}){1,2}$/.test(args[2])) {
                             dbUpdate(message.author.id,{colour: parseInt(args[2], 16)})
                         }
                     } catch {
