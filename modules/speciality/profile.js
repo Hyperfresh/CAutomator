@@ -278,15 +278,22 @@ module.exports = {
 
                 // Edit embed colour
                 } else if (args[1] == ("colour" || "color")) {
-                    if (args[2].test(/^#(?:[0-9a-fA-F]{3}){1,2}$/)) {
-                        dbUpdate(message.author.id,{colour: parseInt(args[2], 16)})
+                    try {
+                        if (args[2].test(/^#(?:[0-9a-fA-F]{3}){1,2}$/)) {
+                            dbUpdate(message.author.id,{colour: parseInt(args[2], 16)})
+                        }
+                    } catch {
+                        message.reply('seems you forgot to specify a colour to assign!')
+                        return
                     }
-                
                 // Edit bio image
                 } else if (args[1] == "image") {
                     if (img(args[2])) {
                         dbUpdate(message.author.id,{image: args[2]})
-                    } else message.reply('you might want to check that URL again.')
+                    } else {
+                        message.reply('you might want to check that URL again.')
+                        return
+                    }
                 } else if (args[1] == "badges") {
                     dbUpdate(message.author.id,{pbadges: createPrideBadges(args)})
                 } else {
