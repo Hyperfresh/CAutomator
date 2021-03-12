@@ -52,7 +52,7 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
         "<:enby:798917920674676756>","<:pan:798918319238545418>","<:nd:798918686676353034>",
         "<:les1:798920011145281556>","<:les2:798920322828861460>","<:bi:798919094194798622>",
         "<:ace:798919222843146270>","<:gq:798919345836785664>","<:aro:798919620840652870>",
-        ":transgender_flag:"
+        ":transgender_flag:",":rainbow_flag:"
     ]
     let found;
     try { // Is this function being used to construct pride badges for the embed or the database?
