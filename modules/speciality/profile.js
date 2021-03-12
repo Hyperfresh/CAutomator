@@ -77,6 +77,7 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
                 if (Element == "<:gq:798919345836785664>") temp.push("gq")
                 if (Element == "<:aro:798919620840652870>") temp.push("aro")
                 if (Element == ":transgender_flag:") temp.push("trans")
+                if (Element == ":rainbow_flag:") temp.push('gay')
             })
             r = temp
         }
@@ -96,6 +97,9 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
     }
     if (r.includes("trans")) {
         badgesToAdd.push(':transgender_flag:')
+    }
+    if (r.includes("gay")) {
+        badgesToAdd.push(':rainbow_flag:')
     }
     if (badgesToAdd.length == 0) badgesToAdd = "No pride badges assigned"
     return badgesToAdd
@@ -274,7 +278,7 @@ module.exports = {
 
                 // Edit embed colour
                 } else if (args[1] == ("colour" || "color")) {
-                    if (args[2].test(/^(?:[0-9a-fA-F]{3}){1,2}$/)) {
+                    if (args[2].test(/^#(?:[0-9a-fA-F]{3}){1,2}$/)) {
                         dbUpdate(message.author.id,{colour: parseInt(args[2], 16)})
                     }
                 
