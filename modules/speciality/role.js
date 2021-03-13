@@ -23,30 +23,26 @@ module.exports = {
             .find({memberid: message.author.id})
             .value()
         if (!search) {
-            for (let x = 0; x > ((args.length)-1); x++) {
+            for (let x = 1; x < (args.length); x++) {
                 rolename = `${rolename} ${args[x]}`
             }
-            if (/^#(?:[0-9a-fA-F]{3}){1,2}$/.test(args[((args.length)-1)])) {
-                let rolecolour = parseInt(args[((args.length)-1)], 16)
-                let y = message.guild.roles.cache.find((role) => {
-                    return role.id === '547360918930194443'
-                })
-                /*let role = message.guild.roles.create({
+            if (/^(?:[0-9a-fA-F]{3}){1,2}$/.test(args[0])) {
+                let rolecolour = parseInt(args[0], 16)
+                let role = message.guild.roles.create({
                     data: {
                       name: rolename,
                       color: rolecolour,
-                      hoist: true,
-                      position: ((message.guild.roles.fetch(547360918930194443).members.length)+13)
+                      hoist: true
                     },
                   })
-                    .then(console.log)
+                    .then(role => {
+                        db.get('roles')
+                            .push({memberid: message.author.id, roleid: role.id})
+                            .write()
+                        message.member.roles.add(role.id)
+                        message.reply(`Role given: <@&${role.id}>`)
+                    })
                     .catch(console.error);
-                db.get('roles')
-                  .push({memberid: message.author.id, roleid: role.id})
-                  .write()
-                message.member._roles.add(role.id)*/
-                console.log(y)
-                message.reply(`Role given.`)
             }
         }
     }

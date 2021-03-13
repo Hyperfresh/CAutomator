@@ -25,14 +25,28 @@ const img = require('is-image-url')
 // |   |_| | | |_  |  | |_| | | 
 
 function createServerBadges(id,roles) /* Create server badges for embeds & database. */ {
-    let serverBadgeEmoji = ['star','wrench','crown','pushpin']
+    let serverBadgeEmoji = [
+        'star','wrench','crown','pushpin','video_game',
+        'see_no_evil','one','two','three','five','six'
+    ]
     let badgesToAdd = []
     let r = []
 
-    if (config.MAINTAINERID == id) r.push('wrench')
-    if (config.OWNERID == id) r.push("crown")
-    if (roles.includes(config.PINNER)) r.push("pushpin")
-    if (roles.includes(config.ADMIN)) r.push("star")
+    // Moderation badges
+    if (config.MAINTAINERID == id) r.push('wrench') // Bot Maintainer
+    if (config.OWNERID == id) r.push("crown") // Server Owner
+    if (roles.includes(config.PINNER)) r.push("pushpin") // Media Pinner
+    if (roles.includes(config.ADMIN)) r.push("star") // Admin
+    if (roles.includes('741595848743452763')) r.push('video_game') // Game Day Coordinator
+    if (roles.includes('804971962346110976')) r.push('speech_balloon') // RP Moderator
+    if (roles.includes('547613236640350228')) r.push('see_no_evil') // NSFW Moderator
+
+    // Level badges
+    if (roles.includes('321506876632203264')) r.push('one')
+    if (roles.includes('321506989895319553')) r.push('two')
+    if (roles.includes('547360918930194443')) r.push('three')
+    if (roles.includes('321507123424919555')) r.push('five')
+    if (roles.includes('776045687203692566')) r.push('six')
 
     let counter = 0
     serverBadgeEmoji.forEach(Element => {
@@ -41,7 +55,7 @@ function createServerBadges(id,roles) /* Create server badges for embeds & datab
         }
         counter += 1
     })
-    if (badgesToAdd.length == 0) badgesToAdd = "No server badges"
+    if (badgesToAdd.length == 0) badgesToAdd = ["No server badges"]
     return badgesToAdd
 }
 
@@ -60,7 +74,7 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
             return r.indexOf(elem) > -1;
         }).length == r.length
     } catch {
-        badgesToAdd = "No pride badges assigned" // If r is null, this is just a "last resort" measure
+        badgesToAdd = ["No pride badges"] // If r is null, this is just a "last resort" measure
         return badgesToAdd
     }
         if (found) { // Function being used to construct pride badges for embed.
@@ -93,7 +107,7 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
                 counter += 1
             })
     } catch {
-        badgesToAdd = "No pride badges assigned"
+        badgesToAdd = ["No pride badges"]
     }
     if (r.includes("trans")) {
         badgesToAdd.push(':transgender_flag:')
@@ -101,8 +115,78 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
     if (r.includes("gay")) {
         badgesToAdd.push(':rainbow_flag:')
     }
-    if (badgesToAdd.length == 0) badgesToAdd = "No pride badges assigned"
+    if (badgesToAdd.length == 0) badgesToAdd = ["No pride badges"]
     return badgesToAdd
+}
+
+function createInterestBadges(r) {
+    // Declare variable types.
+    let badgesToAdd = []
+    let fullList = /* This list is the full resolve for each interest badge. */ [
+        '<:minecraft:817185848373542963>',
+        '<:amogus:817207798583525386>',
+        '<:splatoon:817209133526024243>',
+        '<:animalcrossing:817207987240304690>',
+        '<:terraria:817186008750751754>',
+        ':video_game:', ':musical_note:', ':paintbrush:'
+    ]
+    let found;
+    try { // Is this function being used to construct interest badges for the embed or the database?
+        found = fullList.filter(function (elem) {
+            return r.indexOf(elem) > -1;
+        }).length == r.length
+    } catch {
+        badgesToAdd = ['No interest badges'] // If r is null, this is just a "last resort" measure
+        return badgesToAdd
+    }
+        if (found) { // Function being used to construct interest badges for embed.
+            // Convert constructed badges from database to badge types
+            let temp = []
+            r.forEach(Element => {
+                if (Element == "<:minecraft:817185848373542963>") temp.push("minecraft")
+                if (Element == "<:amogus:817207798583525386>") temp.push("amogus")
+                if (Element == "<:splatoon:817209133526024243>") temp.push("splatoon")
+                if (Element == "<:animalcrossing:817207987240304690>") temp.push("animalcrossing")
+                if (Element == "<:terraria:817186008750751754>") temp.push("terraria")
+                if (Element == ":musical_note:") temp.push("musician")
+                if (Element == ":video_game:") temp.push("gameday")
+                if (Element == ":paintbrush:") temp.push("artist")
+            })
+            r = temp
+        }
+    
+    let prideBadgeEmoji = ['minecraft','amogus','splatoon','animalcrossing','terraria'] // Badge types
+    let prideBadgeEmoID = ['817185848373542963','817207798583525386','817209133526024243','817207987240304690','817186008750751754']
+    let counter = 0
+    try {
+        prideBadgeEmoji.forEach(Element => {
+                if (r.includes(Element)) {
+                    badgesToAdd.push(`<:${prideBadgeEmoji[counter]}:${prideBadgeEmoID[counter]}>`)
+                }
+                counter += 1
+            })
+    } catch {
+        badgesToAdd = ['No interest badges']
+    }
+    if (r.includes("musician")) {
+        badgesToAdd.push(':musical_note:')
+    }
+    if (r.includes("gameday")) {
+        badgesToAdd.push(':video_game:')
+    }
+    if (r.includes("artist")) {
+        badgesToAdd.push(":paintbrush:")
+    }
+    if (badgesToAdd.length == 0) badgesToAdd = ['No interest badges']
+    return badgesToAdd
+}
+
+function spaceout(args) {
+    let yes = '';
+    for (let i = 0; i < (args.length); i++) {
+        yes = `${yes} ${args[i]}`
+    }
+    return yes
 }
 
 function createEmbed(search) /* Create the profile card. */ {
@@ -111,10 +195,11 @@ function createEmbed(search) /* Create the profile card. */ {
         .setTitle(r.username)
         .setColor(r.colour)
         .setDescription(`**Name**: ${r.name}\n**Pronouns**: ${r.pronouns}\n**Birthday**: ${r.bday}\n**Switch FC**: ${r.switch}`)
-        .setThumbnail(r.avatar)
+        .setThumbnail(`https://cdn.discordapp.com/avatars/${r.memberid}/${r.avatar}`)
         .setAuthor("Calculated Anarchy Profile",'https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png')
-        .addField('Server Badges',String(createServerBadges(r.memberid,r.data)),true)
-        .addField('Pride Badges',String(createPrideBadges(r.pbadges)),true)
+        .addField('Interest Badges',spaceout(createInterestBadges(r.ibadges)))
+        .addField('Server Badges',spaceout(createServerBadges(r.memberid,r.data)),true)
+        .addField('Pride Badges',spaceout(createPrideBadges(r.pbadges)),true)
         .setFooter(`Member ID: ${r.memberid}`)
     if (r.bio !== null) embed.addField(r.bio.title,r.bio.desc,false)
     if (r.tz !== null) embed.addField('Time',`**Time zone**: ${r.tz}\n**Current time**: `,false)
@@ -175,13 +260,7 @@ module.exports = {
                 if (memberroles.includes("754901688669700106")) pronoun.push("they/them")
                 if (memberroles.includes("754901986205237358")) pronoun.push("other")
                 
-                if (pronoun.length >= 1) {
-                    let pronouns = ""
-                    pronoun.forEach(Element => {
-                        pronouns = `${Element}, ${pronouns}`
-                    })
-                    pronoun = pronouns
-                } else {
+                if (pronoun.length == 0) {
                     message.reply('looks like you need to assign yourself a pronoun! You can do that in #roles.')
                     return
                 }
@@ -192,14 +271,15 @@ module.exports = {
                     name: "Anonymous",
                     bday: "--",
                     switch: "--",
-                    pronouns: pronoun, // See above
+                    pronouns: String(pronoun), // See above
                     bio: null,
                     sbadges: createServerBadges(message.author.id,message.member._roles), // check if there's any mod roles
                     pbadges: null,
+                    ibadges: null,
                     colour: message.member.displayColor,
                     tz: null,
                     data: message.member._roles, // This just stores their roles to make things easier later.
-                    avatar: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.member.user.avatar}.png`
+                    avatar: message.author.avatar
                 })
                     .write()
                 db.update('count', n => n + 1)
@@ -218,30 +298,24 @@ module.exports = {
                 if (memberroles.includes("754901568624525372")) pronoun.push("she/her")
                 if (memberroles.includes("754901688669700106")) pronoun.push("they/them")
                 if (memberroles.includes("754901986205237358")) pronoun.push("other")
-                try { // User must have a pronoun to be in the database.
-                    if (pronoun.length > 1) {
-                        let pronouns = ""
-                        pronoun.forEach(Element => {
-                            pronouns = `${Element}, ${pronouns}`
-                        })
-                        pronoun = pronouns
-                    }
-                } catch { // No pronouns?
+                if (pronoun.length == 0) {
                     message.reply('looks like you need to assign yourself a pronoun! You can do that in #roles.')
                     return
                 }
+                console.log(message.author.avatar)
                 db.get('members')
                     .find({memberid: message.author.id})
-                    .update({
+                    .assign({
                         username: `${message.author.username}#${message.author.discriminator}`,
-                        pronouns: pronoun,
+                        pronouns: String(pronoun),
                         sbadges: createServerBadges(message.author.id,message.member._roles), // check if there's any mod roles
                         data: message.member._roles, // This just stores their roles to make things easier later.
-                        avatar: `https://cdn.discordapp.com/avatars/${message.author.id}/${message.member.user.avatar}.png`
+                        avatar: message.author.avatar
                     })
+                    .write()
                 search = dbSearch(message.author.id) // Refresh the search result
                 let embed = createEmbed(search)
-                message.channel.send(embed)
+                message.channel.send('Profile card updated.',embed)
             }
 
         } else if (args[0] == "edit") { // Edit data on the database.
@@ -296,6 +370,8 @@ module.exports = {
                     }
                 } else if (args[1] == "badges") {
                     dbUpdate(message.author.id,{pbadges: createPrideBadges(args)})
+                } else if (args[1] == "interest") {
+                    dbUpdate(message.author.id,{ibadges: createInterestBadges(args)})
                 } else {
                     message.reply('you can\'t edit this! Here\'s what your profile currently looks like.')
                 }
