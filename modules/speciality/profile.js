@@ -28,13 +28,16 @@ const img = require('is-image-url')
 // |__      _   _ _|_ *  _   _
 // |   |_| | | |_  |  | |_| | | 
 
-function createServerBadges(id,roles) /* Create server badges for embeds & database. */ {
+function createServerBadges(id) /* Create server badges for embeds & database. */ {
     let serverBadgeEmoji = [
         'star','wrench','crown','pushpin','video_game',
         'see_no_evil','one','two','three','five','six'
     ]
     let badgesToAdd = []
     let r = []
+
+    let user = client.users.cache.get(id)
+    let roles = user.lastMessage.guild.member(user)._roles
 
     // Moderation badges
     if (config.MAINTAINERID == id) r.push('wrench') // Bot Maintainer
@@ -193,17 +196,18 @@ function spaceout(args) {
     return yes
 }
 
-function createEmbed(search) /* Create the profile card. */ {
-    let r = search
+function createEmbed(r) /* Create the profile card. */ {
     let time = DateTime.now().setZone(r.tz).toLocaleString(DateTime.DATETIME_MED)
+    let user = client.users.cache.get(r.memberid)
     let embed = new Discord.MessageEmbed()
         .setTitle(r.username)
+        .setURL(`https://discord.com/users/${r.memberid}`)
         .setColor(r.colour)
         .setDescription(`**Name**: ${r.name}\n**Pronouns**: ${r.pronouns}\n**Birthday**: ${r.bday}\n**Switch FC**: ${r.switch}`)
-        .setThumbnail(`https://cdn.discordapp.com/avatars/${r.memberid}/${r.avatar}`)
+        .setThumbnail(`https://cdn.discordapp.com/avatars/${r.memberid}/${user.avatar}.png?size=1024`)
         .setAuthor("Calculated Anarchy Profile",'https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png')
         .addField('Interest Badges',spaceout(createInterestBadges(r.ibadges)))
-        .addField('Server Badges',spaceout(createServerBadges(r.memberid,r.data)),true)
+        .addField('Server Badges',spaceout(createServerBadges(r.memberid)),true)
         .addField('Pride Badges',spaceout(createPrideBadges(r.pbadges)),true)
         .setFooter(`Member ID: ${r.memberid}`)
     if (r.tz !== null) embed.addField(`The time for me is ${time}.`,`**Time zone**: ${r.tz}`,false)
@@ -361,19 +365,16 @@ module.exports = {
                 db.get('profiles') // Push into the database.
                     .push({
                     memberid: message.author.id, // User who requested to register.
-                    username: `${message.author.username}#${message.author.discriminator}`, // eg Hyperfresh#8080
+                    username: `${message.author.username}#${message.author.discriminator}`,
                     name: "Anonymous",
                     bday: "--",
                     switch: "--",
                     pronouns: String(pronoun), // See above
                     bio: null,
-                    sbadges: createServerBadges(message.author.id,message.member._roles), // check if there's any mod roles
                     pbadges: null,
                     ibadges: null,
                     colour: message.member.displayColor,
                     tz: null,
-                    data: message.member._roles, // This just stores their roles to make things easier later.
-                    avatar: message.author.avatar
                 })
                     .write()
                 db.update('pcount', n => n + 1)
@@ -381,7 +382,7 @@ module.exports = {
                 search = dbSearch(message.author.id)
                 let embed = createEmbed(search)
                 message.channel.send('> ✅ > Your profile was created.',embed)
-                message.channel.send(`Here's what you can edit:`,helpModule(basic))
+                message.channel.send(`Here's what you can edit:`,helpModule('basic'))
             } else message.reply('looks like you\'ve already registered!') 
 
         } else if (args [0] == "update") { // Update user info on the database. For example, Discord username.
@@ -400,10 +401,7 @@ module.exports = {
                     .find({memberid: message.author.id})
                     .assign({
                         username: `${message.author.username}#${message.author.discriminator}`,
-                        pronouns: String(pronoun),
-                        sbadges: createServerBadges(message.author.id,message.member._roles), // check if there's any mod roles
-                        data: message.member._roles, // This just stores their roles to make things easier later.
-                        avatar: message.author.avatar
+                        pronouns: String(pronoun)
                     })
                     .write()
                 search = dbSearch(message.author.id) // Refresh the search result
