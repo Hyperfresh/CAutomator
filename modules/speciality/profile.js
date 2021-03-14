@@ -17,6 +17,10 @@ const db = lowdb(adapter)
 db.defaults({ roles: [], rcount: 0, profiles : [], pcount: 0 })
         .write()
 
+// Times
+const { DateTime } = require('luxon')
+const timezone = require('moment-timezone')
+
 // Check if url is valid and leads to image.
 const img = require('is-image-url')
 
@@ -191,6 +195,7 @@ function spaceout(args) {
 
 function createEmbed(search) /* Create the profile card. */ {
     let r = search
+    let time = DateTime.now().setZone(r.tz).toLocaleString(DateTime.DATETIME_MED)
     let embed = new Discord.MessageEmbed()
         .setTitle(r.username)
         .setColor(r.colour)
@@ -201,8 +206,8 @@ function createEmbed(search) /* Create the profile card. */ {
         .addField('Server Badges',spaceout(createServerBadges(r.memberid,r.data)),true)
         .addField('Pride Badges',spaceout(createPrideBadges(r.pbadges)),true)
         .setFooter(`Member ID: ${r.memberid}`)
+    if (r.tz !== null) embed.addField('Time',`**Time zone**: ${r.tz}\n**Current time**: ${time}`,false)
     if (r.bio !== null) embed.addField(r.bio.title,r.bio.desc,false)
-    if (r.tz !== null) embed.addField('Time',`**Time zone**: ${r.tz}\n**Current time**: `,false)
     try {
         if (r.image !== null) embed.setImage(r.image)
     } catch {
@@ -328,7 +333,7 @@ module.exports = {
                     dbUpdate(message.author.id,{name: name})
 
                 // Edit birthday
-                } else if (args[1] == ("bday" || "birthday")) {
+                } else if (args[1] == "bday" || args[1] == "birthday") {
                     try {
                         var test = String(`${args[2]} ${args[3]}`)
                         if (!/^((31(?!\ (Feb(ruary)?|Apr(il)?|June?|(Sep(?=\b|t)t?|Nov)(ember)?)))|((30|29)(?!\ Feb(ruary)?))|(29(?=\ Feb(ruary)?\ (((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)))))|(0?[1-9])|1\d|2[0-8])\ (Jan(uary)?|Feb(ruary)?|Ma(r(ch)?|y)|Apr(il)?|Ju((ly?)|(ne?))|Aug(ust)?|Oct(ober)?|(Sep(?=\b|t)t?|Nov|Dec)(ember)?)$/.test(test)) throw new Error()
@@ -350,7 +355,7 @@ module.exports = {
                     dbUpdate(message.author.id,{bio: {title: title, desc: text}})
 
                 // Edit embed colour
-                } else if (args[1] == ("colour" || "color")) {
+                } else if (args[1] == "colour" || args[1] == "color") {
                     try {
                         if (/^(?:[0-9a-fA-F]{3}){1,2}$/.test(args[2])) {
                             dbUpdate(message.author.id,{colour: parseInt(args[2], 16)})
@@ -371,6 +376,19 @@ module.exports = {
                     dbUpdate(message.author.id,{pbadges: createPrideBadges(args)})
                 } else if (args[1] == "interest") {
                     dbUpdate(message.author.id,{ibadges: createInterestBadges(args)})
+                } else if (args[1] == "timezone") {
+                    if (!timezone.tz.zone(args[2])) {
+                        let helpembed = new Discord.MessageEmbed()
+                            .setTitle('Click here to see all valid time zones.')
+                            .setDescription('Time zone names are case sensitive.')
+                            .setURL('https://en.wikipedia.org/wiki/List_of_tz_database_time_zones')
+                        message.reply('I don\'t recognise this time zone.',helpembed)
+                        return
+                    }
+                    dbUpdate(message.author.id,{tz: args[2]})
+                } else if (args[1] == "switch") {
+                    if (/(SW-[0-9]{4}-[0-9]{4}-[0-9]{4})/.test(args[2])) dbUpdate(message.author.id,{switch: args[2]})
+                    else message.reply('seems you messed up somewhere... Try again, in the format of `SW-1234-1234-1234-1234`.')
                 } else {
                     message.reply('you can\'t edit this! Here\'s what your profile currently looks like.')
                 }
