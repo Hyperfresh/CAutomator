@@ -1,5 +1,4 @@
-param ($S1)
-param ($S2)
+param ($S1, $S2)
 Start-Transcript -Path "$S2/data/update.log" -Append
 if ($S1 -eq 'npm') {
     Write-Host "[pwsh] I hope you know what you're doing." -ForegroundColor Yellow
