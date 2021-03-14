@@ -226,14 +226,14 @@ function getUserFromMention(mention) /* Make a mention into a snowflake. */ {
 }
 
 function dbSearch(search) /* Search for a user via memberid. */ {
-    let yep = db.get('members')
+    let yep = db.get('profiles')
         .find({memberid: search})
         .value()
     return yep
 }
 
 function dbUpdate(search, update) /* Update details on the database. */ {
-    db.get('members')
+    db.get('profiles')
         .find({memberid: search})
         .assign(update)
         .write()
@@ -264,7 +264,7 @@ module.exports = {
                     message.reply('looks like you need to assign yourself a pronoun! You can do that in #roles.')
                     return
                 }
-                db.get('members') // Push into the database.
+                db.get('profiles') // Push into the database.
                     .push({
                     memberid: message.author.id, // User who requested to register.
                     username: `${message.author.username}#${message.author.discriminator}`, // eg Hyperfresh#8080
@@ -302,7 +302,7 @@ module.exports = {
                     message.reply('looks like you need to assign yourself a pronoun! You can do that in #roles.')
                     return
                 }
-                db.get('members')
+                db.get('profiles')
                     .find({memberid: message.author.id})
                     .assign({
                         username: `${message.author.username}#${message.author.discriminator}`,
@@ -385,11 +385,11 @@ module.exports = {
                 for (let i = 1; i < ((args.length)-1); i++) {
                     name = `${name} ${args[1+i]}`
                 }
-                search = db.get('members')
+                search = db.get('profiles')
                     .find({name: name})
                     .value()
             } else if (args[1] == "username") {
-                search = db.get('members')
+                search = db.get('profiles')
                     .find({username: args[2]})
                     .value()
             }
