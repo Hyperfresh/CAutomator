@@ -216,6 +216,94 @@ function createEmbed(search) /* Create the profile card. */ {
     return embed
 }
 
+function helpModule(args) {
+    let types = ['badges','basic','register','edit','search']
+
+    let badges = new Discord.MessageEmbed()
+        .setAuthor('CAutomator Profile System Help','https://github.com/Hyperfresh/CAutomator/blob/master/resources/icon.png?raw=true')
+        .setTitle('Badge Definition')
+        .setDescription(`> ** Server badges**
+:crown: Server owner/founder
+:star: Server admin
+:wrench: Bot maintainer
+:video_game: Game Day Coordinator
+:see_no_evil: NSFW Moderator
+:speech_balloon: Roleplay Moderator
+:pushpin: Media pinner
+:one: Reached Level 10+!
+:two: Reached Level 20+!
+:three: Reached Level 30+!
+:five: Reached Level 50+!
+:six: REACHED LEVEL SIXTY NINE.
+        
+> **Interest badges**
+<:minecraft:817185848373542963> Minecraft
+<:amogus:817207798583525386> Among Us
+<:splatoon:817209133526024243> Splatoon
+<:animalcrossing:817207987240304690> Animal Crossing
+<:terraria:817186008750751754> Terraria
+:video_game: Game Day
+:musical_note: Musician
+:paintbrush: Artist
+
+> **Pride badges**
+<:enby:798917920674676756> Non-Binary
+<:pan:798918319238545418> Pansexual
+<:nd:798918686676353034> Neurodivergent
+<:les1:798920011145281556> Lesbian (flag 1)
+<:les2:798920322828861460> Lesbian (flag 2)
+<:bi:798919094194798622> Bisexual
+<:ace:798919222843146270> Asexual
+<:gq:798919345836785664> Genderqueer
+<:aro:798919620840652870> Aromantic
+:transgender_flag: Transgender
+:rainbow_flag: Gay`)
+
+    let basic = new Discord.MessageEmbed()
+        .setAuthor('CAutomator Profile System Help','https://github.com/Hyperfresh/CAutomator/blob/master/resources/icon.png?raw=true')
+        .setTitle('Basic Profile System Modules')
+        .setDescription(`To learn more about a module, run \`${prefix}profile help <command>\`.\nTo learn about badges, run \`${prefix}profile help badges\`.`)
+        .addField('register','Register onto the Database, if you haven\'t already.',true)
+        .addField('edit','Edit your profile.',true)
+        .addField('search','Advanced search for a user.',true)
+        .addField('help','This message.',true)
+        .addField('(no module)','Search for a user using a @mention, eg `profile <@352668050111201291>`',true)
+
+    let register = new Discord.MessageEmbed()
+        .setAuthor('CAutomator Profile System Help','https://github.com/Hyperfresh/CAutomator/blob/master/resources/icon.png?raw=true')
+        .setTitle(`${prefix}profile register`)
+        .setDescription(`This command does not take any arguments. Just run the command to create an entry on the database.`)
+
+    let edit = new Discord.MessageEmbed()
+        .setAuthor('CAutomator Profile System Help','https://github.com/Hyperfresh/CAutomator/blob/master/resources/icon.png?raw=true')
+        .setTitle('Edit your profile card.')
+        .setDescription('**Usage**: `profile edit ...`\n\n> **Arguments available**:')
+        .addField('bio','Add a bio.\n`...bio title | description`',true)
+        .addField('badges','Add pride badges.\n`...badges enby nd trans`\n> Badges available:\n<:enby:798917920674676756> <:pan:798918319238545418> <:nd:798918686676353034> <:les1:798920011145281556> <:les2:798920322828861460> <:bi:798919094194798622> <:ace:798919222843146270> <:gq:798919345836785664> <:aro:798919620840652870> (:transgender_flag: `trans`) (:rainbow_flag: `gay`)',true)
+        .addField('interest','Add interest badges.\n`...interest splatoon amogus artist`\n> Badges available:\n<:minecraft:817185848373542963> <:amogus:817207798583525386> <:splatoon:817209133526024243> <:animalcrossing:817207987240304690> <:terraria:817186008750751754> (:video_game: `gameday`) (:musical_note: `musician`) (:paintbrush: `artist`)',true)
+        .addField('name','Add your IRL name.\n`...name Paul "Hy" Asencion`',true)
+        .addField('bday','Add your birthday.\n`...bday 12 Aug`',true)
+        .addField('timezone','Add your time zone so people know what time it is for you.\n`...timezone Australia/Adelaide`',true)
+        .addField('colour','Set your profile card\'s colour.\n`...colour 00ff00`',true)
+        .addField('image','Set featured image, like a piece of art or just something cool!\n`...image <link>`',true)
+        .addField('switch','Add your Switch friend code.\n`...switch SW-1234-1234-1234-1234`')
+
+    let search = new Discord.MessageEmbed()
+        .setAuthor('CAutomator Profile System Help','https://github.com/Hyperfresh/CAutomator/blob/master/resources/icon.png?raw=true')
+        .setTitle('Search the database.')
+        .setDescription('**Usage**: `profile search ...`\n\n> **Arguments available**:')
+        .addField('name','Search by IRL name.\n`...name Paul ("Hy" Asencion)`',true)
+        .addField('username','Search by Discord username.\n`...username Hyperfresh(#8080)`',true)
+        .addField('memberid','Search by Discord member id.\n`...memberid 352668050111201291`',true)
+        .addField('(no argument)','Search by Discord mention.\n`...<@352668050111201291>`',true)
+
+    if (args == 'badges') return badges
+    else if (args == 'register') return register
+    else if (args == 'edit') return edit
+    else if (args == 'search') return search
+    else return basic
+    }
+
 function getUserFromMention(mention) /* Make a mention into a snowflake. */ {
 	if (!mention) return;
 
@@ -255,7 +343,8 @@ module.exports = {
                 let embed = createEmbed(search)
                 message.channel.send(embed)
             } else message.channel.send(`Seems you aren't on the database. Run \`${prefix}profile register\` to do that!`)
-
+        } else if (args[0] == "help") {
+            message.channel.send(helpModule(args[1]))
         } else if (args[0] == "register") { // Register a user on the database.
             if (!search) { // Make sure they're not already on the database
                 let pronoun = []
@@ -292,7 +381,7 @@ module.exports = {
                 search = dbSearch(message.author.id)
                 let embed = createEmbed(search)
                 message.channel.send('> ✅ > Your profile was created.',embed)
-                message.channel.send(`Check \`${prefix}help profile\` for help on setting up your profile.`)
+                message.channel.send(`Here's what you can edit:`,helpModule(basic))
             } else message.reply('looks like you\'ve already registered!') 
 
         } else if (args [0] == "update") { // Update user info on the database. For example, Discord username.
@@ -413,6 +502,14 @@ module.exports = {
             }
             else if (args[1] == "memberid") {
                 search = dbSearch(args[2])
+            }
+            else {
+                let user = getUserFromMention(args[1]);
+                try { search = dbSearch(user.id) }
+                catch {
+                    message.reply('I think you messed up your command somewhere. Try again.')
+                    return
+                }
             }
             if (search) {
                 let embed = createEmbed(search)
