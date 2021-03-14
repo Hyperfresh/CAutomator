@@ -206,7 +206,7 @@ function createEmbed(search) /* Create the profile card. */ {
         .addField('Server Badges',spaceout(createServerBadges(r.memberid,r.data)),true)
         .addField('Pride Badges',spaceout(createPrideBadges(r.pbadges)),true)
         .setFooter(`Member ID: ${r.memberid}`)
-    if (r.tz !== null) embed.addField('Time',`**Time zone**: ${r.tz}\n**Current time**: ${time}`,false)
+    if (r.tz !== null) embed.addField(`The time for me is ${time}.`,`**Time zone**: ${r.tz}`,false)
     if (r.bio !== null) embed.addField(r.bio.title,r.bio.desc,false)
     try {
         if (r.image !== null) embed.setImage(r.image)
