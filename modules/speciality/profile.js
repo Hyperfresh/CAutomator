@@ -14,7 +14,7 @@ const lowdb = require("lowdb");
 const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync(`${config.DIR}/data/database.json`)
 const db = lowdb(adapter)
-db.defaults({ roles: [], members: [], count: 0 })
+db.defaults({ roles: [], rcount: 0, profiles : [], pcount: 0 })
         .write()
 
 // Check if url is valid and leads to image.
@@ -282,7 +282,7 @@ module.exports = {
                     avatar: message.author.avatar
                 })
                     .write()
-                db.update('count', n => n + 1)
+                db.update('pcount', n => n + 1)
                     .write()
                 search = dbSearch(message.author.id)
                 let embed = createEmbed(search)
@@ -302,7 +302,6 @@ module.exports = {
                     message.reply('looks like you need to assign yourself a pronoun! You can do that in #roles.')
                     return
                 }
-                console.log(message.author.avatar)
                 db.get('members')
                     .find({memberid: message.author.id})
                     .assign({
