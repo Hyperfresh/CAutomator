@@ -1,4 +1,5 @@
 param ($S1, $S2)
+Remove-Item -Path "$S2/data/update.log"
 Start-Transcript -Path "$S2/data/update.log" -Append
 if ($S1 -eq 'npm') {
     Write-Host "[pwsh] I hope you know what you're doing." -ForegroundColor Yellow
