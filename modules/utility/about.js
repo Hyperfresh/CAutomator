@@ -16,12 +16,12 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     callback: (message, text) => {
-        let colour = message.guild.member(client.user.id)
+        let member = message.guild.member(client.user.id)
 
         let embed = new Discord.MessageEmbed()
             .setAuthor('About CAutomator')
             .setTitle(`CAutomator v${botinfo.version}`)
-            .setColor(colour.roles.highest.color)
+            .setColor(member.displayColor)
             .setURL(`https://github.com/Hyperfresh/CAutomator/releases/tag/v${botinfo.version}`)
             .setThumbnail(`https://cdn.discordapp.com/avatars/${client.user.id}/${client.user.avatar}.png?size=512`)
             .setDescription('<:cautomator:798916996401594368> **CAutomator** is a custom-built Discord bot, built in <:nodejs:817518471226720256> node.js for the <:CalculatedAnarchy:584304539717599234> Calculated Anarchy server.\n[Learn more about me here!](http://github.com/hyperfresh/CAutomator)')
