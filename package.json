@@ -10,7 +10,8 @@
     "luxon": "^1.26.0",
     "moment-timezone": "^0.5.33",
     "node-fetch": "^2.6.1",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.4",
+    "weather-js": "^2.0.0"
   },
   "scripts": {
     "test": "echo \"If you see this message, it means I didn't see a problem with trying to build CAutomator!\" && exit 0",
