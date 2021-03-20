@@ -15,7 +15,7 @@ module.exports = {
     commands: 'about',
     minArgs: 0,
     maxArgs: 0,
-    callback: (message, text) => {
+    callback: (message) => {
         let member = message.guild.member(client.user.id)
 
         let embed = new Discord.MessageEmbed()
@@ -26,7 +26,7 @@ module.exports = {
             .setThumbnail(`https://cdn.discordapp.com/avatars/${client.user.id}/${client.user.avatar}.png?size=512`)
             .setDescription('<:cautomator:798916996401594368> **CAutomator** is a custom-built Discord bot, built in <:nodejs:817518471226720256> node.js for the <:CalculatedAnarchy:584304539717599234> Calculated Anarchy server.\n[Learn more about me here!](http://github.com/hyperfresh/CAutomator)')
             .addField('OS & Node Installation',`**OS**: ${os.version()}\n**Node**: ${process.version}`,true)
-            .addField('Main dependencies',`**discord.js**: ${Discord.version}\n**lowdb**: ${botinfo.dependencies.lowdb}\n**shell.js**: ${botinfo.dependencies.shelljs}\n**luxon**: ${luxonver}\n**moment-timezone**: ${timez.version}`,true)
+            .addField('Main dependencies',`**discord.js**: ${Discord.version}\n**lowdb**: ${botinfo.dependencies.lowdb}\n**luxon**: ${luxonver}\n**moment-timezone**: ${timez.version}\n**weather-js**: ${botinfo.dependencies.weather-js}`,true)
             .addField('Server time',DateTime.now().toLocaleString(DateTime.DATETIME_HUGE))
             .setFooter('Created by Hyperfresh#8080','https://media.discordapp.net/attachments/634575479042474003/663591393754742794/emote.gif')
         message.channel.send(embed)
