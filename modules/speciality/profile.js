@@ -28,7 +28,7 @@ const img = require('is-image-url')
 // |__      _   _ _|_ *  _   _
 // |   |_| | | |_  |  | |_| | | 
 
-function createServerBadges(id) /* Create server badges for embeds & database. */ {
+function createServerBadges(id,guild) /* Create server badges for embeds & database. */ {
     let serverBadgeEmoji = [
         'star','wrench','crown','pushpin','video_game',
         'see_no_evil','one','two','three','five','six'
@@ -37,7 +37,7 @@ function createServerBadges(id) /* Create server badges for embeds & database. *
     let r = []
 
     let user = client.users.cache.get(id)
-    let roles = user.lastMessage.guild.member(user)._roles
+    let roles = guild.member(user)._roles
 
     // Moderation badges
     if (config.MAINTAINERID == id) r.push('wrench') // Bot Maintainer
@@ -196,9 +196,8 @@ function spaceout(args) {
     return yes
 }
 
-function createEmbed(r) /* Create the profile card. */ {
+function createEmbed(r,user,guild) /* Create the profile card. */ {
     let time = DateTime.now().setZone(r.tz).toLocaleString(DateTime.DATETIME_MED)
-    let user = client.users.cache.get(r.memberid)
     let embed = new Discord.MessageEmbed()
         .setTitle(r.username)
         .setURL(`https://discord.com/users/${r.memberid}`)
@@ -207,7 +206,7 @@ function createEmbed(r) /* Create the profile card. */ {
         .setThumbnail(`https://cdn.discordapp.com/avatars/${r.memberid}/${user.avatar}.png?size=1024`)
         .setAuthor("Calculated Anarchy Profile",'https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png')
         .addField('Interest Badges',spaceout(createInterestBadges(r.ibadges)))
-        .addField('Server Badges',spaceout(createServerBadges(r.memberid)),true)
+        .addField('Server Badges',spaceout(createServerBadges(r.memberid,guild)),true)
         .addField('Pride Badges',spaceout(createPrideBadges(r.pbadges)),true)
         .setFooter(`Member ID: ${r.memberid}`)
     if (r.tz !== null) embed.addField(`The time for me is ${time}.`,`**Time zone**: ${r.tz}`,false)
@@ -344,7 +343,7 @@ module.exports = {
         let search = dbSearch(message.author.id) // Create search.
         if (args == "") {
             if (search) { // Did something come back?
-                let embed = createEmbed(search)
+                let embed = createEmbed(search,client.users.cache.get(search.memberid),message.guild)
                 message.channel.send(embed)
             } else message.channel.send(`Seems you aren't on the database. Run \`${prefix}profile register\` to do that!`)
         } else if (args[0] == "help") {
@@ -380,7 +379,7 @@ module.exports = {
                 db.update('pcount', n => n + 1)
                     .write()
                 search = dbSearch(message.author.id)
-                let embed = createEmbed(search)
+                let embed = createEmbed(search,client.users.cache.get(search.memberid),message.guild)
                 message.channel.send('> ✅ > Your profile was created.',embed)
                 message.channel.send(`Here's what you can edit:`,helpModule('basic'))
             } else message.reply('looks like you\'ve already registered!') 
@@ -405,7 +404,7 @@ module.exports = {
                     })
                     .write()
                 search = dbSearch(message.author.id) // Refresh the search result
-                let embed = createEmbed(search)
+                let embed = createEmbed(search,client.users.cache.get(search.memberid),message.guild)
                 message.channel.send('Profile card updated.',embed)
             }
 
@@ -480,7 +479,7 @@ module.exports = {
                     message.reply('you can\'t edit this! Here\'s what your profile currently looks like.')
                 }
                 search = dbSearch(message.author.id)
-                let embed = createEmbed(search)
+                let embed = createEmbed(search,client.users.cache.get(search.memberid),message.guild)
                 message.channel.send(embed)
 
             } else message.channel.send(`Seems you aren't on the database. Run \`${prefix}profile register\` to do that!`)
@@ -510,7 +509,13 @@ module.exports = {
                 }
             }
             if (search) {
-                let embed = createEmbed(search)
+                let embed
+                try {
+                    embed = createEmbed(search,client.users.cache.get(search.memberid),message.guild)
+                } catch {
+                    message.reply('sorry, but something *really bad* happened when I tried to get a result. Try searching with their @ instead.')
+                    return
+                }                
                 message.channel.send(embed)
             } else message.reply("I didn't find anything. Sorry.")
         } else {
@@ -521,7 +526,13 @@ module.exports = {
                 return
             }
             if (search) {
-                let embed = createEmbed(search)
+                let embed
+                try {
+                    embed = createEmbed(search,user,message.guild)
+                } catch {
+                    message.reply('sorry, but something *really bad* happened when I tried to get a result. Try searching with their @ instead.')
+                    return
+                }
                 message.channel.send(embed)
             } else message.reply("I didn't find anything. Sorry.")
         }
