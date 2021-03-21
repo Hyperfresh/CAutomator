@@ -1,26 +1,33 @@
-# About CAutomator
-**CAutomator (JavaScript)** is a custom-built bot for Calculated Anarchy. It manages custom roles, server-side profile cards, and several other things.
+<div align="center">
+<p align="center">
+  <img src="./resources/logo.png" alt="logo"/>
+  <h1>A custom Discord bot for Calculated Anarchy</h1>
 
-# CAutomator comes in two versions
-CAutomator was coded in Python originally, before it was rewritten in JavaScript. The Python code lives as "CAutomator Legacy". Although older, it is more stable (NOT reliable!) than CAutomator JS.
+  <p align="center">
+    profiles | time | weather | invites | roles
+  </p>
+  <p>
+    <a href="https://hyperfresh.github.io/cautomator">Learn more about CAutomator on its website.</a>
+    </p>
+</div>
 
-## What version am I looking at?
-**You are currently looking at CAutomator (JavaScript).**
+Built in Node.js from the ground-up from its [Python ancestor](https://github.com/hyperfresh/CAutomator-Legacy), CAutomator can control custom roles for each user to help users stand out, manage server-side profile cards to help users with IRL identity, find the time and weather across the globe, and manage invites into the server. 
 
-[Click to look at CAutomator Legacy](https://github.com/Hyperfresh/CAutomator-Legacy)
+## Feature spotlight: Profile system
 
-## What are the differences?
-**CAutomator Legacy** is tried and tested to Python. It's a stable bot that does things almost flawlessly.
+A common problem within the Calculated Anarchy server is IRL identities. CAutomator fixes this problem with the **CAutomator Profile System**.
 
-**CAutomator (JavaScript)** is the fresh new version built on what the web is using now: JavaScript. It has many more features and is expected to be more stable and reliable compared to Python when rewriting is complete.
+![Profile system example](https://media.discordapp.net/attachments/822673098637574184/823117284741611550/unknown.png?width=346&height=585)
 
-Keep in mind that **CAutomator Legacy** is licensed under the [GNU **Lesser** GPL](https://www.gnu.org/licenses/lgpl-3.0.html), while **CAutomator (JavaScript)** is licensed under the [GNU **Affero** GPL](https://www.gnu.org/licenses/agpl-3.0.html). The main difference between the two licenses is that if you use **CAutomator (JavaScript)**, you MUST make your modified source code available for viewing if you decide to fork this repository and host a Discord bot with it.
+The CAutomator profile system is able to show the user's IRL name, pronouns, birthday, Switch friend code, pride badges and interests. It also has the ability to show the user's time and time zone, as well show a brief "about me"!
+
+There's more features to learn about! Have a look at https://hyperfresh.github.io/cautomator for more details.
 
 ---
 
 *CAutomator - the custom-built Discord bot, coded in Node.*
 
-*Copyright (C) 2020 Hyperfresh | https://github.com/Hyperfresh/CAutomator/*
+*Copyright (C) 2021 Hyperfresh | https://github.com/Hyperfresh/CAutomator/*
 
 *This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
