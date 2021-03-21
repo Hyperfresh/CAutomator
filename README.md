@@ -7,7 +7,7 @@
     profiles | time | weather | invites | roles
   </p>
   <p>
-    <a href="https://hyperfresh.github.io/cautomator">Learn more about CAutomator on its website.</a>
+    <a href="https://hyperfresh.github.io/CAutomator">Learn more about CAutomator on its website.</a>
     </p>
 </div>
 
@@ -21,7 +21,7 @@ A common problem within the Calculated Anarchy server is IRL identities. CAutoma
 
 The CAutomator profile system is able to show the user's IRL name, pronouns, birthday, Switch friend code, pride badges and interests. It also has the ability to show the user's time and time zone, as well show a brief "about me"!
 
-There's more features to learn about! Have a look at https://hyperfresh.github.io/cautomator for more details.
+There's more features to learn about! Have a look at https://hyperfresh.github.io/CAutomator for more details.
 
 ---
 
