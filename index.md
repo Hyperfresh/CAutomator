@@ -69,19 +69,3 @@ CAutomator can manage invites into the server, by limiting who can create an inv
 `-invite`
 
 *To learn more about the code, look at `modules/speciality/invite.js`*
-
----
-
-*CAutomator - the custom-built Discord bot, coded in Node.*
-
-*Copyright (C) 2021 Hyperfresh \| https://github.com/Hyperfresh/CAutomator/*
-
-*This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.*
-
-*This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.*
