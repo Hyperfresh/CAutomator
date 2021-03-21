@@ -1,13 +1,3 @@
-<div align="center">
-<p align="center">
-  <img src="https://github.com/Hyperfresh/CAutomator/blob/master/resources/logo.png?raw=true" alt="logo"/>
-  <h1>A custom Discord bot for Calculated Anarchy</h1>
-
-  <p align="center">
-    profiles | time | weather | invites | roles
-  </p>
-</div>
-
 Built in Node.js from the ground-up from its [Python ancestor](https://github.com/hyperfresh/CAutomator-Legacy), CAutomator can control custom roles for each user to help users stand out, manage server-side profile cards to help users with IRL identity, find the time and weather across the globe, and manage invites into the server. 
 
 ## Features
