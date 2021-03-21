@@ -54,10 +54,10 @@ The Calculated Anarchy server has members from all around the globe: some in Eur
 - `-weather [location]` (example: `-weather Adelaide`)
 - `-time [tz]` (example: `-time Australia/Adelaide`, uses `moment-timezone` and [the tz database](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to verify timezone)
 
-*To learn more about the code, look at:
-- [original code for weather](https://github.com/Hyperfresh/CAutomator-Legacy/blob/61fff2e08117440ec8b0cda4a2126d0b32b5db43/bot.py#L195)
-- `modules/utility/weather.js`
-- `modules/utility/time.js`*
+*To learn more about the code, look at:*
+- [*original code for weather*](https://github.com/Hyperfresh/CAutomator-Legacy/blob/61fff2e08117440ec8b0cda4a2126d0b32b5db43/bot.py#L195)
+- *`modules/utility/weather.js`*
+- *`modules/utility/time.js`*
 
 ### Invite management
 CAutomator can manage invites into the server, by limiting who can create an invite, how many the invite can allow in, and how long they have to wait until they can invite another user.
