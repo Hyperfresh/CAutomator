@@ -1,4 +1,4 @@
-const { DiscordAPIError } = require("discord.js");
+const Discord = require('discord.js')
 
 const talkedRecently = new Set();
 
@@ -22,7 +22,10 @@ function createInv(message) {
         })
     })
     .catch(i => {
-        message.reply('your DMs don\'t seem to be open. I\'m not able to create an invite without that, so please open your DMs and try again.')
+        let embed = new Discord.MessageEmbed()
+            .setTitle('Rather not open your DM\'s?')
+            .setDescription('[Open a ticket with us instead.](https://discord.com/channels/267817764989698048/547334755885121536/769472963484844053)')
+        message.reply('your DMs don\'t seem to be open. I\'m not able to create an invite without that, so please open your DMs and try again.',embed)
         setError(false)
     });
 }
