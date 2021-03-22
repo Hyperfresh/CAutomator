@@ -6,7 +6,6 @@
   "dependencies": {
     "discord.js": "^12.4.1",
     "is-image-url": "^1.1.8",
-    "jquery": "^3.6.0",
     "lowdb": "^1.0.0",
     "node-fetch": "^2.6.1",
     "rss-parser": "^3.12.0",
