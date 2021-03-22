@@ -3,4 +3,9 @@
 
 @import "{{ site.theme }}";
 
-page-header{color:#fff;text-align:center;background-color:#2bb573;background-image:linear-gradient(120deg, #00ff00, #2bb573)};
+page-header {
+  color:#fff;
+  text-align:center;
+  background-color:#2bb573;
+  background-image:linear-gradient(120deg, #00ff00, #2bb573);
+};
