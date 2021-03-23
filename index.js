@@ -9,7 +9,7 @@
 
 var info = String(`
 CAutomator - the custom-built Discord bot, coded in discord.js / node.js
-Copyright (C) 2020 Hyperfresh | https://github.com/Hyperfresh/CAutomator/
+Copyright (C) 2021 Hyperfresh | https://github.com/Hyperfresh/CAutomator/
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by

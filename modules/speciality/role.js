@@ -23,6 +23,7 @@ module.exports = {
         let search = db.get('roles')
             .find({memberid: message.author.id})
             .value()
+        message.react('<a:typing:798907891787628544>')
         if (!search) {
             for (let x = 1; x < (args.length); x++) {
                 rolename = `${rolename} ${args[x]}`
@@ -77,5 +78,6 @@ module.exports = {
                 message.reply('you didn\'t specify a colour (or didn\'t specify it properly)! Do in the following format: `~role <colour> <role name>`')
             }
         }
+        message.reactions.removeAll()
     }
 }
