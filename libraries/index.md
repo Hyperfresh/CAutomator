@@ -2,7 +2,8 @@
 CAutomator uses other libraries that make parts of the bot work! These are the main dependencies CAutomator rely upon.
 
 ## API Wrapper: [discord.js](https://discord.js.org/)
-Used in: the majority of CAutomator
+Used in the majority of CAutomator.
+
 ```
    Copyright 2015 - 2021 Amish Shah
 
@@ -23,6 +24,7 @@ Used in: the majority of CAutomator
 Used in:
 - modules/speciality/profile.js
 - modules/speciality/role.js
+
 ```
 The MIT License (MIT)
 
@@ -51,6 +53,7 @@ Used in:
 - modules/utility/time.js
 - modules/speciality/profile.js
 - modules/utility/about.js
+
 ```
 Copyright 2019 JS Foundation and other contributors
 
@@ -65,6 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 Used in:
 - modules/utility/time.js
 - modules/speciality/profile.js
+
 ```
 The MIT License (MIT)
 
@@ -92,6 +96,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Used in:
 - modules/speciality/alert.js
 - modules/speciality/alert-automate.js
+
 ```  
 MIT License
 
@@ -120,6 +125,7 @@ SOFTWARE.
 Used in:
 - modules/speciality/alert.js
 - modules/speciality/alert-automate.js
+
 ```
 (The MIT License)
 
@@ -133,8 +139,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ```
 
 ## [weather](https://github.com/devfacet/weather)
-Used in:
-- modules/utility/weather.js
+Used in `modules/utility/weather.js`
+
 ``` 
 The MIT License (MIT)
 
@@ -160,8 +166,8 @@ SOFTWARE.
 ```
 
 ## [is-image-url](https://www.npmjs.com/package/is-image-url)
-Used in:
-- modules/speciality/profile.js
+Used in `modules/speciality/profile.js`.
+
 ```
 The MIT License (MIT)
 
