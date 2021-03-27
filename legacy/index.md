@@ -17,6 +17,7 @@ A common problem within the Calculated Anarchy server is IRL identities. CAutoma
 The way it used to work was the server #namelist, where people had to manually check the details of each user. Additionally, the namelist would only be updated every so often that when it was used to check the details of a user, it would be severely out of date.
 
 Enter the **CAutomator Legacy Profile System**:
+
 ![profile system example](https://user-images.githubusercontent.com/31476608/111932427-4bf33d80-8b0d-11eb-9f5a-8ec408d5269d.png)
 
 The CAutomator Legacy profile system is able to show the user's IRL name, pronouns, birthday, Switch friend code, as well show a brief "about me" of the user. The new version of CAutomator is able to show the timezone of a user, pride and interest badges, as well as a bio image.
@@ -45,4 +46,20 @@ CAutomator Legacy could fetch Minecraft skins. Self-explanatory.
 
 ![Minecraft skin example](https://user-images.githubusercontent.com/31476608/111933687-dfc60900-8b0f-11eb-9dc3-4a4a33a5e4cb.png)
 
-##
+## Speedtest
+CAutomator could do a speedtest to determine how fast it can respond to things from where the bot is based at. Self-explanatory.
+
+![speedtest example](https://user-images.githubusercontent.com/31476608/112722554-3c835280-8f5a-11eb-83b0-7c36d2dc0bb5.png)
+
+## YouTube downloader
+Uses the `youtube-dl` module to download things off YouTube. Self-explanatory. May also use HandBrake to compress videos.
+
+![ytdl example](https://user-images.githubusercontent.com/31476608/112722593-79e7e000-8f5a-11eb-802b-4b0567be758f.png)
+
+## Game development comment fetcher
+Fetched Google Doc comments using email shenanigans. Really simple.
+
+![getdevcom example](https://user-images.githubusercontent.com/31476608/112722685-e662df00-8f5a-11eb-8019-358304ca40e8.png)
+
+# Why are lots of CAutomator Legacy's features missing?
+They haven't found a use to be needed again. There's room for them to be rewritten due to CAutomator's new directory structure however, so it's very easy to transfer a Python command into a CAutomator module.
