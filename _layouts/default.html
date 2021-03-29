@@ -25,17 +25,15 @@
     <header class="page-header" role="banner">
       <div align="center">
         <p align="center">
-          <img href='https://hyperfresh.github.io/CAutomator' style='height: 100%; width: 100%; object-fit: contain' src="https://github.com/Hyperfresh/CAutomator/blob/master/resources/logo.png?raw=true" alt="logo"/>
+          <a href='https://hyperfresh.github.io/CAutomator'>
+            <img style='height: 100%; width: 100%; object-fit: contain' src="https://github.com/Hyperfresh/CAutomator/blob/master/resources/logo.png?raw=true" alt="logo"/>
+          </a>
         </p>
       </div>
       <h2 class="project-tagline">profiles | time | weather | invites | roles</h2>
-      {% if site.github.is_project_page %}
-        <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
+       <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
+      <br>
       <a href="https://hyperfresh.github.io/CAutomator/legacy">Legacy edition</a> | <a href="https://hyperfresh.github.io/CAutomator/libraries">Libraries</a>
-      {% endif %}
-      {% if site.show_downloads %}
-        <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
-        <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
       {% endif %}
     </header>
 
