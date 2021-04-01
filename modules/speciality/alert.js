@@ -40,7 +40,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     callback: (message) => {
-        let RSS_URL = 'http://data.eso.sa.gov.au/prod/cfs/criimson/cfs_cap_incidents.xml'
+        let RSS_URL = 'https://data.eso.sa.gov.au/prod/cfs/criimson/cfs_cap_incidents.xml'
         parser.parseURL(RSS_URL)
             .then(res => {
                 console.log(res.items[0].content)
@@ -49,9 +49,6 @@ module.exports = {
                     console.dir(result);
                     message.channel.send(createAlertEmbed(result,0))
                 })
-                    .catch(function (err) {
-                       // Failed
-                    })
                 if (res.items.length > 1) {
                     for ( let i = 0; i <= res.items.length; i++ ) {
                         console.log(res.items[i].content)
@@ -60,9 +57,6 @@ module.exports = {
                             console.dir(result);
                             message.channel.send(createAlertEmbed(result,i))
                         })
-                            .catch(function (err) {
-                            // Failed
-                            });
                     }
                 }
             })
