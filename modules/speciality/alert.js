@@ -24,6 +24,9 @@ function createAlertEmbed(result,num) {
     } else if (alert.parameter[2].value[0] == 'Bushfire Emergency Warning') {
         embed.setThumbnail('https://github.com/Hyperfresh/CAutomator/blob/dev/resources/alert-symbols/ico-fire-red.png?raw=true')
         embed.setColor(14024732)
+    } else if (alert.parameter[2].value[0] == 'Update') {
+        embed.setThumbnail('')
+            .setColor(16777215)
     }
     embed.setTitle(alert.area[0].areaDesc[0])
     embed.setURL(alert.web[0])
