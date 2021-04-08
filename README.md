@@ -3,6 +3,7 @@
 [Learn more about CAutomator on its website.](https://hyperfresh.github.io/CAutomator)
 
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Hyperfresh_CAutomator)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
+
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=bugs)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=security_rating)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=ncloc)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
