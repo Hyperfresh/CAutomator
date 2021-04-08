@@ -1,15 +1,12 @@
-<div align="center">
-<p align="center">
-  <img src="./resources/logo.png" alt="logo"/>
-  <h1>A custom Discord bot for Calculated Anarchy</h1>
+![CAutomator logo](./resources/logo.png)
+# A custom Discord bot for Calculated Anarchy that manages profile cards, invites, custom roles and more.
+[Learn more about CAutomator on its website.](https://hyperfresh.github.io/CAutomator)
 
-  <p align="center">
-    profiles | time | weather | invites | roles
-  </p>
-  <p>
-    <a href="https://hyperfresh.github.io/CAutomator">Learn more about CAutomator on its website.</a>
-    </p>
-</div>
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Hyperfresh_CAutomator)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=bugs)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=security_rating)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=ncloc)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
+
 
 Built in Node.js from the ground-up from its [Python ancestor](https://github.com/hyperfresh/CAutomator-Legacy), CAutomator can control custom roles for each user to help users stand out, manage server-side profile cards to help users with IRL identity, find the time and weather across the globe, and manage invites into the server. 
 
