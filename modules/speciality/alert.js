@@ -30,8 +30,8 @@ function createAlertEmbed(result,num) {
     }
     embed.setTitle(alert.area[0].areaDesc[0])
     embed.setURL(alert.web[0])
-    let issued = DateTime.fromISO(alert.effective[0]).toLocaleString(DateTime.DATETIME_MED)
-    let expire = DateTime.fromISO(alert.expires[0]).toLocaleString(DateTime.DATETIME_MED)
+    let issued = DateTime.fromISO(alert.effective[0]).setZone('Australia/Adelaide').toLocaleString(DateTime.DATETIME_MED)
+    let expire = DateTime.fromISO(alert.expires[0]).setZone('Australia/Adelaide').toLocaleString(DateTime.DATETIME_MED)
     embed.setDescription(`> **Issued ${issued}**\n\n${alert.description[0]}`)
     embed.addField('What you should do',`${alert.instruction[0]}\n\n> **Expires ${expire}**`)
     embed.setFooter('Times are in Australian Central Standard/Daylight')
