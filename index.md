@@ -1,9 +1,12 @@
-
+<div align="center">
+  
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Hyperfresh_CAutomator)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=bugs)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=security_rating)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=ncloc)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
+
+</div>
 
 Built in Node.js from the ground-up from its [Python ancestor](https://github.com/hyperfresh/CAutomator-Legacy), CAutomator can control custom roles for each user to help users stand out, manage server-side profile cards to help users with IRL identity, find the time and weather across the globe, and manage invites into the server. 
 
