@@ -5,13 +5,7 @@
 const config = require('../../data/config.json');
 let prefix = config.PREFIX
 
-// Set up database based on lowdb.
-const lowdb = require("lowdb");
-const FileSync = require('lowdb/adapters/FileSync')
-const adapter = function() { FileSync(`${config.DIR}/data/database.json`) }
-const db = lowdb(adapter)
-db.defaults({ roles: [], rcount: 0, profiles: [], pcount: 0 })
-        .write()
+const {db} = require('../../index')
 
 module.exports = {
     commands: 'role',
