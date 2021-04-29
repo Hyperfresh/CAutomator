@@ -32,6 +32,13 @@ const path = require('path')
 const config = require("./data/config.json");
 const client = new Discord.Client();
 
+const lowdb = require("lowdb");
+const FileSync = require('lowdb/adapters/FileSync')
+const adapter = new FileSync(`${config.DIR}/data/database.json`)
+const db = lowdb(adapter)
+db.defaults({ roles: [], rcount: 0, profiles : [], pcount: 0 })
+        .write()
+
 const prefix = config.PREFIX;
 
 function ready() {
@@ -78,4 +85,6 @@ client.on("ready", function() {
 //         }
 // });         
 client.login(config.TOKEN);
+
 module.exports.client = client;
+module.exports.db = db
