@@ -1,6 +1,6 @@
 // RSS Parsing
 const Parser = require('rss-parser')
-const parser = new Parser();
+const parser = function() { Parser(); }
 const xml2js = require('xml2js')
 const xmlparser = new xml2js.Parser();
 
@@ -46,7 +46,12 @@ module.exports = {
         let RSS_URL = 'https://data.eso.sa.gov.au/prod/cfs/criimson/cfs_cap_incidents.xml'
         parser.parseURL(RSS_URL)
             .then(res => {
-                console.log(res.items[0].content)
+                try {
+                    console.log(res.items[0].content)
+                } catch {
+                    message.channel.send('No alerts to show.')
+                    return
+                }
                 console.log('parsing...')
                 xmlparser.parseStringPromise(res.items[0].content).then(function (result) {
                     console.dir(result);

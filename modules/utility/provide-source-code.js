@@ -71,7 +71,6 @@ module.exports = {
             }).catch(err => {
                 console.warn(`Something really bad happened. ${err}`)
                 message.channel.send(`> 🛑 > Something really bad happened.\nPlease report the following error to my bot owner: \`\`\`${err}\`\`\``)
-                return
             });
         } catch(AbortError) {
             console.warn(`Something really bad happened. ${error}`)
