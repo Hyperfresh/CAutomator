@@ -70,20 +70,7 @@ client.on("ready", function() {
         readCommands('modules');
         ready()
 });
-        
-
-// client.on("message", function(message) { 
-//         if (message.author.bot) return;
-//         if (!message.content.startsWith(prefix)) {
-//                 if ("@someone" in message.content) {
-//                         let user = choice(message.channel.guild.members);
-//                         while ("295463016248377344" in str(user.roles)) {
-//                                 user = choice(message.channel.guild.members);
-//                         }
-//                         message.channel.send("I pick **" + String(user.mention) + "**!");
-//                 } else return;
-//         }
-// });         
+                 
 client.login(config.TOKEN);
 
 module.exports.client = client;
