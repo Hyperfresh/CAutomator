@@ -22,6 +22,18 @@ function createInv(message) {
         })
     })
     .catch(i => {
+        if (/(ticket-)[0-9][0-9][0-9][0-9]/.test(message.channel.name)) {
+            message.channel.createInvite({maxUses: 1},`This invite was created by ${message.author.tag}.`)
+            .then(invite => {
+                message.channel.send(`> **Your <:CalculatedAnarchy:584304539717599234> invite**: ${invite}\n\nPlease note that this expires after 24 hours, or as soon as the invite is used by someone: whichever comes first.`)
+                setError(true)
+            })
+            .catch(x => {
+                message.channel.send(`Apologies, but something happened while trying to create your invite. Please wait for one of the Admins to manually create one for you.`)
+                setError(false)
+            }) 
+            return
+        }
         let embed = new Discord.MessageEmbed()
             .setTitle('Rather not open your DM\'s?')
             .setDescription('[Open a ticket with us instead.](https://discord.com/channels/267817764989698048/547334755885121536/769472963484844053)')
@@ -47,7 +59,7 @@ module.exports = {
         createInv(message)
         setTimeout(() => {
             if (!error) return
-            message.reply('please check your DMs.')
+            if (!/(ticket-)[0-9][0-9][0-9][0-9]/.test(message.channel.name))message.reply('please check your DMs.')
             talkedRecently.add(message.author.id)
             setTimeout(() => {
                 talkedRecently.delete(message.author.id)
