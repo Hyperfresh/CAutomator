@@ -35,8 +35,8 @@ const validatePerm = (permission) => {
         'MANAGE_WEBHOOKS',
         'MANAGE_EMJOIS',
     ]
-    for (permission of validPerms) {
-        if (!validPerms.includes(permission)) {
+    for (let permissions of validPerms) {
+        if (!validPerms.includes(permissions)) {
             throw new Error(`Couldn't recognise permission "${permission}".`)
         }
     }
