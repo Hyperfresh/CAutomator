@@ -16,7 +16,7 @@ function createInv(message) {
             message.author.send(`Here's your requested invite link: ${invite}`)
             setError(true)
         })
-        .catch(i => {
+        .catch(x => {
             message.author.send(`Apologies, but something happened while trying to create your invite. Please DM @Hy and they'll create the invite for you.`)
             setError(false)
         })
