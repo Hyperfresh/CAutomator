@@ -45,7 +45,6 @@ const validatePerm = (permission) => {
 module.exports = (client, commandOptions) => {
     let {
         commands,
-        expectedArgs = '',
         permissionError = 'Sorry, you can\'t do that.',
         minArgs = 0,
         maxArgs = null,
@@ -73,7 +72,7 @@ module.exports = (client, commandOptions) => {
                     }
                 }
                 for (const requiredRole of requiredRoles) {
-                    const role = guild.roles.cache.find(role => role.name === requiredRole)
+                    const role = guild.roles.cache.find(hasRole => hasRole.name === requiredRole)
                     if (!role || !member.roles.cache.has(role.id)) {
                         message.reply(`Seems you don't have the **${requiredRole}** role.`)
                         return
