@@ -1,6 +1,6 @@
 {
   "name": "cautomator",
-  "version": "3.3.0",
+  "version": "4.0.0",
   "description": "A custom Discord bot for the Calculated Anarchy Server.",
   "main": "index.js",
   "dependencies": {
