@@ -24,6 +24,10 @@ GNU Affero General Public License for more details.
 
 console.log(info)
 
+if (!/^(v([1-9][2-9]+\.)?(\d+\.)?(\d+))$/.test(process.version)) { // Version check
+        throw new Error(`CAutomator requires Node.js v12.*.* or higher to run properly. You have ${process}. Please upgrade your Node install.`)
+}
+
 const { exception, profile } = require("console");
 const Discord = require("discord.js");
 const { exit } = require("process");
