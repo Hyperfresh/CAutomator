@@ -3,6 +3,7 @@ let breakMessages = [
     'Oh no, hairpins busted',
     "'JHsfhishi28778878v...'''s''df'4'4'433'101011011001'",
     "oh no, now my brain has turned into mash potat"
+    "Have a break, have a Kit Kat."
 ]
 
 module.exports = {
