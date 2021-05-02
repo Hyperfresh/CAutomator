@@ -11,7 +11,7 @@ module.exports = {
     minArgs: 0,
     maxArgs: 0,
     callback: (message) => {
-        let item = Math.random() * 3
+        let item = Math.random() * 4
         message.channel.send(`${breakMessages[item.toFixed(0)]}`)
     }
 }
