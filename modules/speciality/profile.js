@@ -76,7 +76,7 @@ function parseBadges(name,id,badges) {
 }
 
 function construct(r,list) {
-    if (r == null) return null
+    if (r == null) return "noBadge"
     return list.filter(function (elem) {
         return r.indexOf(elem) > -1
     }).length
@@ -91,30 +91,23 @@ function createPrideBadges(r) { // Create pride badges for embeds & database.
         "<:ace:798919222843146270>","<:gq:798919345836785664>","<:aro:798919620840652870>",
         ":transgender_flag:",":rainbow_flag:"
     ]
+    let prideBadgeEmoji = ['enby','pan','nd','les1','les2','bi','ace','gq','aro'] // Badge types
+    let prideBadgeEmoID = ['798917920674676756','798918319238545418','798918686676353034','798920011145281556','798920322828861460','798919094194798622','798919222843146270','798919345836785664','798919620840652870']
+
     let found = construct(r,fullList)
+    if (found == "noBadge") {
+        badgesToAdd = ["No pride badges"]
+        return badgesToAdd
+    }
     if (found) { // Function being used to construct pride badges for embed.
         // Convert constructed badges from database to badge types
         let temp = []
-        r.forEach(Element => {
-            switch (Element) {
-                case "<:enby:798917920674676756>": temp.push("enby"); break
-                case "<:pan:798918319238545418>": temp.push("pan"); break
-                case "<:nd:798918686676353034>": temp.push("nd"); break
-                case "<:les1:798920011145281556>": temp.push("les1"); break
-                case "<:les2:798920322828861460>": temp.push("les2"); break
-                case "<:bi:798919094194798622>": temp.push("bi"); break
-                case "<:ace:798919222843146270>": temp.push("ace"); break
-                case "<:gq:798919345836785664>": temp.push("gq"); break
-                case "<:aro:798919620840652870>": temp.push("aro"); break
-                case ":transgender_flag:": temp.push("trans"); break
-               case ":rainbow_flag:": temp.push('gay'); break
-            }
-        })
+        for (let value of r) {
+            if (r == fullList[value]) temp.push(prideBadgeEmoji[value])
+        }
         r = temp
     }
     
-    let prideBadgeEmoji = ['enby','pan','nd','les1','les2','bi','ace','gq','aro'] // Badge types
-    let prideBadgeEmoID = ['798917920674676756','798918319238545418','798918686676353034','798920011145281556','798920322828861460','798919094194798622','798919222843146270','798919345836785664','798919620840652870']
     badgesToAdd = parseBadges(prideBadgeEmoji,prideBadgeEmoID,r)
     if (r.includes("trans")) {
         badgesToAdd.push(':transgender_flag:')
@@ -137,27 +130,23 @@ function createInterestBadges(r) {
         '<:terraria:817186008750751754>',
         ':video_game:', ':musical_note:', ':paintbrush:'
     ]
+    let interestBadgeEmoji = ['minecraft','amogus','splatoon','animalcrossing','terraria'] // Badge types
+    let interestBadgeEmoID = ['817185848373542963','817207798583525386','817209133526024243','817207987240304690','817186008750751754']
+
     let found = construct(r,fullList)
+    if (found == "noBadge") {
+        badgesToAdd = ["No interest badges"]
+        return badgesToAdd
+    }
     if (found) { // Function being used to construct interest badges for embed.
         // Convert constructed badges from database to badge types
         let temp = []
-        r.forEach(Element => {
-            switch (Element) {
-                case "<:minecraft:817185848373542963>": temp.push("minecraft"); break
-                case "<:amogus:817207798583525386>": temp.push("amogus"); break
-                case "<:splatoon:817209133526024243>": temp.push("splatoon"); break
-                case "<:animalcrossing:817207987240304690>": temp.push("animalcrossing"); break
-                case "<:terraria:817186008750751754>": temp.push("terraria"); break
-                case ":musical_note:": temp.push("musician"); break
-                case ":video_game:": temp.push("gameday"); break
-                case ":paintbrush:": temp.push("artist"); break
-            }
-        })
+        for (let value of r) {
+            if (r == fullList[value]) temp.push(interestBadgeEmoji[value])
+        }
         r = temp
     }
     
-    let interestBadgeEmoji = ['minecraft','amogus','splatoon','animalcrossing','terraria'] // Badge types
-    let interestBadgeEmoID = ['817185848373542963','817207798583525386','817209133526024243','817207987240304690','817186008750751754']
     badgesToAdd = parseBadges(interestBadgeEmoji,interestBadgeEmoID,r)
     if (r.includes("musician")) {
         badgesToAdd.push(':musical_note:')
@@ -174,14 +163,16 @@ function createInterestBadges(r) {
 
 function spaceout(args) {
     let yes = '';
+    if (/^(No)\s(\w+)\s(badges)$/.test(args[0])) return args[0]
     for (let value of args) {
-        yes = `${yes} ${args[value]}`
+        yes = `${yes} ${value}`
     }
     return yes
 }
 
 function createEmbed(r,user,guild) /* Create the profile card. */ {
     let time = DateTime.now().setZone(r.tz).toLocaleString(DateTime.DATETIME_MED)
+    console.log(spaceout(createInterestBadges(r.ibadges)))
     let embed = new Discord.MessageEmbed()
         .setTitle(r.username)
         .setURL(`https://discord.com/users/${r.memberid}`)
