@@ -75,44 +75,43 @@ function parseBadges(name,id,badges) {
     return badgesToAdd
 }
 
-function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
+function construct(r,list) {
+    if (r == null) return null
+    return list.filter(function (elem) {
+        return r.indexOf(elem) > -1
+    }).length
+}
+
+function createPrideBadges(r) { // Create pride badges for embeds & database.
     // Declare variable types.
     let badgesToAdd = []
-    let fullList = /* This list is the full resolve for each pride badge. */ [
+    let fullList = [ // This list is the full resolve for each pride badge.
         "<:enby:798917920674676756>","<:pan:798918319238545418>","<:nd:798918686676353034>",
         "<:les1:798920011145281556>","<:les2:798920322828861460>","<:bi:798919094194798622>",
         "<:ace:798919222843146270>","<:gq:798919345836785664>","<:aro:798919620840652870>",
         ":transgender_flag:",":rainbow_flag:"
     ]
-    let found;
-    try { // Is this function being used to construct pride badges for the embed or the database?
-        found = fullList.filter(function (elem) {
-            return r.indexOf(elem) > -1;
-        }).length == r.length
-    } catch {
-        badgesToAdd = ["No pride badges"] // If r is null, this is just a "last resort" measure
-        return badgesToAdd
+    let found = construct(r,fullList)
+    if (found) { // Function being used to construct pride badges for embed.
+        // Convert constructed badges from database to badge types
+        let temp = []
+        r.forEach(Element => {
+            switch (Element) {
+                case "<:enby:798917920674676756>": temp.push("enby"); break
+                case "<:pan:798918319238545418>": temp.push("pan"); break
+                case "<:nd:798918686676353034>": temp.push("nd"); break
+                case "<:les1:798920011145281556>": temp.push("les1"); break
+                case "<:les2:798920322828861460>": temp.push("les2"); break
+                case "<:bi:798919094194798622>": temp.push("bi"); break
+                case "<:ace:798919222843146270>": temp.push("ace"); break
+                case "<:gq:798919345836785664>": temp.push("gq"); break
+                case "<:aro:798919620840652870>": temp.push("aro"); break
+                case ":transgender_flag:": temp.push("trans"); break
+               case ":rainbow_flag:": temp.push('gay'); break
+            }
+        })
+        r = temp
     }
-        if (found) { // Function being used to construct pride badges for embed.
-            // Convert constructed badges from database to badge types
-            let temp = []
-            r.forEach(Element => {
-                switch (Element) {
-                    case "<:enby:798917920674676756>": temp.push("enby"); break
-                    case "<:pan:798918319238545418>": temp.push("pan"); break
-                    case "<:nd:798918686676353034>": temp.push("nd"); break
-                    case "<:les1:798920011145281556>": temp.push("les1"); break
-                    case "<:les2:798920322828861460>": temp.push("les2"); break
-                    case "<:bi:798919094194798622>": temp.push("bi"); break
-                    case "<:ace:798919222843146270>": temp.push("ace"); break
-                    case "<:gq:798919345836785664>": temp.push("gq"); break
-                    case "<:aro:798919620840652870>": temp.push("aro"); break
-                    case ":transgender_flag:": temp.push("trans"); break
-                    case ":rainbow_flag:": temp.push('gay'); break
-                }
-            })
-            r = temp
-        }
     
     let prideBadgeEmoji = ['enby','pan','nd','les1','les2','bi','ace','gq','aro'] // Badge types
     let prideBadgeEmoID = ['798917920674676756','798918319238545418','798918686676353034','798920011145281556','798920322828861460','798919094194798622','798919222843146270','798919345836785664','798919620840652870']
@@ -130,7 +129,7 @@ function createPrideBadges(r) /* Create pride badges for embeds & database. */ {
 function createInterestBadges(r) {
     // Declare variable types.
     let badgesToAdd = []
-    let fullList = /* This list is the full resolve for each interest badge. */ [
+    let fullList = [ // This list is the full resolve for each interest badge.
         '<:minecraft:817185848373542963>',
         '<:amogus:817207798583525386>',
         '<:splatoon:817209133526024243>',
@@ -138,32 +137,24 @@ function createInterestBadges(r) {
         '<:terraria:817186008750751754>',
         ':video_game:', ':musical_note:', ':paintbrush:'
     ]
-    let found;
-    try { // Is this function being used to construct interest badges for the embed or the database?
-        found = fullList.filter(function (elem) {
-            return r.indexOf(elem) > -1;
-        }).length == r.length
-    } catch {
-        badgesToAdd = ['No interest badges'] // If r is null, this is just a "last resort" measure
-        return badgesToAdd
+    let found = construct(r,fullList)
+    if (found) { // Function being used to construct interest badges for embed.
+        // Convert constructed badges from database to badge types
+        let temp = []
+        r.forEach(Element => {
+            switch (Element) {
+                case "<:minecraft:817185848373542963>": temp.push("minecraft"); break
+                case "<:amogus:817207798583525386>": temp.push("amogus"); break
+                case "<:splatoon:817209133526024243>": temp.push("splatoon"); break
+                case "<:animalcrossing:817207987240304690>": temp.push("animalcrossing"); break
+                case "<:terraria:817186008750751754>": temp.push("terraria"); break
+                case ":musical_note:": temp.push("musician"); break
+                case ":video_game:": temp.push("gameday"); break
+                case ":paintbrush:": temp.push("artist"); break
+            }
+        })
+        r = temp
     }
-        if (found) { // Function being used to construct interest badges for embed.
-            // Convert constructed badges from database to badge types
-            let temp = []
-            r.forEach(Element => {
-                switch (Element) {
-                    case "<:minecraft:817185848373542963>": temp.push("minecraft"); break
-                    case "<:amogus:817207798583525386>": temp.push("amogus"); break
-                    case "<:splatoon:817209133526024243>": temp.push("splatoon"); break
-                    case "<:animalcrossing:817207987240304690>": temp.push("animalcrossing"); break
-                    case "<:terraria:817186008750751754>": temp.push("terraria"); break
-                    case ":musical_note:": temp.push("musician"); break
-                    case ":video_game:": temp.push("gameday"); break
-                    case ":paintbrush:": temp.push("artist"); break
-                }
-            })
-            r = temp
-        }
     
     let interestBadgeEmoji = ['minecraft','amogus','splatoon','animalcrossing','terraria'] // Badge types
     let interestBadgeEmoID = ['817185848373542963','817207798583525386','817209133526024243','817207987240304690','817186008750751754']
@@ -183,8 +174,8 @@ function createInterestBadges(r) {
 
 function spaceout(args) {
     let yes = '';
-    for (let i = 0; i < (args.length); i++) {
-        yes = `${yes} ${args[i]}`
+    for (let value of args) {
+        yes = `${yes} ${args[value]}`
     }
     return yes
 }
