@@ -19,7 +19,7 @@ module.exports = {
             .value()
         message.react('<a:typing:798907891787628544>')
         switch (search) {
-            case false:
+            case !search:
                 for (let x = 1; x < (args.length); x++) {
                     rolename = `${rolename} ${args[x]}`
                 }
@@ -46,7 +46,7 @@ module.exports = {
                         .catch(console.error);
                 } else message.reply('you didn\'t specify a colour (or didn\'t specify it properly)! Do in the following format: `-role <colour> <role name>`')
                 break
-            case true:
+            case search:
                 if (args[0] == "remove") {
                     message.member.roles.remove(search.roleid)
                         .then(message.reply('I\'ve removed your custom role.'))
@@ -66,7 +66,7 @@ module.exports = {
                             message.reply(`I've edited your custom role: <@&${role.id}>`)
                             message.member.roles.add(role.id)
                         })
-                } else message.reply('you didn\'t specify a colour (or didn\'t specify it properly)! Do in the following format: `~role <colour> <role name>`')
+                } else message.reply(`you didn't specify a colour (or didn't specify it properly)! Do in the following format: \`${prefix}role <colour> <role name>\``)
                 break
         }
         message.reactions.removeAll()
