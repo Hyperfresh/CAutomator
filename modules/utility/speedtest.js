@@ -25,7 +25,7 @@ module.exports = { // Command
         if (!run) {
             run = true
             message.reply('Conducting speed test. Please wait.')
-            speedTest().then(res => {
+            speedTest({acceptLicense: true}).then(res => {
                 console.log(res)
                 let download = res.download.bytes/1000000
                 let upload = res.upload.bytes/1000000
