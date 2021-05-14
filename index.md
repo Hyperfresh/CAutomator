@@ -7,18 +7,21 @@ Built in Node.js from the ground-up from its [Python ancestor](https://github.co
 # Code quality
 ## [SonarCloud](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
 SonarCloud code scanning is also paired with [SonarLint](https://sonarlint.com) in Visual Studio Code.
+
 |Quality Gate|Measures|
 |---|---|
 |[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Hyperfresh_CAutomator)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)|[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=ncloc)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)<br>[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)<br>[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)|
 
 ## Other Code Quality scanners
 *\*Better Code does not have an option to make its dashboard publicly viewable. The hyperlink leads to Better Code's main website.*
+
 |[Better Code](https://bettercodehub.com/)\*|[Semmle LGTM](https://lgtm.com/projects/g/Hyperfresh/CAutomator/)|
 |---|---|
 |[![BCH compliance](https://bettercodehub.com/edge/badge/Hyperfresh/CAutomator?branch=master)](https://bettercodehub.com/)|[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Hyperfresh/CAutomator.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Hyperfresh/CAutomator/context:javascript) [![Total alerts](https://img.shields.io/lgtm/alerts/g/Hyperfresh/CAutomator.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Hyperfresh/CAutomator/alerts/)|
 
 # Security
 Security always comes first. While CAutomator is built for one server and a specific purposes, personal data may be stored by cloned running copies of the bot. [Check the security dashboard of this repository](https://github.com/Hyperfresh/CAutomator/security) for more details.
+
 |[SonarCloud](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)|[Snyk](https://snyk.io/test/github/Hyperfresh/CAutomator)|[CodeQL](https://github.com/Hyperfresh/CAutomator/actions/workflows/codeql-analysis.yml)|
 |----------|----|------|
 |[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=security_rating)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=bugs)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)|[![Known Vulnerabilities](https://snyk.io/test/github/Hyperfresh/CAutomator/badge.svg)](https://snyk.io/test/github/Hyperfresh/CAutomator)|[![CodeQL](https://github.com/Hyperfresh/CAutomator/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/Hyperfresh/CAutomator/actions/workflows/codeql-analysis.yml)|
