@@ -28,20 +28,19 @@ if (!/^(v([1-9][2-9]+\.)?(\d+\.)?(\d+))$/.test(process.version)) { // Version ch
         throw new Error(`CAutomator requires Node.js v12.*.* or higher to run properly. You have ${process}. Please upgrade your Node install.`)
 }
 
-const { exception, profile } = require("console");
 const Discord = require("discord.js");
-const { exit } = require("process");
 const fs = require('fs')
 const path = require('path')
 const config = require("./data/config.json");
 const client = new Discord.Client();
 
-const lowdb = require("lowdb");
-const FileSync = require('lowdb/adapters/FileSync')
+import { Low, FileSync } from 'lowdb'
+
 const adapter = new FileSync(`${config.DIR}/data/database.json`)
-const db = lowdb(adapter)
-db.defaults({ roles: [], rcount: 0, profiles : [], pcount: 0 })
-        .write()
+const db = new Low(adapter)
+
+db.data ||= { roles: [], rcount: 0, profiles : [], pcount: 0 }
+db.write()
 
 const prefix = config.PREFIX;
 
