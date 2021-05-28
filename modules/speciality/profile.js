@@ -63,15 +63,15 @@ function createServerBadges(id,guild) /* Create server badges for embeds & datab
 
 function parseBadges(name,id,badges) {
     let counter = 0
-    let badgesToAdd;
+    let badgesToAdd = [];
     try {
         badges.forEach(Element => {
-                if (r.includes(Element)) {
+                if (badges.includes(Element)) {
                     badgesToAdd.push(`<:${name[counter]}:${id[counter]}>`)
                 }
                 counter += 1
             })
-    } catch {console.log('Nothing to parse')}
+    } catch (err) {console.log('Nothing to parse:',err)}
     return badgesToAdd
 }
 
@@ -102,8 +102,8 @@ function createPrideBadges(r) { // Create pride badges for embeds & database.
     if (found) { // Function being used to construct pride badges for embed.
         // Convert constructed badges from database to badge types
         let temp = []
-        for (let value of r) {
-            if (r == fullList[value]) temp.push(prideBadgeEmoji[value])
+        for (let i = 0; i < r.length; i++) {
+            if (fullList.includes(r[i])) temp.push(prideBadgeEmoji[i])
         }
         r = temp
     }
@@ -141,8 +141,8 @@ function createInterestBadges(r) {
     if (found) { // Function being used to construct interest badges for embed.
         // Convert constructed badges from database to badge types
         let temp = []
-        for (let value of r) {
-            if (r == fullList[value]) temp.push(interestBadgeEmoji[value])
+        for (let i = 0; i < r.length; i++) {
+            if (fullList.includes(r[i])) temp.push(interestBadgeEmoji[i])
         }
         r = temp
     }
@@ -367,8 +367,8 @@ function updateUser() {
     message.channel.send('Profile card updated.',embed)
 }
 
-function editUser(args) {
-    switch (args[0]) {
+function editUser(message,args) {
+    switch (args[1]) {
         case "name":
             let name = ""
             for (let i = 1; i < ((args.length)-1); i++) {
@@ -486,7 +486,7 @@ module.exports = {
                 break
             case "edit":
                 if (search) {
-                    editUser(args)
+                    editUser(message,args)
                     search = dbSearch(message.author.id)
                     let embed = createEmbed(search,client.users.cache.get(search.memberid),message.guild)
                     message.channel.send(embed)

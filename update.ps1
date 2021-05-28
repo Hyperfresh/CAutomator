@@ -10,6 +10,8 @@ if ($S1 -eq 'npm') {
     Write-Output "[pwsh] > Auditing."
     npm audit fix
 } elseif ( $S1 -eq 'bot' ) { 
+    Write-Host "[pwsh] > Resetting head..." -ForegroundColor Yellow
+    git reset --hard
     Write-Output "[pwsh] > Fetching."
     git fetch --all
     Write-Output "[pwsh] > Pulling."
