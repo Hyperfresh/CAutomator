@@ -1,7 +1,7 @@
 // RSS Parsing
 const Parser = require('rss-parser')
-const parser = function() { Parser(); }
-const xml2js = require('xml2js')
+const parser = new Parser();
+const xml2js = require('xml2js');
 const xmlparser = new xml2js.Parser();
 
 // Embed building

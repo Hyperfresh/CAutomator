@@ -7,18 +7,58 @@ const weather = require('weather-js')
 // Time stuff
 const {DateTime} = require('luxon')
 
+// Set up database based on lowdb.
+const { db } = require('../../index')
+const client = require('../../index').client
+
+
+function getUserFromMention(mention) /* Make a mention into a snowflake. */ {
+	if (!mention) return;
+	if (mention.startsWith('<@') && mention.endsWith('>')) {
+		mention = mention.slice(2, -1);
+		if (mention.startsWith('!')) {
+			mention = mention.slice(1);
+		}
+		return client.users.cache.get(mention);
+	}
+}
+
 module.exports = { // Command
     commands: 'weather',
     minArgs: 0,
     maxArgs: 500,
     callback: (message, args) => {
         let city;
-        if (args.length == 0) city = 'Adelaide, South Australia'
-        else city = args.join(', ')
+        if (args.length == 0) {
+            let dbresult = db.get('profiles')
+                .find({memberid: message.author.id})
+                .value()
+            if (dbresult) {
+                let res = dbresult.tz
+                let temp = res.split('/')
+                city = `"${temp[1]}, ${temp[0]}"`
+            } else city = 'Adelaide, South Australia'
+        } else {
+            if (/(<@[!]\d{18}>)/.test(args[0])) {
+                let mention = getUserFromMention(args[0])
+                let dbresult = db.get('profiles')
+                    .find({memberid: mention.id})
+                    .value()
+                if (dbresult) {
+                    let res = dbresult.tz
+                    let temp = res.split('/')
+                    city = `"${temp[1]}, ${temp[0]}"`
+                } else {
+                    message.reply("this user has not registered a location for their user.")
+                    return
+                }
+            } else city = args.join(', ')
+        }
 
+        console.log(city)
         weather.find({search: city, degreeType: 'C'}, function(err, result) {
-            if (!result) {
-                message.reply(`I couldn't find any weather details for ${city}.`)
+            if (!result || result == 0) {
+                message.reply(`I couldn't find any weather details for ${city}. Try searching like "Adelaide, Australia".`)
                 return
             }
 
