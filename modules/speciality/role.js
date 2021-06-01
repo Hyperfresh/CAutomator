@@ -5,7 +5,7 @@
 const config = require('../../data/config.json');
 let prefix = config.PREFIX
 
-const {db} = require('../../index')
+const { db } = require('../../index')
 
 module.exports = {
     commands: 'role',
@@ -15,7 +15,7 @@ module.exports = {
     callback: (message, args) => {
         let rolename = "";
         let search = db.get('roles')
-            .find({memberid: message.author.id})
+            .find({ memberid: message.author.id })
             .value()
         message.react('<a:typing:798907891787628544>')
         switch (search) {
@@ -28,15 +28,15 @@ module.exports = {
                     let pos = db.get('rcount').value()
                     message.guild.roles.create({
                         data: {
-                          name: rolename,
-                          color: rolecolour,
-                          hoist: true,
-                          position: message.guild.roles.cache.size-pos
+                            name: rolename,
+                            color: rolecolour,
+                            hoist: true,
+                            position: message.guild.roles.cache.size - pos
                         },
-                      })
+                    })
                         .then(role => {
                             db.get('roles')
-                                .push({memberid: message.author.id, roleid: role.id})
+                                .push({ memberid: message.author.id, roleid: role.id })
                                 .write()
                             message.member.roles.add(role.id)
                             db.update('rcount', n => n + 1)

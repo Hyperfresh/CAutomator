@@ -1,31 +1,31 @@
 
-const fail = function() {
+const fail = function () {
     message.reply('something went wrong. Please try that again.')
 }
 
-function validate(member,id) {
+function validate(member, id) {
     if (!(member._roles.includes(id))) {
         message.reply("either you already don't have the role, or you've provided an incorrect argument. Check both before tyring again.")
         return false
     }
 }
 
-function remove(member,args) {
+function remove(member, args) {
     switch (args) {
         case "horny":
-            if (!validate(member,'697338555533361194')) return
+            if (!validate(member, '697338555533361194')) return
             member.roles.remove('697338555533361194')
                 .then(message.reply('you are no longer horny. Welcome to the bright side.'))
                 .catch(fail)
             break
         case "tasted":
-            if (!validate(member,'524424268503580683')) return
-            member.roles.remove(member,'524424268503580683')
+            if (!validate(member, '524424268503580683')) return
+            member.roles.remove(member, '524424268503580683')
                 .then(message.reply('you no longer have access to music commands.'))
                 .catch(fail)
             break
         case "spoilt":
-            if (!validate(member,'758604551787118603')) return
+            if (!validate(member, '758604551787118603')) return
             member.roles.remove('758604551787118603')
                 .then(message.reply('you no longer have access to spoilers.'))
                 .catch(fail)
@@ -75,7 +75,7 @@ module.exports = {
                 }
                 break
             case 'not':
-                remove(member,args[1])
+                remove(member, args[1])
                 break
             default:
                 message.reply('this doesn\'t look like a valid argument.\nAvailable arguments: `horny`, `tasted`, `not horny`, `not tasted`')

@@ -1,24 +1,24 @@
 const { db } = require('../..');
-const {client} = require('../..')
+const { client } = require('../..')
 const prefix = require('../../data/config.json').PREFIX
 
 function getUserFromMention(mention) /* Make a mention into a snowflake. */ {
-	if (!mention) return;
+    if (!mention) return;
 
-	if (mention.startsWith('<@') && mention.endsWith('>')) {
-		mention = mention.slice(2, -1);
+    if (mention.startsWith('<@') && mention.endsWith('>')) {
+        mention = mention.slice(2, -1);
 
-		if (mention.startsWith('!')) {
-			mention = mention.slice(1);
-		}
+        if (mention.startsWith('!')) {
+            mention = mention.slice(1);
+        }
 
-		return client.users.cache.get(mention);
-	}
+        return client.users.cache.get(mention);
+    }
 }
 
 function dbSearch(search) /* Search for a user via memberid. */ {
     return db.get('profiles')
-        .find({memberid: search})
+        .find({ memberid: search })
         .value()
 }
 
@@ -52,7 +52,7 @@ module.exports = { // Command
             }
             res = result.switch
             user = `${result.username}`
-        } 
+        }
         message.channel.send(`> **${user}'s Friend Code**\n${res}`)
     }
 }

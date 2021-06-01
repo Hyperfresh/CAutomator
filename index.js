@@ -39,22 +39,22 @@ import { Low, FileSync } from 'lowdb'
 const adapter = new FileSync(`${config.DIR}/data/database.json`)
 const db = new Low(adapter)
 
-db.data ||= { roles: [], rcount: 0, profiles : [], pcount: 0 }
+db.data ||= { roles: [], rcount: 0, profiles: [], pcount: 0 }
 db.write()
 
 const prefix = config.PREFIX;
 
 function ready() {
-        var play = String(prefix+"help");
+        var play = String(prefix + "help");
         client.user.setPresence({
-                status: "online",activity:{
-                        name:play,type:"PLAYING"
+                status: "online", activity: {
+                        name: play, type: "PLAYING"
                 }
         });
-        console.log("🟩 >",client.user.tag,"is now online.");
+        console.log("🟩 >", client.user.tag, "is now online.");
 }
 
-client.on("ready", function() {
+client.on("ready", function () {
         const baseFile = 'base.js'
         const commandBase = require(`./modules/${baseFile}`)
 
@@ -73,7 +73,7 @@ client.on("ready", function() {
         readCommands('modules');
         ready()
 });
-                 
+
 client.login(config.TOKEN);
 
 module.exports.client = client;

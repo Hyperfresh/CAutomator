@@ -25,19 +25,19 @@ module.exports = { // Command
         if (!run) {
             run = true
             message.reply('Conducting speed test. Please wait.')
-            speedTest({acceptLicense: true}).then(res => {
+            speedTest({ acceptLicense: true }).then(res => {
                 console.log(res)
-                let download = res.download.bytes/1000000
-                let upload = res.upload.bytes/1000000
+                let download = res.download.bytes / 1000000
+                let upload = res.upload.bytes / 1000000
 
                 let embed = new discord.MessageEmbed()
-                    .setAuthor('Speedtest by Ookla',null,'https://speedtest.net')
+                    .setAuthor('Speedtest by Ookla', null, 'https://speedtest.net')
                     .setThumbnail('https://www.speedtest.net/s/images/ookla/index/gauge-blue-1x.png')
                     .setTitle('Speedtest Results')
                     .setURL(res.result.url)
                     .setDescription(`**Download speed**: ${download.toFixed(2)} Mbps\n**Upload speed**: ${upload.toFixed(2)} Mbps\n**Ping**: ${res.ping.latency}ms`)
-                    .addField('Server',`**${res.server.name}**@${res.server.location}, ${res.server.country}`)
-                    .addField('Disclaimers',"This command is powered by [Ookla's Speedtest](https://speedtest.net).\nUsage of this command means you agree to Ookla's [EULA](https://www.speedtest.net/about/eula), [Terms of Use](https://www.speedtest.net/about/terms), [GDPR DPA](https://www.speedtest.net/gdpr-dpa) and [Privacy Policy](https://www.speedtest.net/about/privacy).")
+                    .addField('Server', `**${res.server.name}**@${res.server.location}, ${res.server.country}`)
+                    .addField('Disclaimers', "This command is powered by [Ookla's Speedtest](https://speedtest.net).\nUsage of this command means you agree to Ookla's [EULA](https://www.speedtest.net/about/eula), [Terms of Use](https://www.speedtest.net/about/terms), [GDPR DPA](https://www.speedtest.net/gdpr-dpa) and [Privacy Policy](https://www.speedtest.net/about/privacy).")
                     .setTimestamp(res.timestamp)
 
                 message.channel.send(embed)

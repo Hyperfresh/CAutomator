@@ -2,28 +2,28 @@
 const Discord = require('discord.js')
 
 // Time stuff
-const {DateTime} = require('luxon')
+const { DateTime } = require('luxon')
 const timezone = require('moment-timezone');
 const { db } = require('../..');
-const {client} = require('../..')
+const { client } = require('../..')
 
 function getUserFromMention(mention) /* Make a mention into a snowflake. */ {
-	if (!mention) return;
+    if (!mention) return;
 
-	if (mention.startsWith('<@') && mention.endsWith('>')) {
-		mention = mention.slice(2, -1);
+    if (mention.startsWith('<@') && mention.endsWith('>')) {
+        mention = mention.slice(2, -1);
 
-		if (mention.startsWith('!')) {
-			mention = mention.slice(1);
-		}
+        if (mention.startsWith('!')) {
+            mention = mention.slice(1);
+        }
 
-		return client.users.cache.get(mention);
-	}
+        return client.users.cache.get(mention);
+    }
 }
 
 function dbSearch(search) /* Search for a user via memberid. */ {
     return db.get('profiles')
-        .find({memberid: search})
+        .find({ memberid: search })
         .value()
 }
 
@@ -52,13 +52,13 @@ module.exports = { // Command
                 user = `${result.username}'s`
             } catch {
                 let helpembed = new Discord.MessageEmbed()
-                .setTitle('Click here to see all valid time zones.')
-                .setDescription('Time zone names are case sensitive.')
-                .setURL('https://en.wikipedia.org/wiki/List_of_tz_database_time_zones')
-                message.reply('I don\'t recognise this time zone.',helpembed)
+                    .setTitle('Click here to see all valid time zones.')
+                    .setDescription('Time zone names are case sensitive.')
+                    .setURL('https://en.wikipedia.org/wiki/List_of_tz_database_time_zones')
+                message.reply('I don\'t recognise this time zone.', helpembed)
                 return
             }
-        } 
+        }
         let embed = new Discord.MessageEmbed()
             .setAuthor('The time is')
             .setTitle(DateTime.now().setZone(args).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY))

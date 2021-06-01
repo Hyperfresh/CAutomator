@@ -11,7 +11,7 @@ const Discord = require('discord.js')
 const { DateTime } = require('luxon')
 
 // Create alert embed
-function createAlertEmbed(result,num) {
+function createAlertEmbed(result, num) {
     let alert = result.div.alert[num].info[0]
     let embed = new Discord.MessageEmbed()
         .setAuthor(alert.parameter[2].value[0].toUpperCase())
@@ -33,7 +33,7 @@ function createAlertEmbed(result,num) {
     let issued = DateTime.fromISO(alert.effective[0]).setZone('Australia/Adelaide').toLocaleString(DateTime.DATETIME_MED)
     let expire = DateTime.fromISO(alert.expires[0]).setZone('Australia/Adelaide').toLocaleString(DateTime.DATETIME_MED)
     embed.setDescription(`> **Issued ${issued}**\n\n${alert.description[0]}`)
-    embed.addField('What you should do',`${alert.instruction[0]}\n\n> **Expires ${expire}**`)
+    embed.addField('What you should do', `${alert.instruction[0]}\n\n> **Expires ${expire}**`)
     embed.setFooter('Times are in Australian Central Standard/Daylight')
     return embed
 }
@@ -55,19 +55,19 @@ module.exports = {
                 console.log('parsing...')
                 xmlparser.parseStringPromise(res.items[0].content).then(function (result) {
                     console.dir(result);
-                    message.channel.send(createAlertEmbed(result,0))
+                    message.channel.send(createAlertEmbed(result, 0))
                 })
                 if (res.items.length > 1) {
-                    for ( let i = 0; i <= res.items.length; i++ ) {
+                    for (let i = 0; i <= res.items.length; i++) {
                         console.log(res.items[i].content)
                         console.log('parsing...')
                         xmlparser.parseStringPromise(res.items[i].content).then(function (result) {
                             console.dir(result);
-                            message.channel.send(createAlertEmbed(result,i))
+                            message.channel.send(createAlertEmbed(result, i))
                         })
                     }
                 }
             })
-        
+
     }
 }

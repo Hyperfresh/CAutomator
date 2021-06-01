@@ -5,7 +5,7 @@ const Discord = require('discord.js')
 const weather = require('weather-js')
 
 // Time stuff
-const {DateTime} = require('luxon')
+const { DateTime } = require('luxon')
 
 // Set up database based on lowdb.
 const { db } = require('../../index')
@@ -13,14 +13,14 @@ const client = require('../../index').client
 
 
 function getUserFromMention(mention) /* Make a mention into a snowflake. */ {
-	if (!mention) return;
-	if (mention.startsWith('<@') && mention.endsWith('>')) {
-		mention = mention.slice(2, -1);
-		if (mention.startsWith('!')) {
-			mention = mention.slice(1);
-		}
-		return client.users.cache.get(mention);
-	}
+    if (!mention) return;
+    if (mention.startsWith('<@') && mention.endsWith('>')) {
+        mention = mention.slice(2, -1);
+        if (mention.startsWith('!')) {
+            mention = mention.slice(1);
+        }
+        return client.users.cache.get(mention);
+    }
 }
 
 module.exports = { // Command
@@ -31,7 +31,7 @@ module.exports = { // Command
         let city;
         if (args.length == 0) {
             let dbresult = db.get('profiles')
-                .find({memberid: message.author.id})
+                .find({ memberid: message.author.id })
                 .value()
             if (dbresult) {
                 let res = dbresult.tz
@@ -42,7 +42,7 @@ module.exports = { // Command
             if (/(<@[!]\d{18}>)/.test(args[0])) {
                 let mention = getUserFromMention(args[0])
                 let dbresult = db.get('profiles')
-                    .find({memberid: mention.id})
+                    .find({ memberid: mention.id })
                     .value()
                 if (dbresult) {
                     let res = dbresult.tz
@@ -56,7 +56,7 @@ module.exports = { // Command
         }
 
         console.log(city)
-        weather.find({search: city, degreeType: 'C'}, function(err, result) {
+        weather.find({ search: city, degreeType: 'C' }, function (err, result) {
             if (!result || result == 0) {
                 message.reply(`I couldn't find any weather details for ${city}. Try searching like "Adelaide, Australia".`)
                 return
@@ -66,7 +66,7 @@ module.exports = { // Command
                 message.reply(`something terrible happened. Please report this to the bot author: \`\`\`${err}\`\`\``)
                 return
             }
-           
+
             let current = result[0].current
             let location = result[0].location
             let forecast = result[0].forecast
@@ -82,9 +82,9 @@ module.exports = { // Command
                 let precip;
                 if (!forecast[i].precip) precip = "0"
                 else precip = forecast[i].precip
-                embed.addField(forecast[i].day,`> **${forecast[i].skytextday}**\n**High**: ${forecast[i].high}°${location.degreetype}\n**Low**: ${forecast[i].low}°${location.degreetype}\n**Chance of rain**: ${precip}%`,true)
+                embed.addField(forecast[i].day, `> **${forecast[i].skytextday}**\n**High**: ${forecast[i].high}°${location.degreetype}\n**Low**: ${forecast[i].low}°${location.degreetype}\n**Chance of rain**: ${precip}%`, true)
             }
             message.channel.send(embed)
-          });
+        });
     },
 }

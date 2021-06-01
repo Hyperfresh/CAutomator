@@ -61,7 +61,7 @@ module.exports = (client, commandOptions) => {
     }
 
     client.on('message', message => {
-        let {member, content, guild} = message
+        let { member, content, guild } = message
         if (message.author.bot) return
         for (const alias of commands) {
             if (content.toLowerCase().startsWith(`${prefix}${alias.toLowerCase()}`)) {

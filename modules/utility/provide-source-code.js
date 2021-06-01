@@ -21,7 +21,7 @@
 
                     READ THE ABOVE BEFORE PROCEEDING.
 */
-const {exec} = require('child_process');
+const { exec } = require('child_process');
 const shell = require('shelljs')
 const config = require('../../data/config.json')
 const pkg = require('../../package.json')
@@ -67,12 +67,12 @@ module.exports = {
             promise.then(res => {
                 console.log('Attempting to upload the source code to Discord.')
                 message.channel.send('> 📤 > **ZIP complete.** Uploading to Discord.')
-                message.channel.send('Here\'s the source code.', { files: [`${d}/data/${name}_${ver}_source.zip`]});
+                message.channel.send('Here\'s the source code.', { files: [`${d}/data/${name}_${ver}_source.zip`] });
             }).catch(err => {
                 console.warn(`Something really bad happened. ${err}`)
                 message.channel.send(`> 🛑 > Something really bad happened.\nPlease report the following error to my bot owner: \`\`\`${err}\`\`\``)
             });
-        } catch(AbortError) {
+        } catch (AbortError) {
             console.warn(`Something really bad happened. ${error}`)
             message.channel.send(`> 🛑 > Something really bad happened.\nPlease report the following error to my bot owner: \`\`\`${error}\`\`\``)
             return
