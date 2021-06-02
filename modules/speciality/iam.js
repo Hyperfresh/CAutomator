@@ -8,6 +8,7 @@ function validate(member, id) {
         message.reply("either you already don't have the role, or you've provided an incorrect argument. Check both before tyring again.")
         return false
     }
+    return true
 }
 
 function remove(member, args) {
