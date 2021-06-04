@@ -108,7 +108,11 @@ function createPrideBadges(r) { // Create pride badges for embeds & database.
         // Convert constructed badges from database to badge types
         let temp = []
         for (let i = 0; i < fullList.length; i++) {
-            if (r.includes(fullList[i])) temp.push(prideBadgeEmoji[i])
+            if (r.includes(fullList[i])) {
+                if (fullList[i] == ":transgender_flag:") temp.push('trans')
+                else if (fullList[i] == ":rainbow_flag:") temp.push('gay')
+                else temp.push(prideBadgeEmoji[i])
+            }
         }
         r = temp
     }
