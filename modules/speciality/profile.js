@@ -12,6 +12,8 @@ let prefix = config.PREFIX
 // Set up database based on lowdb.
 const { db } = require('../../index')
 
+// Cropping into circle
+
 // Times
 const { DateTime } = require('luxon')
 const timezone = require('moment-timezone')
@@ -65,13 +67,16 @@ function parseBadges(name,id,badges) {
     let counter = 0
     let badgesToAdd = [];
     try {
-        badges.forEach(Element => {
+        name.forEach(Element => {
                 if (badges.includes(Element)) {
                     badgesToAdd.push(`<:${name[counter]}:${id[counter]}>`)
                 }
                 counter += 1
             })
-    } catch (err) {console.log('Nothing to parse:',err)}
+    } catch (err) {
+        console.log('Nothing to parse:',err)
+        return "noBadge"
+    }
     return badgesToAdd
 }
 
@@ -102,8 +107,8 @@ function createPrideBadges(r) { // Create pride badges for embeds & database.
     if (found) { // Function being used to construct pride badges for embed.
         // Convert constructed badges from database to badge types
         let temp = []
-        for (let i = 0; i < r.length; i++) {
-            if (fullList.includes(r[i])) temp.push(prideBadgeEmoji[i])
+        for (let i = 0; i < fullList.length; i++) {
+            if (r.includes(fullList[i])) temp.push(prideBadgeEmoji[i])
         }
         r = temp
     }
@@ -173,12 +178,13 @@ function spaceout(args) {
 function createEmbed(r,user,guild) /* Create the profile card. */ {
     let time = DateTime.now().setZone(r.tz).toLocaleString(DateTime.DATETIME_MED)
     console.log(spaceout(createInterestBadges(r.ibadges)))
+
     let embed = new Discord.MessageEmbed()
         .setTitle(r.username)
         .setURL(`https://discord.com/users/${r.memberid}`)
         .setColor(r.colour)
         .setDescription(`**Name**: ${r.name}\n**Pronouns**: ${r.pronouns}\n**Birthday**: ${r.bday}\n**Switch FC**: ${r.switch}`)
-        .setThumbnail(`https://cdn.discordapp.com/avatars/${r.memberid}/${user.avatar}.png?size=1024`)
+        .setThumbnail(user.avatarURL({dynamic: true, size: 1024}))
         .setAuthor("Calculated Anarchy Profile",'https://media.discordapp.net/attachments/634575479042474003/641812026267795476/dsadsa.png')
         .addField('Interest Badges',spaceout(createInterestBadges(r.ibadges)))
         .addField('Server Badges',spaceout(createServerBadges(r.memberid,guild)),true)
@@ -368,6 +374,7 @@ function updateUser() {
 }
 
 function editUser(message,args) {
+    let temp;
     switch (args[1]) {
         case "name":
             let name = ""
@@ -415,11 +422,13 @@ function editUser(message,args) {
             break
         case "badges":
         case "pride":
-            dbUpdate(message.author.id,{pbadges: createPrideBadges(args)})
+            temp = args.splice(2)
+            dbUpdate(message.author.id,{pbadges: createPrideBadges(temp)})
             break
         case "interest":
         case "interests":
-            dbUpdate(message.author.id,{ibadges: createInterestBadges(args)})
+            temp = args.splice(2)
+            dbUpdate(message.author.id,{ibadges: createInterestBadges(temp)})
             break
         case "tz":
         case "timezone":
