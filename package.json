@@ -7,9 +7,8 @@
     "discord.js": "^12.5.3",
     "ftp": "^0.3.10",
     "is-image-url": "^1.1.8",
-    "lowdb": "^2.1.0",
-    "luxon": "^1.27.0",
     "moment-timezone": "^0.5.33",
+    "mongodb": "^3.6.9",
     "node-fetch": "^2.6.1",
     "rss-parser": "^3.12.0",
     "shelljs": "^0.8.4",
@@ -29,5 +28,9 @@
   "bugs": {
     "url": "https://github.com/Hyperfresh/CAutomator/issues"
   },
-  "homepage": "https://github.com/Hyperfresh/CAutomator#readme"
+  "homepage": "https://github.com/Hyperfresh/CAutomator#readme",
+  "devDependencies": {
+    "@types/mongodb": "^3.6.17",
+    "@types/node": "^15.12.1"
+  }
 }
