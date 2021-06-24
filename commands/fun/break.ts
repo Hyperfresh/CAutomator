@@ -6,12 +6,15 @@ let breakMessages = [
     "Have a break, have a Kit Kat."
 ]
 
-module.exports = {
-    commands: 'break',
-    minArgs: 0,
-    maxArgs: 0,
-    callback: (message) => {
-        let item = Math.random() * 4
-        message.channel.send(`${breakMessages[item.toFixed(0)]}`)
-    }
+import { Client, Message } from 'discord.js'
+
+module.exports.run = async (bot: Client, msg: Message) => {
+    let item = Math.random() * (breakMessages.length - 1)
+    msg.channel.send(`${breakMessages[item.toFixed(0)]}`)
+}
+
+module.exports.help = {
+    name: "break",
+    usage: "break",
+    desc: "lili what did you do this time"
 }
