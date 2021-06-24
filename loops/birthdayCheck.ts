@@ -46,8 +46,8 @@ export default async function birthdayCheck(bot: Client) {
                 let userInfo = await guild.members.fetch(user._id)
                 userInfo.roles.add(process.env.BIRTHDAYROLE)
                 const embed = new MessageEmbed();
-                embed.setTitle(`**Happy Birthday, ${userInfo.user.username} ! 🎉🎉**`)
-                embed.setFooter(`Born on : ${todayString}`)
+                embed.setTitle(`**Happy birthday, ${userInfo.user.username}! 🎉🎉**`)
+                embed.setFooter(`Born on: ${todayString}`)
                 embed.setColor('#FFFF72')
                 embed.setThumbnail(userInfo.user.avatarURL({ dynamic: true, size: 128 }))
                 channel.send(`<@${user._id}>`)
