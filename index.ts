@@ -19,16 +19,17 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
-Some of the TypeScript you see in CAutomator comes from iwa's deprecated Q-Bot
-discord bot. You can see my fork of the bot at https://github.com/hyperfresh/myu-bot.
-There is no license for Q-Bot, so it's assumed that credit to the original author
-(Pierre "iwa") is substantial enough. If this isn't the case, let me know!
+-----
+
+Some of the TypeScript you see in CAutomator comes from my fork of iwa's deprecated
+Q-Bot Discord bot (https://github.com/iwa | https://github.com/hyperfresh/myu-bot),
+which is licensed under ISC. Please read the LIBRARIES.md file for more information.
 `)
 
 console.log(info)
 
 if (!/^(v([1-9][2-9]+\.)?(\d+\.)?(\d+))$/.test(process.version)) { // Version check
-        throw new Error(`CAutomator requires Node.js v12.*.* or higher to run properly. You have ${process}. Please upgrade your Node install.`)
+        throw new Error(`CAutomator requires Node.js v14.*.* or higher to run properly. You have ${process}. Please upgrade your Node install.`)
 }
 
 import * as Discord from "discord.js";
@@ -97,10 +98,16 @@ bot.on('message', async (msg: Discord.Message) => {
 
 });
 
-import birthdayCheck from './loops/birthdayCheck';
+// Loops
+import birthdayCheck from './loops/birthdayCheck'; // Check birthdays every hour
 setInterval(async () => {
         await birthdayCheck(bot)
 }, 3600000);
+
+import alertCheck from './loops/alertCheck'; // Check birthdays every 15 minutes
+setInterval(async () => {
+        await alertCheck(bot)
+}, 900000);
 
 bot.login(config.TOKEN);
 
