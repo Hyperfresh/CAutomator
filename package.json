@@ -2,7 +2,7 @@
   "name": "cautomator",
   "version": "4.1.1",
   "description": "A custom Discord bot for the Calculated Anarchy Server.",
-  "main": "index.js",
+  "main": "index.ts",
   "dependencies": {
     "discord.js": "^12.5.3",
     "ftp": "^0.3.10",
@@ -30,7 +30,9 @@
   },
   "homepage": "https://github.com/Hyperfresh/CAutomator#readme",
   "devDependencies": {
+    "@types/luxon": "^1.27.0",
     "@types/mongodb": "^3.6.17",
-    "@types/node": "^15.12.1"
+    "@types/node": "^15.12.1",
+    "@types/xml2js": "^0.4.8"
   }
 }
