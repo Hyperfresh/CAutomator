@@ -1,7 +1,7 @@
 # Libraries used in CAutomator
 
-## Framework: Q-Bot [(link to Hy's fork)]((https://github.com/Hyperfresh/Myu-Bot))
-Some of CAutomator's TypeScript framework comes courtesy of iwa's Q-Bot Discord bot. It is licensed under the ISC License according to the repository's package.json file, although a LICENSE file is not included within the repository. Please contact me if a different license is used for Q-Bot!
+## Framework: Q-Bot [(link to Hy's fork)](https://github.com/Hyperfresh/Myu-Bot)
+Some of CAutomator's TypeScript framework comes courtesy of @iwa's now archived Q-Bot Discord bot. It is licensed under the ISC License according to the repository's package.json file, although a LICENSE file is not included within the repository. Please contact me if a different license is used for Q-Bot!
 
 ```
 ISC License
