@@ -8,7 +8,7 @@ Built in Node.js from the ground-up from its [Python ancestor](https://github.co
 
 ## Code quality
 ### [SonarCloud](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)
-SonarCloud code scanning is also paired with [SonarLint](https://sonarlint.com) in Visual Studio Code.
+SonarCloud code scanning is also paired with [SonarLint](https://sonarlint.org) in Visual Studio Code.
 |Quality Gate|Measures|
 |---|---|
 |[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=Hyperfresh_CAutomator)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)|[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=ncloc)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)<br>[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)<br>[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Hyperfresh_CAutomator&metric=sqale_index)](https://sonarcloud.io/dashboard?id=Hyperfresh_CAutomator)|
