@@ -1,3 +1,8 @@
+# 🛑 Hold on a minute!
+CAutomator is currently not in active development. I'm awaiting for Node.js v16 to reach LTS before I work on Discord.js v13. Please be patient in the meantime, as I've got other work to do as well!
+
+-----
+
 ![CAutomator logo](./resources/logo.png)
 # A custom Discord bot for Calculated Anarchy that manages profile cards, invites, custom roles and more.
 Built in Node.js from the ground-up from its [Python ancestor](https://github.com/hyperfresh/CAutomator-Legacy), CAutomator can control custom roles for each user to help users stand out, manage server-side profile cards to help users with IRL identity, find the time and weather across the globe, and manage invites into the server.
