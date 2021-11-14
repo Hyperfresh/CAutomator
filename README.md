@@ -1,5 +1,4 @@
-# 🛑 Hold on a minute!
-CAutomator is currently not in active development. I'm awaiting for Node.js v16 to reach LTS before I work on Discord.js v13. Please be patient in the meantime, as I've got other work to do as well!
+# 🛑 This project is now deprecated
 
 -----
 
